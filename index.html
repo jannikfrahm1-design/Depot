@@ -14,16 +14,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* VOICE: ruhig, präzise, wie das Datenblatt eines Profi-Terminals – Zahlen zuerst, Erklärung danach.
-   IDEA: ein Depot-Datenblatt im Taschenformat: Kobalt-Titelstreifen, darunter exakte Panels auf einer Grundlinie.
-   PICTURE: die Depotkurve selbst – groß, berührbar, mit echten Kurspunkten als Marken.
+/* VOICE: ruhig, präzise, wie ein Profi-Terminal – Zahlen zuerst, Erklärung danach.
+   IDEA: Depot-Datenblatt im Taschenformat: Kobalt-Titelstreifen, darunter exakte Panels auf einer Grundlinie.
+   PICTURE: die Depotkurve selbst – groß, berührbar, Linie oder Kerzen, mit echten Kurspunkten.
    COLOUR and TYPE: Kobalt #1240e0, Weiß/Tiefnacht #0a0d18, Grün/Rot nur für Gewinn/Verlust; Space Grotesk + Inter.
-   LAYOUT: App-Schale fürs iPhone – Titelstreifen, Panels, untere Tab-Leiste, Fonds als Vollbild-Blatt. */
+   LAYOUT: iPhone-App-Schale – Titelstreifen, Panels, untere Tab-Leiste, Fonds als Vollbild-Blatt. */
 :root{color-scheme:light dark;
 --bg:light-dark(#f3f5fb,#0a0d18);--card:light-dark(#fff,#121729);--card2:light-dark(#eef2ff,#182040);
 --ink:light-dark(#0b0f1e,#eef1fa);--mute:light-dark(#566079,#8d96b0);--line:light-dark(#e2e6f0,#232b45);
 --brand:light-dark(#1240e0,#6f8bff);--strip:light-dark(#1240e0,#0f2a9e);
---up:light-dark(#08875a,#3ddc97);--dn:light-dark(#c9302a,#ff6f6a);
+--up:light-dark(#08875a,#3ddc97);--dn:light-dark(#c9302a,#ff6f6a);--warn:light-dark(#8a6200,#ffcf5c);
 --c1:light-dark(#1240e0,#7d97ff);--c2:light-dark(#d9730d,#ffae4f);--c3:light-dark(#0b8f7e,#40d4be);
 --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -36,53 +36,59 @@ h3{font-size:16px;margin:0 0 6px}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
-.up{color:var(--up)}.dn{color:var(--dn)}.mute{color:var(--mute)}
-.small{font-size:13px}
-.nowrap{white-space:nowrap}
-/* Kopfzeile */
+.up{color:var(--up)}.dn{color:var(--dn)}.mute{color:var(--mute)}.warn{color:var(--warn)}
+.small{font-size:13px}.nowrap{white-space:nowrap}
 .top{position:sticky;top:0;z-index:20;background:var(--strip);color:#fff;padding:calc(var(--safe-t) + 10px) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}
 .top .t{font:600 18px "Space Grotesk",sans-serif;flex:1}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.14);white-space:nowrap}
-.dot{width:8px;height:8px;border-radius:50%;background:#ffd166}
+.dot{width:8px;height:8px;border-radius:50%;background:#ffd166;flex:none}
 .pill.live .dot{background:#3ddc97;animation:pulse 1.6s infinite}
 .pill.err .dot{background:#ff6f6a}
 @keyframes pulse{50%{opacity:.35}}
-@media(prefers-reduced-motion:reduce){.pill.live .dot{animation:none}}
-.icon-btn{width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.14);display:grid;place-items:center;color:#fff}
+.flash{animation:fl .6s}@keyframes fl{0%{opacity:.55}}
+@media(prefers-reduced-motion:reduce){.pill.live .dot,.flash{animation:none}}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.14);display:grid;place-items:center;color:#fff;flex:none}
 .icon-btn svg{width:20px;height:20px}
 .spin svg{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
-/* Hero */
-.hero{background:var(--strip);color:#fff;padding:6px max(16px,5vw) 26px}
-.hero .inner{max-width:760px;margin:0 auto}
+.hero{background:var(--strip);color:#fff;padding:6px max(16px,5vw) 24px}
+.hero .inner,.fhero .inner{max-width:760px;margin:0 auto}
 .hero .lbl{font-size:13px;opacity:.8}
 .hero .val{font:700 clamp(36px,10vw,52px)/1.05 "Space Grotesk",sans-serif;margin:4px 0 10px;letter-spacing:-.5px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{background:rgba(255,255,255,.13);border-radius:10px;padding:7px 10px;font-size:13px;line-height:1.3}
-.chip b{display:block;font:600 15px "Space Grotesk",sans-serif}
+.chip b{display:block;font:600 15px "Space Grotesk",sans-serif;white-space:nowrap}
 .chip .pos{color:#7dffc4}.chip .neg{color:#ffb3ae}
-/* Haupt */
+.mstat{display:flex;align-items:center;gap:6px;font-size:13px;margin-top:10px;opacity:.9}
 main{max-width:760px;margin:0 auto;padding:16px max(14px,env(safe-area-inset-left)) calc(96px + var(--safe-b))}
 .view{display:none}.view.on{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
-.card.flush{padding:0;overflow:hidden}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
 .kv div span{display:block;font-size:13px;color:var(--mute)}
 .kv div b{font:600 16px "Space Grotesk",sans-serif;white-space:nowrap}
 @media(min-width:560px){.kv.k3{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.seg{display:flex;gap:4px;background:var(--card2);padding:4px;border-radius:12px;overflow-x:auto}
-.seg button{flex:1 1 0;min-height:36px;border:0;background:transparent;border-radius:9px;padding:0 2px;font-size:13px;white-space:nowrap;font-weight:600;color:var(--mute)}
+.seg{display:flex;gap:3px;background:var(--card2);padding:4px;border-radius:12px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;min-height:36px;min-width:42px;border:0;background:transparent;border-radius:9px;padding:0 8px;font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap}
 .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.fig{position:relative;height:230px;margin-top:12px;touch-action:pan-y}
+.seg.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.seg.grid button{min-width:0;padding:0 2px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.ctl .seg{flex:none}
+.ctl .seg button{min-width:0}
+.fig{position:relative;height:250px;margin-top:12px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%}
 .tip{position:absolute;top:0;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:5px 8px;border-radius:8px;white-space:nowrap;transform:translateX(-50%);display:none;z-index:2}
 .empty{display:grid;place-items:center;text-align:center;height:100%;color:var(--mute);font-size:14px;padding:0 20px}
-.rangeinfo{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.stats div{background:var(--card2);border-radius:10px;padding:7px 8px}
+.stats span{display:block;font-size:11px;color:var(--mute)}
+.stats b{font:600 14px "Space Grotesk",sans-serif;white-space:nowrap}
+@media(max-width:400px){.stats b{font-size:12.5px}}
+.srcline{font-size:12px;color:var(--mute);margin-top:8px}
 .alloc{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px;margin:10px 0}
 .alloc i{display:block;height:100%}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
 .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px;vertical-align:-1px}
-/* Positionen */
 .pos-card{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:18px;padding:0;margin-bottom:12px;overflow:hidden}
 .pos-card .h{padding:14px 16px 10px;border-left:5px solid var(--c);display:flex;gap:12px;align-items:flex-start}
 .pos-card .h div{flex:1}
@@ -92,10 +98,9 @@ main{max-width:760px;margin:0 auto;padding:16px max(14px,env(safe-area-inset-lef
 .big{font:600 22px "Space Grotesk",sans-serif;white-space:nowrap}
 .badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--card2);color:var(--mute);white-space:nowrap}
 .badge.live{background:color-mix(in srgb,var(--up) 16%,transparent);color:var(--up)}
-.badge.old{background:color-mix(in srgb,#e0a100 18%,transparent);color:light-dark(#8a6200,#ffcf5c)}
+.badge.old{background:color-mix(in srgb,#e0a100 18%,transparent);color:var(--warn)}
 .spark{height:40px;width:96px}
 .chev{width:20px;height:20px;color:var(--mute);flex:none;margin-top:2px}
-/* Listen */
 .list{list-style:none;margin:0;padding:0}
 .list li{border-top:1px solid var(--line);padding:12px 0}
 .list li:first-child{border-top:0}
@@ -103,204 +108,224 @@ main{max-width:760px;margin:0 auto;padding:16px max(14px,env(safe-area-inset-lef
 .ord{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px}
 .ord .r{text-align:right}
 .tag{font-size:12px;font-weight:600;padding:1px 7px;border-radius:6px;background:var(--card2);color:var(--mute);margin-left:6px;white-space:nowrap}
-.tag.vl{color:var(--c3)}.tag.unk{color:light-dark(#8a6200,#ffcf5c)}
-.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:6px}
+.tag.vl{color:var(--c3)}.tag.unk{color:var(--warn)}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:6px;scrollbar-width:none}
 .filters button{flex:none;min-height:40px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-size:14px;font-weight:600}
 .filters button.on{background:var(--brand);border-color:var(--brand);color:#fff}
-/* Tabellen */
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{font-size:12px;font-weight:600;color:var(--mute);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
-td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 tr:last-child td{border-bottom:0}
 td.n,th.n{text-align:right;white-space:nowrap;font-feature-settings:"tnum"}
-.wbar{height:6px;border-radius:3px;background:var(--card2);margin-top:4px;overflow:hidden}
+.wbar{height:6px;border-radius:3px;background:var(--card2);margin-top:4px;overflow:hidden;display:flex}
 .wbar i{display:block;height:100%;background:var(--c,var(--brand))}
 .stk b{display:block;font-weight:600;line-height:1.25}
 .stk span{font-size:12px;color:var(--mute)}
 .note{font-size:12px;color:var(--mute);margin-top:2px;line-height:1.35}
 .fdots{display:flex;gap:4px}
 .fdots i{width:9px;height:9px;border-radius:50%;background:var(--c)}
-/* Info */
 .callout{background:var(--card2);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.45}
-.bul{margin:0;padding-left:18px}.bul li{margin:6px 0}
+.bul{margin:0;padding-left:18px}.bul li{margin:7px 0}
 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .duo>div{background:var(--card2);border-radius:14px;padding:12px}
 .duo span{font-size:13px;color:var(--mute);display:block}
 .duo b{font:600 20px "Space Grotesk",sans-serif;display:block;white-space:nowrap}
-/* Formulare */
+/* Heatmap */
+.heat{display:flex;flex-wrap:wrap;gap:3px}
+.heat div{flex:var(--g) 1 66px;min-height:58px;border-radius:8px;padding:6px 7px;background:var(--hc,var(--card2));color:var(--ink);font-size:12px;line-height:1.25;overflow:hidden}
+.heat b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Analysten */
+.an{border-top:1px solid var(--line);padding:14px 0}
+.an:first-child{border-top:0;padding-top:4px}
+.an .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.rate{font-size:12px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+.rate.sb{background:color-mix(in srgb,var(--up) 22%,transparent);color:var(--up)}
+.rate.b{background:color-mix(in srgb,var(--up) 12%,transparent);color:var(--up)}
+.rate.h{background:var(--card2);color:var(--mute)}
+.rng{position:relative;height:30px;margin:10px 0 2px}
+.rng .ln{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:2px;background:var(--card2)}
+.rng .band{position:absolute;top:13px;height:4px;border-radius:2px;background:color-mix(in srgb,var(--brand) 45%,transparent)}
+.rng .mk{position:absolute;top:6px;width:3px;height:18px;border-radius:2px;transform:translateX(-50%)}
+.rng .mk.cur{background:var(--ink)}.rng .mk.avg{background:var(--brand)}
+.rnglbl{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.recbar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-top:8px;gap:1px}
+.gchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gchips span{font-size:12px;background:var(--card2);border-radius:7px;padding:2px 7px;white-space:nowrap}
+.hbar{display:grid;grid-template-columns:7.5em minmax(0,1fr) 3.6em;gap:8px;align-items:center;font-size:13px;margin:7px 0}
+.hbar .tr{height:10px;border-radius:5px;background:var(--card2);overflow:hidden;display:flex}
+.hbar .tr i{height:100%;display:block}
+.hbar b{text-align:right;font-weight:600;font-feature-settings:"tnum"}
+.mx td{text-align:center;font-feature-settings:"tnum"}
 label.f{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 6px}
-input[type=text],input[type=number],input[type=password],select{width:100%;min-height:44px;font-size:16px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px}
+input[type=text],input[type=number],input[type=password],input[type=search],select{width:100%;min-height:44px;font-size:16px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px}
 input[type=range]{width:100%;accent-color:var(--brand);min-height:32px}
 .btn{flex:none;min-height:44px;border-radius:12px;border:0;background:var(--brand);color:#fff;font-weight:600;padding:0 16px}
 .btn.ghost{background:var(--card2);color:var(--ink)}
+.btn.link{background:none;color:var(--brand);padding:0;min-height:40px}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .status{font-size:14px;margin-top:10px}
 ol.steps{padding-left:20px;margin:6px 0}ol.steps li{margin:6px 0}
-/* Tabs */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + var(--safe-b));display:flex;justify-content:center}
 nav.tabs .in{display:flex;width:100%;max-width:760px}
 nav.tabs a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;justify-content:center;color:var(--mute);text-decoration:none;font-size:11px;font-weight:600;border-radius:12px}
 nav.tabs a svg{width:23px;height:23px}
 nav.tabs a.on{color:var(--brand)}
-/* Fondsblatt */
 .sheet{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
 .sheet.on{display:block}
-.sheet .top{position:sticky}
 .sheet main{padding-bottom:calc(40px + var(--safe-b))}
 .fhero{background:var(--strip);color:#fff;padding:4px max(16px,5vw) 22px}
-.fhero .inner{max-width:760px;margin:0 auto}
 .fhero h1{font-size:clamp(22px,6vw,32px);line-height:1.1;margin:4px 0 4px;text-wrap:balance}
 .scroll{overflow-x:auto}
-@media(max-width:600px){table{font-size:13px}td,th{padding:9px 4px}.hide-s{display:none}}
+@media(max-width:600px){table{font-size:13px}td,th{padding:8px 4px}.hide-s{display:none}}
 </style>
 </head>
 <body>
-<header class="top" id="topbar">
+<header class="top">
   <div class="t" id="pageTitle">Mein Depot</div>
   <span class="pill" id="livePill"><span class="dot"></span><span id="liveTxt">Stand Bank</span></span>
   <button class="icon-btn" id="refreshBtn" aria-label="Kurse aktualisieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
 </header>
 
-<section class="hero" id="hero">
-  <div class="inner">
-    <div class="lbl" id="heroLbl">DekaBank Depot · 260•••972 · Jannik Frahm</div>
-    <div class="val" id="heroVal">–</div>
-    <div class="chips" id="heroChips"></div>
+<section class="hero" id="hero"><div class="inner">
+  <div class="lbl">DekaBank Depot · 260•••972 · Jannik Frahm</div>
+  <div class="val" id="heroVal">–</div>
+  <div class="chips" id="heroChips"></div>
+  <div class="mstat" id="mktStat"></div>
+</div></section>
+
+<main>
+<section class="view" id="v-depot">
+  <div class="card">
+    <h2 style="margin:0">Depotentwicklung</h2><div class="small mute" id="chartSrc"></div>
+    <div class="seg grid" id="rangeSeg" style="margin-top:12px"></div>
+    <div class="fig" id="mainFig"></div>
+    <div class="stats" id="mainStats"></div>
+    <div class="ctl"><div class="seg" id="typeSeg"><button data-t="line" class="on">Linie</button><button data-t="candle">Kerzen</button></div><div class="seg" id="modeSeg"><button data-m="0">Depotwert</button><button data-m="1">Gewinn/Verlust</button></div></div><div class="small mute" id="mainHint" style="margin-top:8px"></div>
+  </div>
+  <div class="card">
+    <div class="row"><h2 style="margin:0">Aufteilung</h2><span class="small mute">3 Positionen</span></div>
+    <div class="alloc" id="allocBar"></div>
+    <div class="legend" id="allocLegend"></div>
+  </div>
+  <h2 style="margin:22px 2px 12px">Meine Wertpapiere</h2>
+  <div id="posList"></div>
+  <div class="card">
+    <h2>Nächste Ausführungen</h2>
+    <ul class="list" id="nextList"></ul>
+    <p class="small mute" style="margin:10px 0 0">Sparpläne laufen zum 15. – je nach Wochenende und Buchungstag landet die Ausführung erfahrungsgemäß zwischen dem 15. und 18.</p>
   </div>
 </section>
 
-<main>
-  <!-- DEPOT -->
-  <section class="view" id="v-depot">
-    <div class="card">
-      <div class="row"><h2 style="margin:0">Depotentwicklung</h2><span class="small mute" id="chartAsOf"></span></div>
-      <div class="seg" id="rangeSeg" style="margin-top:12px">
-        <button data-r="10m">10M</button><button data-r="1h">1S</button><button data-r="1d">1T</button><button data-r="1w">1W</button><button data-r="1m">1M</button><button data-r="3m">3M</button><button data-r="max" class="on">Max</button>
-      </div>
-      <div class="fig" id="mainFig"></div>
-      <div class="rangeinfo"><span id="rangeDelta"></span><span class="mute" id="rangeHint"></span></div>
-    </div>
+<section class="view" id="v-orders">
+  <div class="card"><h2>Orderübersicht</h2><div class="kv k3" id="ordStats"></div></div>
+  <div class="card"><h2>Einzahlungen pro Monat</h2><div id="ordMonths"></div></div>
+  <div class="filters" id="fFund"></div>
+  <div class="filters" id="fType"></div>
+  <div id="ordList"></div>
+  <p class="small mute">„Betrag“ ist die tatsächliche Lastschrift. Der Kostenanteil ist aus deinen Orders zurückgerechnet: Jeder Betrag teilt sich exakt in Anlage + 3,75 % (GlobalChampions), + 5,25 % (Global Technology) bzw. + 1 % (MSCI World ETF).</p>
+</section>
 
-    <div class="card">
-      <div class="row"><h2 style="margin:0">Aufteilung</h2><span class="small mute" id="posCount"></span></div>
-      <div class="alloc" id="allocBar"></div>
-      <div class="legend" id="allocLegend"></div>
-    </div>
+<section class="view" id="v-markt">
+  <div class="card"><h2>Marktlage</h2><ul class="bul" id="mktNews"></ul></div>
+  <div class="card">
+    <div class="row"><h2 style="margin:0">Heatmap deiner Aktien</h2><span class="small mute" id="heatSrc"></span></div>
+    <p class="small mute" style="margin:6px 0 10px">Kachelgröße = dein Euro-Anteil über alle Fonds, Farbe = Tagesveränderung.</p>
+    <div class="heat" id="heat"></div>
+  </div>
+  <div class="card">
+    <h2>Was du wirklich besitzt</h2>
+    <p class="small mute" style="margin-top:-4px">Durchschau über alle drei Fonds: Fondsgewicht × dein Positionswert, zusammengefasst je Aktie.</p>
+    <input type="search" id="lookQ" placeholder="Aktie suchen, z. B. SAP" aria-label="Aktie suchen">
+    <div class="scroll" style="margin-top:8px"><table id="lookTable"></table></div>
+    <button class="btn link" id="lookMore"></button>
+    <div class="callout" id="lookCallout" style="margin-top:8px"></div>
+  </div>
+  <div class="card">
+    <h2>Analysten-Erwartungen</h2>
+    <p class="small mute" style="margin-top:-4px" id="anIntro"></p>
+    <div class="duo" id="anSum" style="margin-bottom:10px"></div>
+    <div class="filters" id="anSort"></div>
+    <div id="anList"></div>
+    <p class="small mute" style="margin:10px 0 0">Konsens laut S&amp;P Global via stockanalysis.com (Stand jeweils angegeben). Kursziele sind Erwartungen für 12 Monate und erfahrungsgemäß eher zu optimistisch – keine Garantie und keine Anlageberatung.</p>
+  </div>
+</section>
 
-    <h2 style="margin:22px 2px 12px">Meine Wertpapiere</h2>
-    <div id="posList"></div>
+<section class="view" id="v-analyse">
+  <div class="card">
+    <h2>Zwei Wahrheiten über deine Rendite</h2>
+    <div class="duo" id="truth"></div>
+    <p class="small mute" style="margin:10px 0 0" id="truthTxt"></p>
+  </div>
+  <div class="card">
+    <h2>Risiko-Kennzahlen</h2>
+    <div class="kv k3" id="riskKv"></div>
+    <p class="small mute" style="margin:12px 0 0" id="riskTxt"></p>
+    <h3 style="margin-top:16px">Gleichlauf der Fonds (Korrelation)</h3>
+    <div class="scroll"><table class="mx" id="corr"></table></div>
+  </div>
+  <div class="card"><h2>Branchen (Durchschau)</h2><div id="sectBars"></div><p class="small mute" style="margin:8px 0 0">Gewichtet aus den Branchenangaben der Fonds: GlobalChampions (Citywire), Global Technology (Fidelity, 30.09.2026), MSCI World (iShares, 25.11.2026).</p></div>
+  <div class="card"><h2>Regionen (Durchschau)</h2><div id="regBars"></div></div>
+  <div class="card">
+    <h2>Kosten-Röntgen</h2>
+    <div class="scroll"><table id="costTable"></table></div>
+    <div class="callout" id="costCallout" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h2>Klumpen &amp; Streuung</h2>
+    <div class="kv" id="klKv"></div>
+  </div>
+  <div class="card">
+    <h2>Sparplan-Rechner</h2>
+    <p class="small mute" style="margin-top:-4px">Rechenbeispiel mit konstanter Rendite – keine Prognose.</p>
+    <label class="f" for="pjM">Monatliche Anlage: <span id="pjMv"></span></label>
+    <input type="range" id="pjM" min="25" max="1000" step="5" value="290">
+    <label class="f" for="pjR">Rendite pro Jahr nach Kosten: <span id="pjRv"></span></label>
+    <input type="range" id="pjR" min="0" max="10" step="0.5" value="5">
+    <label class="f" for="pjY">Laufzeit: <span id="pjYv"></span></label>
+    <input type="range" id="pjY" min="1" max="40" step="1" value="15">
+    <div class="duo" id="pjOut" style="margin-top:14px"></div>
+  </div>
+</section>
 
-    <div class="card">
-      <h2>Nächste Ausführungen</h2>
-      <ul class="list" id="nextList"></ul>
-      <p class="small mute" style="margin:10px 0 0">Deine Sparpläne laufen zum 15. – fällt der Tag aufs Wochenende oder bucht die Bank später, landet die Ausführung erfahrungsgemäß zwischen dem 15. und 18.</p>
-    </div>
-  </section>
-
-  <!-- ORDERS -->
-  <section class="view" id="v-orders">
-    <div class="card">
-      <h2>Orderübersicht</h2>
-      <div class="kv k3" id="ordStats"></div>
-    </div>
-    <div class="filters" id="fFund"></div>
-    <div class="filters" id="fType"></div>
-    <div id="ordList"></div>
-    <p class="small mute">„Betrag“ ist die tatsächliche Lastschrift. Den Kostenanteil (Ausgabeaufschlag bzw. Kaufkosten) habe ich aus deinen Orders zurückgerechnet: Bei jeder Order teilt sich der Betrag exakt in Anlage + 3,75 % (GlobalChampions), + 5,25 % (Global Technology) bzw. + 1 % (MSCI World ETF).</p>
-  </section>
-
-  <!-- MARKT -->
-  <section class="view" id="v-markt">
-    <div class="card">
-      <h2>Marktlage am 26. November 2026</h2>
-      <ul class="bul" id="mktNews"></ul>
-    </div>
-    <div class="card">
-      <h2>Was du wirklich besitzt</h2>
-      <p class="small mute" style="margin-top:-4px">Durchschau über alle drei Fonds: dein Euro-Anteil an den größten Einzelaktien, berechnet aus Fondsgewichtung × deinem Positionswert.</p>
-      <div id="lookList"></div>
-      <div class="callout" id="lookCallout" style="margin-top:12px"></div>
-    </div>
-    <div class="card">
-      <div class="row"><h2 style="margin:0">Alle Aktien aus deinen Fonds</h2></div>
-      <p class="small mute" id="stkAsOf" style="margin:6px 0 4px"></p>
-      <div class="legend" style="margin-bottom:8px"><span style="--c:var(--c1)">GlobalChampions</span><span style="--c:var(--c2)">Global Tech</span><span style="--c:var(--c3)">MSCI World</span></div>
-      <div class="scroll"><table id="stkTable"></table></div>
-    </div>
-  </section>
-
-  <!-- ANALYSE -->
-  <section class="view" id="v-analyse">
-    <div class="card">
-      <h2>Zwei Wahrheiten über deine Rendite</h2>
-      <div class="duo" id="truth"></div>
-      <p class="small mute" style="margin:10px 0 0" id="truthTxt"></p>
-    </div>
-    <div class="card">
-      <h2>Kosten-Röntgen</h2>
-      <div class="scroll"><table id="costTable"></table></div>
-      <div class="callout" id="costCallout" style="margin-top:12px"></div>
-    </div>
-    <div class="card">
-      <h2>Klumpen &amp; Streuung</h2>
-      <div class="kv" id="riskKv"></div>
-      <p class="small mute" style="margin:12px 0 0" id="riskTxt"></p>
-    </div>
-    <div class="card">
-      <h2>Sparplan-Rechner</h2>
-      <p class="small mute" style="margin-top:-4px">Rechenbeispiel mit konstanter Rendite – keine Prognose.</p>
-      <label class="f" for="pjM">Monatliche Anlage: <span id="pjMv"></span></label>
-      <input type="range" id="pjM" min="25" max="1000" step="5" value="290">
-      <label class="f" for="pjR">Rendite pro Jahr nach Kosten: <span id="pjRv"></span></label>
-      <input type="range" id="pjR" min="0" max="10" step="0.5" value="5">
-      <label class="f" for="pjY">Laufzeit: <span id="pjYv"></span></label>
-      <input type="range" id="pjY" min="1" max="40" step="1" value="15">
-      <div class="duo" id="pjOut" style="margin-top:14px"></div>
-    </div>
-  </section>
-
-  <!-- EINRICHTEN -->
-  <section class="view" id="v-einrichten">
-    <div class="card">
-      <h2>Live-Kurse einschalten</h2>
-      <p style="margin-top:0">Fonds haben nur einen offiziellen Preis pro Tag. Die App rechnet deshalb laufend eine <b>Live-Schätzung</b>: letzter offizieller Kurs × aktuelle Bewegung der größten Fondsaktien (und für den Rest des Fonds ein passender Index-ETF), umgerechnet in Euro.</p>
-      <label class="f" for="apiKey">Finnhub API-Schlüssel (kostenlos)</label>
-      <input type="password" id="apiKey" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="z. B. cabc123…">
-      <label class="f" for="ivl">Aktualisieren alle</label>
-      <select id="ivl"><option value="15">15 Sekunden</option><option value="30">30 Sekunden</option><option value="60">1 Minute</option><option value="300">5 Minuten</option></select>
-      <div class="btns"><button class="btn" id="saveKey">Speichern &amp; starten</button><button class="btn ghost" id="testKey">Verbindung testen</button><button class="btn ghost" id="clearKey">Schlüssel entfernen</button></div>
-      <div class="status" id="keyStatus"></div>
-      <ol class="steps small">
-        <li>Auf finnhub.io kostenlos registrieren und den API-Key kopieren.</li>
-        <li>Key hier einfügen – er bleibt nur auf deinem iPhone gespeichert.</li>
-        <li>Wichtig: Live-Daten funktionieren nur, wenn die App von einer eigenen Adresse läuft (siehe „Als App installieren“). In der Claude-Vorschau blockiert der Browser externe Kursabrufe.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h2>Offiziellen Kurs nachtragen</h2>
-      <p class="small mute" style="margin-top:-4px">Wenn die Sparkassen-App einen neuen Rücknahmepreis zeigt: hier eintragen, dann rechnet die Live-Schätzung ab diesem Wert weiter.</p>
-      <div id="manualList"></div>
-    </div>
-    <div class="card">
-      <h2>Als App aufs iPhone</h2>
-      <ol class="steps">
-        <li>Die Datei <b>index.html</b> kostenlos hosten, z. B. bei GitHub Pages: neues Repository → Datei hochladen → Settings → Pages → „Deploy from branch“.</li>
-        <li>Die Adresse in <b>Safari</b> öffnen → Teilen-Symbol → <b>Zum Home-Bildschirm</b>.</li>
-        <li>App öffnen, unter „Einrichten“ den Finnhub-Key eintragen – fertig, Kurse laufen live.</li>
-      </ol>
-      <p class="small mute">Ohne eigenes Hosting funktioniert die App trotzdem: alle Bestände, Orders und Analysen mit Kursstand 25./26.11.2026, Kurse manuell nachtragbar.</p>
-    </div>
-    <div class="card">
-      <h2>Daten</h2>
-      <div class="btns" style="margin-top:0"><button class="btn ghost" id="clearSnaps">Live-Verlauf löschen</button><button class="btn ghost" id="clearManual">Nachgetragene Kurse löschen</button></div>
-      <div class="status small mute" id="dataStatus"></div>
-      <h3 style="margin-top:16px">Quellen</h3>
-      <p class="small mute" style="margin:0">Bestände, Orders, Einstandskurse: deine Sparkassen-/Deka-Screenshots vom 26.11.2026. Fondsinhalte: Yahoo Finance/extraETF (GlobalChampions), Fidelity-Factsheet 31.08.2026 (Global Technology), MSCI-World-Factsheet 30.10.2026 (ETF). Aktienkurse: Schlusskurse 25.11.2026 (companiesmarketcap, Yahoo Finance, stockanalysis), Netflix 17.11.2026. Euro: EZB-Referenzkurs 26.11.2026. Live: Finnhub. Keine Anlageberatung.</p>
-    </div>
-  </section>
+<section class="view" id="v-einrichten">
+  <div class="card">
+    <h2>1 · Live-Kurse (Finnhub)</h2>
+    <p style="margin-top:0">Liefert Echtzeit-Kurse der US-Börse – über eine Dauerverbindung kommt jeder Handel sekundengenau an. Fonds haben nur einen offiziellen Preis pro Tag; die App schätzt daraus laufend den aktuellen Wert (letzter offizieller Kurs × Bewegung der Top-10-Aktien bzw. eines passenden Index-ETFs, in Euro).</p>
+    <label class="f" for="apiKey">Finnhub API-Schlüssel</label>
+    <input type="password" id="apiKey" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <label class="f" for="ivl">Kurse zusätzlich abrufen alle</label>
+    <select id="ivl"><option value="30">30 Sekunden</option><option value="60">1 Minute</option><option value="120">2 Minuten</option></select>
+    <div class="btns"><button class="btn" id="saveKey">Speichern &amp; starten</button><button class="btn ghost" id="testKey">Testen</button><button class="btn ghost" id="clearKey">Entfernen</button></div>
+    <div class="status" id="keyStatus"></div>
+  </div>
+  <div class="card">
+    <h2>2 · Kurshistorie (Twelve Data)</h2>
+    <p style="margin-top:0">Für echte Kurven über 1 Tag, 1 Woche und 3 Monate. Finnhub liefert Historie nur gegen Bezahlung – Twelve Data kostenlos.</p>
+    <ol class="steps small">
+      <li>twelvedata.com → „Get free API key“ → registrieren.</li>
+      <li>Im Dashboard unter „API Keys“ den Schlüssel kopieren und hier einfügen.</li>
+      <li>Der erste Ladevorgang dauert gut 1 Minute (Gratis-Limit: 8 Abrufe pro Minute).</li>
+    </ol>
+    <label class="f" for="tdKey">Twelve Data API-Schlüssel</label>
+    <input type="password" id="tdKey" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="btns"><button class="btn" id="saveTd">Speichern &amp; laden</button><button class="btn ghost" id="reloadTd">Neu laden</button><button class="btn ghost" id="clearTd">Entfernen</button></div>
+    <div class="status" id="tdStatus"></div>
+  </div>
+  <div class="card">
+    <h2>Offiziellen Kurs nachtragen</h2>
+    <p class="small mute" style="margin-top:-4px">Zeigt die Sparkassen-App einen neuen Rücknahmepreis, hier eintragen – Schätzung und Kurven richten sich dann daran aus.</p>
+    <div id="manualList"></div>
+  </div>
+  <div class="card">
+    <h2>Daten</h2>
+    <div class="btns" style="margin-top:0"><button class="btn ghost" id="clearSnaps">Live-Verlauf löschen</button><button class="btn ghost" id="clearManual">Nachgetragene Kurse löschen</button></div>
+    <div class="status small mute" id="dataStatus"></div>
+    <h3 style="margin-top:16px">Quellen</h3>
+    <p class="small mute" style="margin:0">Bestände, Orders, Einstandskurse: deine Deka-Screenshots vom 26.11.2026. Fondsinhalte: GlobalChampions Top 10 aktuell (Yahoo Finance/extraETF), übrige Werte aus dem Jahresbericht 30.11.2025, skaliert; Global Technology Top 10 Fidelity-Factsheet 30.09.2026, weitere Werte aus früheren Factsheets; MSCI World: Top 60 des iShares MSCI World ETF vom 24.11.2026 (gleicher Index). Analysten: stockanalysis.com/S&amp;P Global. Kurse ohne Live-Daten: Schlusskurse 25.11.2026. Live: Finnhub, Historie: Twelve Data. Keine Anlageberatung.</p>
+  </div>
+</section>
 </main>
 
-<!-- Fondsblatt -->
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="fName">
   <header class="top">
     <button class="icon-btn" id="sheetBack" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -308,7 +333,7 @@ nav.tabs a.on{color:var(--brand)}
     <span class="pill" id="sheetPill"><span class="dot"></span><span id="sheetPillTxt"></span></span>
   </header>
   <section class="fhero"><div class="inner">
-    <div class="lbl small" id="fKind" style="opacity:.8"></div>
+    <div class="small" id="fKind" style="opacity:.8"></div>
     <h1 id="fName"></h1>
     <div class="small" id="fIsin" style="opacity:.8"></div>
     <div class="val" id="fPrice" style="font:700 clamp(32px,9vw,46px)/1.05 'Space Grotesk',sans-serif;margin:12px 0 8px"></div>
@@ -316,17 +341,22 @@ nav.tabs a.on{color:var(--brand)}
   </div></section>
   <main>
     <div class="card">
-      <div class="row"><h2 style="margin:0">Kursverlauf</h2><span class="small mute">Punkte = deine Käufe</span></div>
+      <h2 style="margin:0">Kursverlauf</h2><div class="small mute" id="fSrc"></div>
+      <div class="seg" id="fRangeSeg" style="margin-top:12px"></div>
       <div class="fig" id="fundFig"></div>
-      <div class="rangeinfo"><span id="fDelta"></span><span class="mute">Rücknahmepreise, zwischen bekannten Kursen verbunden</span></div>
+      <div class="stats" id="fStats"></div>
+      <div class="ctl"><div class="seg" id="fTypeSeg"><button data-t="line" class="on">Linie</button><button data-t="candle">Kerzen</button></div><span class="small mute">Punkte = deine Käufe</span></div>
     </div>
     <div class="card"><h2>Deine Position</h2><div class="kv k3" id="fKv"></div><div id="fLots"></div></div>
-    <div class="card" id="fLiveCard"><h2>So entsteht die Live-Schätzung</h2><div id="fLive" class="small"></div></div>
+    <div class="card"><h2>So entsteht der Live-Wert</h2><div id="fLive" class="small"></div></div>
+    <div class="card"><h2>Branchen &amp; Regionen</h2><div id="fSect"></div><div id="fReg" style="margin-top:10px"></div></div>
     <div class="card">
-      <h2>Was in diesem Fonds steckt</h2>
+      <h2>Alle bekannten Positionen</h2>
       <p class="small mute" id="fHoldSrc" style="margin-top:-4px"></p>
-      <div class="scroll"><table id="fHold"></table></div>
-      <p class="small mute" id="fHoldFoot" style="margin:10px 0 0"></p>
+      <input type="search" id="fQ" placeholder="Im Fonds suchen" aria-label="Im Fonds suchen">
+      <div class="scroll" style="margin-top:8px"><table id="fHold"></table></div>
+      <button class="btn link" id="fMore"></button>
+      <p class="small mute" id="fHoldFoot" style="margin:6px 0 0"></p>
     </div>
     <div class="card"><h2>Deine Käufe</h2><ul class="list" id="fOrders"></ul></div>
   </main>
@@ -342,439 +372,686 @@ nav.tabs a.on{color:var(--brand)}
 
 <script>
 {
-/* ================= Daten aus deinen Screenshots ================= */
-const BANK={asOf:'26.11.2026, 20:08',prevAbs:-189.39,prevPct:-1.34};
+/* ======================= 1. DATEN ======================= */
+const BANK={asOf:'26.11.2026',prevAbs:-189.39,prevPct:-1.34};
+const SECN={T:'Technologie',K:'Kommunikation',Z:'Zykl. Konsum',G:'Gesundheit',F:'Finanzen',I:'Industrie',B:'Basiskonsum',E:'Energie',R:'Rohstoffe',V:'Versorger',M:'Immobilien'};
+const CTRY={US:'USA',TW:'Taiwan',KR:'Südkorea',NL:'Niederlande',DE:'Deutschland',FR:'Frankreich',GB:'Großbritannien',CH:'Schweiz',JP:'Japan',CN:'China',IN:'Indien',BR:'Brasilien',CA:'Kanada',BE:'Belgien',LU:'Luxemburg',ES:'Spanien',DK:'Dänemark',AU:'Australien',SA:'Saudi-Arabien',SE:'Schweden',IE:'Irland',MX:'Mexiko',UY:'Uruguay',HK:'Hongkong'};
+// [Schlüssel, Name, Branche, Land, Finnhub-Symbol (US-Börse) oder '']
+const REG_RAW=[
+['AAPL','Apple','T','US','AAPL'],['MSFT','Microsoft','T','US','MSFT'],['NVDA','NVIDIA','T','US','NVDA'],['GOOGL','Alphabet','K','US','GOOGL'],['AMZN','Amazon','Z','US','AMZN'],
+['TSM','TSMC','T','TW','TSM'],['META','Meta Platforms','K','US','META'],['AVGO','Broadcom','T','US','AVGO'],['SMSN','Samsung Electronics','T','KR',''],['JPM','JPMorgan Chase','F','US','JPM'],
+['ASML','ASML','T','NL','ASML'],['TXN','Texas Instruments','T','US','TXN'],['ORCL','Oracle','T','US','ORCL'],['NFLX','Netflix','K','US','NFLX'],['MCHP','Microchip Technology','T','US','MCHP'],
+['INTU','Intuit','T','US','INTU'],['ASMPT','ASMPT','T','HK',''],['ERIC','Ericsson','T','SE','ERIC'],['TSLA','Tesla','Z','US','TSLA'],['LLY','Eli Lilly','G','US','LLY'],
+['BRKB','Berkshire Hathaway','F','US','BRK.B'],['MU','Micron','T','US','MU'],['V','Visa','F','US','V'],['AMD','AMD','T','US','AMD'],['JNJ','Johnson & Johnson','G','US','JNJ'],
+['XOM','ExxonMobil','E','US','XOM'],['WMT','Walmart','B','US','WMT'],['ABBV','AbbVie','G','US','ABBV'],['MA','Mastercard','F','US','MA'],['COST','Costco','B','US','COST'],
+['PG','Procter & Gamble','B','US','PG'],['CVX','Chevron','E','US','CVX'],['KO','Coca-Cola','B','US','KO'],['CSCO','Cisco','T','US','CSCO'],['HD','Home Depot','Z','US','HD'],
+['PLTR','Palantir','T','US','PLTR'],['MRK','Merck & Co.','G','US','MRK'],['ROG','Roche','G','CH',''],['GE','GE Aerospace','I','US','GE'],['BAC','Bank of America','F','US','BAC'],
+['UNH','UnitedHealth','G','US','UNH'],['PM','Philip Morris','B','US','PM'],['PANW','Palo Alto Networks','T','US','PANW'],['NVS','Novartis','G','CH','NVS'],['AZN','AstraZeneca','G','GB','AZN'],
+['HSBC','HSBC','F','GB','HSBC'],['SHEL','Shell','E','GB','SHEL'],['NESN','Nestlé','B','CH',''],['RTX','RTX','I','US','RTX'],['RY','Royal Bank of Canada','F','CA','RY'],
+['TMO','Thermo Fisher','G','US','TMO'],['AMAT','Applied Materials','T','US','AMAT'],['AMGN','Amgen','G','US','AMGN'],['CAT','Caterpillar','I','US','CAT'],['WFC','Wells Fargo','F','US','WFC'],
+['LRCX','Lam Research','T','US','LRCX'],['INTC','Intel','T','US','INTC'],['LIN','Linde','R','US','LIN'],['GS','Goldman Sachs','F','US','GS'],['GILD','Gilead','G','US','GILD'],
+['IBM','IBM','T','US','IBM'],['DIS','Walt Disney','K','US','DIS'],['MUFG','Mitsubishi UFJ','F','JP','MUFG'],['SAP','SAP','T','DE','SAP'],['CRWD','CrowdStrike','T','US','CRWD'],
+['SIE','Siemens','I','DE',''],['ADS','adidas','Z','DE',''],['AIR','Airbus','I','NL',''],['BUD','AB InBev','B','BE','BUD'],['MT','ArcelorMittal','R','LU','MT'],
+['SAN','Banco Santander','F','ES','SAN'],['BAS','BASF','R','DE',''],['BMW','BMW','Z','DE',''],['BNP','BNP Paribas','F','FR',''],['DTG','Daimler Truck','I','DE',''],
+['IFX','Infineon','T','DE',''],['MC','LVMH','Z','FR',''],['RHM','Rheinmetall','I','DE',''],['SNY','Sanofi','G','FR','SNY'],['SU','Schneider Electric','I','FR',''],
+['TTE','TotalEnergies','E','FR','TTE'],['UL','Unilever','B','GB','UL'],['B3','B3 (Börse Brasilien)','F','BR',''],['BBD','Bradesco','F','BR','BBD'],['BBAS','Banco do Brasil','F','BR',''],
+['ITUB','Itaú Unibanco','F','BR','ITUB'],['LREN','Lojas Renner','Z','BR',''],['PBR','Petrobras','E','BR','PBR'],['VALE','Vale','R','BR','VALE'],['CNI','Canadian National Railway','I','CA','CNI'],
+['ABBN','ABB','I','CH',''],['ALC','Alcon','G','CH','ALC'],['UBS','UBS','F','CH','UBS'],['CATL','CATL','I','CN',''],['DSV','DSV','I','DK',''],
+['NVO','Novo Nordisk','G','DK','NVO'],['BHP','BHP','R','AU','BHP'],['RIO','Rio Tinto','R','GB','RIO'],['BABA','Alibaba','Z','CN','BABA'],['BYD','BYD','Z','CN',''],
+['ICBC','ICBC','F','CN',''],['JD','JD.com','Z','CN','JD'],['MEIT','Meituan','Z','CN',''],['PINGAN','Ping An','F','CN',''],['TCEHY','Tencent','K','CN',''],
+['XIAOMI','Xiaomi','T','CN',''],['BHARTI','Bharti Airtel','K','IN',''],['HDB','HDFC Bank','F','IN','HDB'],['IBN','ICICI Bank','F','IN','IBN'],['INFY','Infosys','T','IN','INFY'],
+['TCS','Tata Consultancy','T','IN',''],['DAIKIN','Daikin','I','JP',''],['FANUC','Fanuc','I','JP',''],['HOYA','Hoya','G','JP',''],['KEYENCE','Keyence','T','JP',''],
+['KOMATSU','Komatsu','I','JP',''],['MURATA','Murata','T','JP',''],['NITTO','Nitto Denko','R','JP',''],['SONY','Sony','T','JP','SONY'],['TM','Toyota','Z','JP','TM'],
+['RAJHI','Al Rajhi Bank','F','SA',''],['ARAMCO','Saudi Aramco','E','SA',''],['STC','Saudi Telecom','K','SA',''],['SKF','SKF','I','SE',''],['ABT','Abbott','G','US','ABT'],
+['ACN','Accenture','T','IE','ACN'],['BIDU','Baidu','K','CN','BIDU'],['BDX','Becton Dickinson','G','US','BDX'],['BNTX','BioNTech','G','DE','BNTX'],['CX','Cemex','R','MX','CX'],
+['C','Citigroup','F','US','C'],['CL','Colgate-Palmolive','B','US','CL'],['COP','ConocoPhillips','E','US','COP'],['DXCM','DexCom','G','US','DXCM'],['EMR','Emerson','I','US','EMR'],
+['EOG','EOG Resources','E','US','EOG'],['GEHC','GE HealthCare','G','US','GEHC'],['HON','Honeywell','I','US','HON'],['LULU','Lululemon','Z','US','LULU'],['MDT','Medtronic','G','IE','MDT'],
+['MELI','MercadoLibre','Z','UY','MELI'],['MDLZ','Mondelez','B','US','MDLZ'],['NEM','Newmont','R','US','NEM'],['NKE','Nike','Z','US','NKE'],['NTR','Nutrien','R','CA','NTR'],
+['PDD','PDD Holdings','Z','CN','PDD'],['PEP','PepsiCo','B','US','PEP'],['PFE','Pfizer','G','US','PFE'],['CRM','Salesforce','T','US','CRM'],['SLB','SLB','E','US','SLB'],
+['TCOM','Trip.com','Z','CN','TCOM'],['UNP','Union Pacific','I','US','UNP'],['ZBH','Zimmer Biomet','G','US','ZBH'],['RELI','Reliance Industries','E','IN','']];
+const REG={};REG_RAW.forEach(([k,n,s,c,q])=>REG[k]={k,n,s,c,q});
+// Fondsinhalte
+const GC_TOP=[['GOOGL',6.62],['AMZN',6.04],['NVDA',6.01],['MSFT',5.91],['AAPL',4.81],['AVGO',4.46],['META',3.23],['TSM',3.19],['SMSN',2.38],['JPM',1.90]];
+const GC_REST=[['ROG',1.22],['NESN',1.23],['SHEL',1.22],['ASML',1.23],['XOM',1.22],['BABA',1.87],['MA',1.80],['LLY',1.75],['TCEHY',1.56],['TSLA',1.27],['MC',1.07],['JNJ',1.06],['HDB',0.99],['PEP',0.98],['RELI',0.93],['PG',0.93],['ADS',0.88],['TTE',0.82],['TM',0.77],['V',0.77],['ABBV',0.75],['AZN',0.73],['IBN',0.73],['CVX',0.69],['ABT',0.68],['MRK',0.66],['SIE',0.65],['ORCL',0.64],['SAP',0.63],['NVS',0.62],['CAT',0.61],['CSCO',0.61],['ICBC',0.60],['IBM',0.60],['KO',0.58],['BHP',0.57],['CRM',0.57],['NVO',0.56],['UL',0.56],['NFLX',0.56],['HON',0.55],['TMO',0.55],['XIAOMI',0.52],['PM',0.52],['RY',0.51],['HSBC',0.49],['COP',0.46],['PDD',0.46],['INFY',0.44],['EOG',0.44],['ITUB',0.42],['ACN',0.41],['BNTX',0.41],['BYD',0.40],['BHARTI',0.39],['VALE',0.38],['LIN',0.38],['RHM',0.34],['PINGAN',0.34],['JD',0.34],['MDLZ',0.34],['NKE',0.34],['PFE',0.34],['SLB',0.34],['DIS',0.34],['ZBH',0.34],['CL',0.32],['PBR',0.32],['LULU',0.30],['DXCM',0.29],['MEIT',0.28],['BIDU',0.27],['ALC',0.26],['BDX',0.26],['TCS',0.26],['BAS',0.25],['RIO',0.25],['BMW',0.24],['STC',0.23],['TCOM',0.23],['SAN',0.22],['ARAMCO',0.22],['IFX',0.21],['NITTO',0.21],['BAC',0.21],['GEHC',0.21],['MDT',0.21],['NTR',0.21],['SNY',0.20],['HOYA',0.20],['C',0.20],['NEM',0.20],['ABBN',0.19],['FANUC',0.19],['SKF',0.19],['EMR',0.19],['AIR',0.18],['DTG',0.18],['SU',0.18],['B3',0.18],['LREN',0.18],['MURATA',0.18],['MT',0.17],['BNP',0.17],['DAIKIN',0.17],['KOMATSU',0.17],['SONY',0.17],['CX',0.17],['UNH',0.17],['BUD',0.16],['CNI',0.14],['CATL',0.15],['DSV',0.15],['MUFG',0.15],['UNP',0.15],['BBD',0.13],['UBS',0.13],['KEYENCE',0.12],['MELI',0.11],['RAJHI',0.08],['BBAS',0.07]];
+const FID_TOP=[['TSM',9.57],['MSFT',7.06],['AAPL',5.74],['GOOGL',4.57],['ASML',3.92],['TXN',3.87],['AMZN',3.69],['META',2.61],['SMSN',2.51],['ORCL',2.07]];
+const FID_REST=[['ERIC',2.5,'31.05.2026'],['ASMPT',2.1,'30.06.2026'],['NFLX',2.05,'31.08.2026'],['MCHP',1.9,'30.06.2026'],['INTU',1.69,'Factsheet finanzen.net']];
+const ETF_ALL=[['AAPL',6.09],['NVDA',4.18],['MSFT',4.10],['AMZN',2.86],['GOOGL',3.43],['AVGO',1.59],['META',1.52],['LLY',1.32],['TSLA',1.29],['JPM',0.99],['BRKB',0.95],['MU',0.83],['V',0.81],['AMD',0.79],['JNJ',0.78],['XOM',0.77],['WMT',0.68],['ABBV',0.62],['MA',0.62],['ASML',0.60],['COST',0.57],['PG',0.47],['CVX',0.45],['KO',0.44],['CSCO',0.43],['HD',0.41],['PLTR',0.41],['MRK',0.41],['ROG',0.40],['GE',0.39],['BAC',0.37],['UNH',0.36],['PM',0.34],['PANW',0.33],['NVS',0.33],['AZN',0.32],['HSBC',0.32],['SHEL',0.32],['NESN',0.31],['RTX',0.31],['RY',0.31],['TMO',0.30],['AMAT',0.30],['AMGN',0.30],['CAT',0.29],['WFC',0.29],['NFLX',0.29],['LRCX',0.29],['INTC',0.28],['LIN',0.28],['TXN',0.28],['GS',0.28],['GILD',0.26],['IBM',0.26],['DIS',0.25],['MUFG',0.25],['SAP',0.25],['CRWD',0.25],['SIE',0.24]];
 const FUNDS=[
  {id:'gc',name:'Deka-GlobalChampions CF',short:'GlobalChampions',isin:'DE000DK0ECU8',wkn:'DK0ECU',kind:'Aktiv gemanagter Aktienfonds · Welt',col:'var(--c1)',aa:.0375,costLbl:'Ausgabeaufschlag',ter:1.45,
-  shares:14.32,price:431.17,pdate:'2026-11-26',venue:'Außerbörslich · Rücknahmepreis',avg:453.91,plan:{amt:125,lbl:'Sparplan'},
-  proxy:'ACWI',proxyName:'iShares MSCI ACWI (Weltaktien)',positions:142,usa:61.8,
-  hsrc:'Top 10 laut Yahoo Finance/extraETF (letzter veröffentlichter Stand) · 142 Positionen insgesamt',
-  hold:[['GOOGL',6.62],['AMZN',6.04],['NVDA',6.01],['MSFT',5.91],['AAPL',4.81],['AVGO',4.46],['META',3.23],['TSM',3.19],['SMSN',2.38],['JPM',1.90]],extra:[]},
+  shares:14.32,price:431.17,pdate:'2026-11-26',venue:'Außerbörslich · Rücknahmepreis',avg:453.91,plan:{amt:125,debit:129.69,day:15,lbl:'Sparplan'},equity:97.42,positions:142,
+  proxy:'ACWI',proxyName:'iShares MSCI ACWI (Weltaktien)',core:GC_TOP,extra:[],
+  sect:{T:28.8,K:13.1,Z:14.2,G:11.5,F:10.2,I:4.4,B:5.6,E:6.7,R:2.8},reg:{US:61.8,EU:15.4,AS:13.9,JP:2.4,OT:6.5},
+  src:'Top 10 aktuell (Yahoo Finance/extraETF). Übrige Werte aus dem Jahresbericht vom 30.11.2025 – ihr Gewicht ist auf die heutige Aktienquote von 97,42 % hochgerechnet, einzelne Werte können inzwischen verkauft sein.'},
  {id:'fid',name:'Fidelity Funds – Global Technology Fund A-DIST-EUR',short:'Global Technology',isin:'LU0099574567',wkn:'921800',kind:'Aktiv gemanagter Technologiefonds · Welt',col:'var(--c2)',aa:.0525,costLbl:'Ausgabeaufschlag',ter:1.89,
-  shares:69.154,price:88.37,pdate:'2026-11-25',venue:'Außerbörslich · Rücknahmepreis',avg:93.99,plan:{amt:125,lbl:'Sparplan'},
-  proxy:'IXN',proxyName:'iShares Global Tech ETF',positions:107,usa:53.5,
-  hsrc:'Top 10 laut Fidelity-Factsheet, Stand 31.08.2026 · rund 107 Positionen insgesamt',
-  hold:[['TSM',9.11],['MSFT',6.91],['AAPL',5.42],['GOOGL',4.37],['AMZN',3.82],['ASML',3.62],['TXN',3.57],['ORCL',2.23],['SMSN',2.10],['NFLX',2.00]],extra:[['2026-10-01',96.81]]},
+  shares:69.154,price:88.37,pdate:'2026-11-25',venue:'Außerbörslich · Rücknahmepreis',avg:93.99,plan:{amt:125,debit:131.56,day:15,lbl:'Sparplan'},equity:96.67,positions:98,
+  proxy:'IXN',proxyName:'iShares Global Tech ETF',core:FID_TOP,extra:[['2026-10-01',96.81]],
+  sect:{T:69.33,K:14.54,Z:6.67,I:4.22,M:2.73,R:1.14,F:0.79,E:0.59},reg:{US:53.5,EU:8.6,AS:20.8,JP:3.7,OT:13.4},
+  src:'Top 10 laut Fidelity-Factsheet vom 30.09.2026 (98 Aktien insgesamt). Fidelity veröffentlicht monatlich nur die Top 10 – darunter Werte, die zu früheren Stichtagen in den Top 10 standen (Datum jeweils angegeben).'},
  {id:'etf',name:'Deka MSCI World UCITS ETF',short:'MSCI World ETF',isin:'DE000ETFL508',wkn:'ETFL50',kind:'Passiver Indexfonds (ETF) · MSCI World',col:'var(--c3)',aa:.01,costLbl:'Kaufkosten',ter:0.30,
-  shares:37.994,price:43.146,pdate:'2026-11-26',ptime:'19:47',venue:'gettex · Börsenkurs',avg:43.69,plan:{amt:40,lbl:'VL-Vertrag'},
-  proxy:'URTH',proxyName:'iShares MSCI World ETF (US-Börse)',positions:1281,usa:72.77,
-  hsrc:'Top 10 des MSCI World laut MSCI-Factsheet, Stand 30.10.2026 · 1.281 Positionen',
+  shares:37.994,price:43.146,pdate:'2026-11-26',ptime:'2026-11-26T18:47:24Z',venue:'gettex · Börsenkurs',avg:43.69,plan:{amt:40,debit:40.40,day:14,lbl:'VL-Vertrag'},equity:99.7,positions:1281,
+  proxy:'URTH',proxyName:'iShares MSCI World ETF (US-Börse, gleicher Index)',core:ETF_ALL.slice(0,10),extra:[['2026-08-03',43.43],['2026-10-05',44.831]],
   lots:[['00','VL-Unterdepot',3.62],['01','Einmalanlage',34.374]],
-  hold:[['AAPL',5.65],['NVDA',5.25],['MSFT',4.11],['AMZN',2.60],['GOOGL',1.83],['AVGO',1.64],['META',1.51],['GOOG',1.45],['TSLA',1.28],['LLY',1.27]],extra:[['2026-08-03',43.43],['2026-10-05',44.831]]}
+  sect:{T:27.36,F:16.53,I:10.85,G:10.70,Z:9.28,K:7.53,B:5.78,E:4.18,R:3.15,V:2.65,M:1.70},reg:{US:72.73,EU:11.47,AS:0,JP:5.59,OT:10.21},
+  src:'Top 60 des MSCI World laut iShares MSCI World ETF vom 24.11.2026 (bildet denselben Index ab wie dein Deka-ETF). Die übrigen rund 1.220 Werte machen zusammen etwa 41 % aus.'}
 ];
+(function(){const g=FUNDS[0],rs=GC_REST.reduce((a,x)=>a+x[1],0),top=GC_TOP.reduce((a,x)=>a+x[1],0),k=(g.equity-top)/rs;
+  g.all=GC_TOP.map(([s,w])=>({k:s,w})).concat(GC_REST.map(([s,w])=>({k:s,w:w*k,est:true})));
+  FUNDS[1].all=FID_TOP.map(([s,w])=>({k:s,w})).concat(FID_REST.map(([s,w,d])=>({k:s,w,old:d})));
+  FUNDS[2].all=ETF_ALL.map(([s,w])=>({k:s,w}));})();
 const ORD=[
- ['2026-08-07','fid','00','Einzug',63.416,99.58,6314.99],
- ['2026-08-10','gc','00','Einzug',13.218,470.94,6224.97],
- ['2026-08-17','gc','00','Einzug',0.277,467.74,129.69],
- ['2026-08-17','fid','00','Einzug',1.314,100.10,131.56],
- ['2026-09-14','etf','00','VL-Zahlung',1.843,43.86,80.81],
- ['2026-09-15','gc','00','Einzug',0.279,464.29,129.69],
- ['2026-09-15','fid','00','Einzug',1.337,98.38,131.56],
- ['2026-09-18','etf','01','Einzug',34.374,44.08,1515.15],
- ['2026-10-14','etf','00','VL-Zahlung',0.884,45.68,40.40],
- ['2026-10-15','fid','00','Einzug',1.276,103.12,131.56],
- ['2026-10-15','gc','00','Einzug',0.272,476.96,129.69],
- ['2026-10-23','fid','00','unbekannt',0.514,102.42,52.62],
- ['2026-11-13','etf','00','VL-Zahlung',0.893,45.25,40.40],
- ['2026-11-16','fid','00','Einzug',1.297,101.43,131.56],
+ ['2026-08-07','fid','00','Einzug',63.416,99.58,6314.99],['2026-08-10','gc','00','Einzug',13.218,470.94,6224.97],
+ ['2026-08-17','gc','00','Einzug',0.277,467.74,129.69],['2026-08-17','fid','00','Einzug',1.314,100.10,131.56],
+ ['2026-09-14','etf','00','VL-Zahlung',1.843,43.86,80.81],['2026-09-15','gc','00','Einzug',0.279,464.29,129.69],
+ ['2026-09-15','fid','00','Einzug',1.337,98.38,131.56],['2026-09-18','etf','01','Einzug',34.374,44.08,1515.15],
+ ['2026-10-14','etf','00','VL-Zahlung',0.884,45.68,40.40],['2026-10-15','fid','00','Einzug',1.276,103.12,131.56],
+ ['2026-10-15','gc','00','Einzug',0.272,476.96,129.69],['2026-10-23','fid','00','unbekannt',0.514,102.42,52.62],
+ ['2026-11-13','etf','00','VL-Zahlung',0.893,45.25,40.40],['2026-11-16','fid','00','Einzug',1.297,101.43,131.56],
  ['2026-11-16','gc','00','Einzug',0.274,472.99,129.69]
 ].map(([d,f,sub,type,qty,p,amt])=>({d,f,sub,type,qty,p,amt}));
-const STK={
- AAPL:{n:'Apple',s:'Hardware',c:'USA',p:355.58,ch:0.43},
- MSFT:{n:'Microsoft',s:'Software & Cloud',c:'USA',p:489.93,ch:1.25},
- NVDA:{n:'NVIDIA',s:'Halbleiter',c:'USA',p:149.30,ch:3.91,note:'Rund 40 % unter dem Oktober-Hoch von 243 $; CEO Jensen Huang trat am 12.11. zurück.'},
- GOOGL:{n:'Alphabet (A)',s:'Internet',c:'USA',p:270.98,ch:2.02},
- GOOG:{n:'Alphabet (C)',s:'Internet',c:'USA',p:270.98,ch:2.02},
- AMZN:{n:'Amazon',s:'Handel & Cloud',c:'USA',p:244.43,ch:3.12},
- TSM:{n:'TSMC',s:'Halbleiter',c:'Taiwan',p:342.34,ch:1.96,note:'Kurs der US-Aktie (ADR).'},
- META:{n:'Meta Platforms',s:'Internet',c:'USA',p:609.89,ch:3.40},
- TSLA:{n:'Tesla',s:'Auto',c:'USA',p:380.14,ch:1.18},
- AVGO:{n:'Broadcom',s:'Halbleiter',c:'USA',p:300.86,ch:0.07},
- LLY:{n:'Eli Lilly',s:'Pharma',c:'USA',p:1392,ch:1.09},
- JPM:{n:'JPMorgan Chase',s:'Banken',c:'USA',p:316.74,ch:0.11},
- SMSN:{n:'Samsung Electronics',s:'Halbleiter',c:'Südkorea',p:129.37,ch:1.76,nolive:true,note:'Börse Seoul, in $ umgerechnet; nicht im Live-Feed.'},
- ASML:{n:'ASML',s:'Chip-Maschinen',c:'Niederlande',p:1303,ch:2.47},
- TXN:{n:'Texas Instruments',s:'Halbleiter',c:'USA',p:270.19,ch:4.55,note:'+4,55 % am 25.11. nach einem branchenweiten Rückgang am Vortag.'},
- ORCL:{n:'Oracle',s:'Software & Cloud',c:'USA',p:103.88,ch:-5.13,note:'Neues 52-Wochen-Tief bei 99,34 $ am 25.11.; Sorgen um Schulden und KI-Ausgaben.'},
- NFLX:{n:'Netflix',s:'Streaming',c:'USA',p:59.68,ch:null,pd:'17.11.'}
-};
+// Schlusskurse 25.11.2026 in USD; Tagesveränderung nur wo bestätigt
+const EMB={AAPL:355.58,MSFT:489.93,NVDA:149.30,GOOGL:270.98,AMZN:244.43,TSM:342.34,META:609.89,TSLA:380.14,AVGO:300.86,LLY:1392,JPM:316.74,SMSN:129.37,ASML:1303,TXN:270.19,ORCL:103.88,NFLX:56.73,
+ BRKB:579.32,V:424.39,MU:601.25,AMD:406.03,JNJ:273.94,XOM:158.08,WMT:131.94,ABBV:294.48,MA:659.97,COST:1087,KO:97.59,CVX:210.95,PG:173.23,PLTR:163.59,CSCO:94.20,HD:361.26,
+ BHP:70.77,UNP:298.38,SNY:54.39,CRM:197.21,PFE:28.46,BUD:79.98,SAN:11.33,UL:66.85,HDB:28.35,IBN:36.50,SONY:28.49,ACN:240.49,MDT:96.06,RIO:74.58,UBS:45.40};
+const EMBCH={AMZN:-3.12,TXN:4.55,ORCL:-5.13,NFLX:-2.96};
+const EMBD={NFLX:'20.11.'};
+// Analysten-Konsens: Rating, Anzahl, Ziel Ø/min/max (USD), Umsatz- & Gewinnwachstum [lfd., nächstes GJ], Stand
+const AN={
+ MSFT:['Strong Buy',58,636.12,440,870,[19.32,20.66],[15.82,20.92],'20.11.'],
+ GOOGL:['Strong Buy',58,397.13,300,500,[24.04,27.37],[21.09,16.87],'20.11.'],
+ AAPL:['Buy',45,345.63,250,425,[10.32,8.12],[4.89,12.24],'20.11.'],
+ AMZN:['Strong Buy',62,326.34,230,405,[15.67,15.84],[33.93,13.78],'25.11.'],
+ NVDA:['Buy',63,244.18,130,425,[96.24,71.21],[102.71,71.73],'20.11.'],
+ TSM:['Strong Buy',21,586.69,440,1000,[46.55,37.87],[66.98,35.23],'24.11.'],
+ META:['Strong Buy',62,848.23,650,1050,[27.81,21.84],[-1.08,21.52],'20.11.'],
+ AVGO:['Strong Buy',51,526.47,398.47,660,[65.89,65.11],[71.03,66.44],'20.11.'],
+ ASML:['Strong Buy',41,2105,848.20,2786,[36.15,28.94],[67.27,36.02],'20.11.'],
+ TXN:['Buy',35,338.79,250,422,[26.68,17.40],[62.58,28.00],'13.11.'],
+ ORCL:['Buy',42,235.77,110,400,[34.28,45.74],[6.71,35.77],'06.11.'],
+ JPM:['Buy',26,373.48,312,425,[13.87,4.58],[21.20,6.94],'20.11.'],
+ LLY:['Buy',31,1469,940,1700,[40.64,16.16],[46.52,43.20],'16.11.'],
+ NFLX:['Buy',51,84.55,57,126,[13.15,10.71],[41.16,5.60],'20.11.']};
+const NOTE={NVDA:'Am 20.11. an einem Tag −14 %, rund 40 % unter dem Oktober-Hoch; CEO Jensen Huang trat am 12.11. zurück.',ORCL:'Neues 52-Wochen-Tief bei 99,34 $ am 25.11.; Sorgen um Schulden für KI-Rechenzentren.',TXN:'+4,55 % am 25.11. nach branchenweitem Rückgang am Vortag.',TSM:'Kurs der US-Aktie (ADR).',SMSN:'Börse Seoul, umgerechnet; nicht im Live-Feed.'};
+const NEWS=[
+ ['Thanksgiving','US-Börsen sind heute (26.11.) geschlossen, Freitag ist ein verkürzter Handelstag bis 19:00 Uhr deutscher Zeit. Live-Ticks kommen erst wieder Freitag ab 15:30 Uhr.'],
+ ['Tech-Korrektur','NVIDIA fiel allein am 20.11. um 14 % und liegt rund 40 % unter dem Oktober-Hoch; nach dem Rücktritt von CEO Jensen Huang am 12.11. führt Finanzchefin Colette Kress übergangsweise. Über alle drei Fonds steckt rund ein Fünftel deines Depots in Halbleiter- und Chipwerten.'],
+ ['Oracle','Neues 52-Wochen-Tief am 25.11. – der Markt sorgt sich um die Verschuldung für KI-Rechenzentren. Oracle steckt mit gut 2 % im Global Technology Fund.'],
+ ['Euro schwach','EZB-Referenzkurs 1,0975 $ (26.11.), nahe dem tiefsten Stand seit April 2025. Für dich als Euro-Anleger mit rund 60 % US-Aktien ist das ein Polster – Dollar-Werte sind in Euro mehr wert.'],
+ ['Zinsen','Der Markt rechnet mit einer Zinserhöhung der US-Notenbank am 9. Dezember; die EZB entscheidet am 17. Dezember. Höhere Zinsen drücken typischerweise auf hoch bewertete Wachstumsaktien.'],
+ ['Analysten','Trotz Korrektur sehen die Analysten-Konsense für fast alle deine großen Werte deutliches Kurspotenzial – Details unten unter „Analysten-Erwartungen“.']];
 const EURUSD=1.0975;
 const PROXIES=['ACWI','IXN','URTH','FXE'];
-const NEWS=[
- 'US-Börsen sind heute wegen Thanksgiving geschlossen, am Freitag gibt es nur einen verkürzten Handelstag. Deshalb bewegen sich die Fonds heute kaum über US-Aktien.',
- 'Tech-Korrektur im November: NVIDIA liegt rund 40 % unter dem Oktober-Hoch, nach dem Rücktritt von CEO Jensen Huang am 12.11. führt Finanzchefin Colette Kress übergangsweise.',
- 'Oracle fiel am 25.11. auf ein neues 52-Wochen-Tief – Anleger sorgen sich um die Verschuldung für KI-Rechenzentren. Oracle steckt mit gut 2 % im Global Technology Fund.',
- 'Der Euro ist schwach: EZB-Referenzkurs 1,0975 $ (26.11.), nahe dem tiefsten Stand seit April 2025. Für dich als Euro-Anleger in überwiegend US-Aktien ist das ein Polster – Dollar-Werte sind in Euro mehr wert.',
- 'Der Markt rechnet mit einer Zinserhöhung der US-Notenbank am 9. Dezember; die EZB entscheidet am 17. Dezember.'
-];
+const TD_SYMS=['URTH','ACWI','IXN','EUR/USD'];
+const HOL=['2026-11-26','2026-12-25','2027-01-01','2027-01-18','2027-02-15','2027-03-26','2027-05-31','2027-06-18','2027-07-05','2027-09-06','2027-11-25','2027-12-24'];
+const EARLY=['2026-11-27','2026-12-24','2027-11-26'];
 
-/* ================= Helfer ================= */
+/* ======================= 2. HELFER ======================= */
 const $=(s,r=document)=>r.querySelector(s);
 const NF={};const nf=d=>NF[d]||(NF[d]=new Intl.NumberFormat('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d}));
 const eur=(v,d=2)=>nf(d).format(v)+' €';
 const usd=(v,d=2)=>nf(d).format(v)+' $';
-const sg=v=>v>0.0000001?'+':v<-0.0000001?'−':'±';
+const sg=v=>v>1e-9?'+':v<-1e-9?'−':'±';
 const pct=(v,d=2)=>sg(v)+nf(d).format(Math.abs(v))+' %';
 const dE=(v,d=2)=>sg(v)+nf(d).format(Math.abs(v))+' €';
-const ud=v=>v>0.0000001?'up':v<-0.0000001?'dn':'';
+const ud=v=>v>1e-9?'up':v<-1e-9?'dn':'';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dDE=s=>{const [y,m,d]=s.slice(0,10).split('-');return d+'.'+m+'.'+y};
-const DAY=864e5;
+const DAY=864e5,sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const ts=s=>Date.parse(s.slice(0,10)+'T12:00:00');
 const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const dfBerlin=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'});
-const dfNY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'});
-const ymd=(t,df=dfBerlin)=>df.format(new Date(t));
+const dfB=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}),dfNY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'});
+const ymd=(t,df=dfB)=>df.format(new Date(t));
 const hm=t=>new Date(t).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+const hms=t=>new Date(t).toLocaleTimeString('de-DE');
+const dshort=t=>{const d=new Date(t);return d.getDate()+'.'+(d.getMonth()+1)+'.'};
 const LS={get(k,d){try{const v=localStorage.getItem('depot.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('depot.'+k,JSON.stringify(v));return true}catch(e){return false}}};
 const F=id=>FUNDS.find(f=>f.id===id);
+const blocked=m=>/fetch|Load failed|NetworkError|access control/i.test(m||'');
+function valAt(s,t){if(!s||!s.length||t<s[0][0])return null;let lo=0,hi=s.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(s[m][0]<=t)lo=m;else hi=m-1}return s[lo][1]}
 
-/* ================= Zustand ================= */
-const CFG={key:LS.get('key',''),ivl:LS.get('ivl',30)};
-let MAN=LS.get('manual',{});           // {gc:{p,d:'YYYY-MM-DD',t}}
-let SNAP=LS.get('snaps',[]);           // [{t,v}]
-let Q=LS.get('quotes',{});             // {SYM:{c,dp,pc,t}}
-const live={state:CFG.key?'idle':'off',err:'',at:LS.get('quotesAt',0),busy:false};
-let range='max',timer=null;
+/* ======================= 3. ZUSTAND ======================= */
+const CFG={key:LS.get('key',''),ivl:LS.get('ivl',60),td:LS.get('td','')};
+if(CFG.ivl<30)CFG.ivl=30;
+let MAN=LS.get('manual',{});
+let SNAP=LS.get('snaps2',[]);        // [t, depot, gc, fid, etf]
+let Q=LS.get('quotes',{});           // {SYM:{c,dp,pc,t,at}}
+let REC=LS.get('recs',{});           // {SYM:{sb,b,h,s,ss,at}}
+let HIST=LS.get('hist',{});          // {iv:{sym:[[t,c]]}}
+let HAT=LS.get('histAt',{});
+const live={state:CFG.key?'idle':'off',err:'',at:LS.get('quotesAt',0),busy:false,ws:null,wsOk:false,ticks:0,lastTick:0};
+let adj=LS.get('adj',false),range=LS.get('range','1d'),ctype=LS.get('ctype','line'),fRange='1mo',fType='line',dirty=false,curView='depot',openF=null,mver=0;
+const tdState={busy:false,msg:''};
 
-/* ================= Rechenkern ================= */
+/* ======================= 4. RECHENKERN ======================= */
 const isCost=o=>o.type!=='unbekannt';
 const grossOf=o=>isCost(o)?o.amt:0;
 const netOf=o=>isCost(o)?o.amt/(1+F(o.f).aa):0;
 const costOf=o=>grossOf(o)-netOf(o);
 function base(f){const m=MAN[f.id];return m?{p:m.p,d:m.d,man:true,t:m.t}:{p:f.price,d:f.pdate,man:false}}
-function quoteDay(q){return ymd(q.t,dfNY)}
-function fresh(q,b){return q&&typeof q.dp==='number'&&quoteDay(q)>b.d}
-function fxr(){const q=Q.FXE;return q&&typeof q.dp==='number'&&live.state==='live'?q.dp/100:0}
-function rEUR(sym){const q=Q[sym];return (1+q.dp/100)/(1+fxr())-1}
+const qDay=q=>ymd(q.t,dfNY);
+const fresh=(q,b)=>q&&typeof q.dp==='number'&&typeof q.t==='number'&&qDay(q)>b.d;
+const isLive=()=>live.state==='live';
+function fxr(){const q=Q.FXE;return isLive()&&q&&typeof q.dp==='number'?q.dp/100:0}
+const rEUR=s=>(1+Q[s].dp/100)/(1+fxr())-1;
 function est(f){
-  const b=base(f),out={p:b.p,r:0,est:false,cov:0,proxyUsed:false,used:[]};
-  if(live.state!=='live')return out;
-  if(f.id==='etf'){const q=Q.URTH;if(!fresh(q,b))return out;const r=rEUR('URTH');return {...out,p:b.p*(1+r),r,est:true,cov:100,proxyUsed:true}}
+  const b=base(f),out={p:b.p,r:0,est:false,cov:0,proxyUsed:false};
+  if(!isLive())return out;
+  if(f.id==='etf'){if(!fresh(Q.URTH,b))return out;const r=rEUR('URTH');return {...out,p:b.p*(1+r),r,est:true,cov:100,proxyUsed:true}}
   let sw=0,sr=0;
-  f.hold.forEach(([s,w])=>{const q=Q[s];if(!STK[s].nolive&&fresh(q,b)){sw+=w;sr+=w*rEUR(s);out.used.push(s)}});
-  const pq=Q[f.proxy],hasP=fresh(pq,b);
+  f.core.forEach(([k,w])=>{const q=REG[k].q&&Q[REG[k].q];if(fresh(q,b)){sw+=w;sr+=w*rEUR(REG[k].q)}});
+  const hasP=fresh(Q[f.proxy],b);
   if(!sw&&!hasP)return out;
   const r=hasP?sr/100+(1-sw/100)*rEUR(f.proxy):sr/sw;
   return {...out,p:b.p*(1+r),r,est:true,cov:sw,proxyUsed:hasP};
 }
 function posVal(f){const e=est(f);return {...e,v:f.shares*e.p,b:base(f)}}
-function totals(){
-  let v=0,bv=0,inv=0,gross=0,cost=0;
+function totals(){let v=0,bv=0,inv=0,gross=0,cost=0;
   FUNDS.forEach(f=>{const p=posVal(f);v+=p.v;bv+=f.shares*p.b.p;inv+=f.shares*f.avg});
-  ORD.forEach(o=>{gross+=grossOf(o);cost+=costOf(o)});
-  return {v,bv,inv,gross,cost};
-}
-function fundGross(f){return ORD.filter(o=>o.f===f.id).reduce((a,o)=>a+grossOf(o),0)}
-function fundCost(f){return ORD.filter(o=>o.f===f.id).reduce((a,o)=>a+costOf(o),0)}
+  ORD.forEach(o=>{gross+=grossOf(o);cost+=costOf(o)});return {v,bv,inv,gross,cost}}
+const fundGross=f=>ORD.filter(o=>o.f===f.id).reduce((a,o)=>a+grossOf(o),0);
+const fundCost=f=>ORD.filter(o=>o.f===f.id).reduce((a,o)=>a+costOf(o),0);
 function navPts(f){
   const m=new Map();
-  ORD.filter(o=>o.f===f.id&&isCost(o)).forEach(o=>m.set(o.d,o.p/(1+f.aa)));
-  f.extra.forEach(([d,p])=>m.set(d,p));
-  m.set(f.pdate,f.price);
-  const mm=MAN[f.id];if(mm)m.set(mm.d,mm.p);
-  return [...m.entries()].map(([d,p])=>({t:ts(d),d,v:p})).sort((a,b)=>a.t-b.t);
+  ORD.filter(o=>o.f===f.id&&isCost(o)).forEach(o=>m.set(o.d,{v:o.p/(1+f.aa),at:Date.parse(o.d+'T21:00:00Z')}));
+  f.extra.forEach(([d,p])=>m.set(d,{v:p,at:Date.parse(d+'T21:00:00Z')}));
+  m.set(f.pdate,{v:f.price,at:f.ptime?Date.parse(f.ptime):Date.parse(f.pdate+'T21:00:00Z')});
+  const mm=MAN[f.id];if(mm)m.set(mm.d,{v:mm.p,at:mm.t});
+  return [...m.entries()].map(([d,o])=>({t:ts(d),at:o.at,d,v:o.v})).sort((a,b)=>a.at-b.at);
 }
-function interp(pts,t){
-  if(t<=pts[0].t)return pts[0].v;
-  for(let i=1;i<pts.length;i++)if(t<=pts[i].t){const a=pts[i-1],b=pts[i];return a.v+(b.v-a.v)*(t-a.t)/(b.t-a.t)}
-  return pts[pts.length-1].v;
+function interp(pts,t){if(t<=pts[0].t)return pts[0].v;for(let i=1;i<pts.length;i++)if(t<=pts[i].t){const a=pts[i-1],b=pts[i];return a.v+(b.v-a.v)*(t-a.t)/(b.t-a.t)}return pts[pts.length-1].v}
+const sharesAt=(f,t)=>ORD.filter(o=>o.f===f.id&&ts(o.d)<=t).reduce((a,o)=>a+o.qty,0);
+const investedAt=t=>ORD.filter(o=>ts(o.d)<=t).reduce((a,o)=>a+netOf(o),0);
+function lookThrough(){const m={};
+  FUNDS.forEach(f=>{const v=posVal(f).v;f.all.forEach(h=>{const x=m[h.k]||(m[h.k]={k:h.k,v:0,by:{}});const e=h.w/100*v;x.v+=e;x.by[f.id]=(x.by[f.id]||0)+e})});
+  return Object.values(m).sort((a,b)=>b.v-a.v)}
+function stockQ(k){const r=REG[k],q=r.q&&Q[r.q];
+  if(q&&typeof q.c==='number'&&Date.now()-(q.at||q.t||0)<36*36e5){const fx=EURUSD*(1+fxr());return {usd:q.c,eur:q.c/fx,ch:q.dp,live:isLive(),t:q.t}}
+  const p=EMB[k];return p?{usd:p,eur:p/EURUSD,ch:EMBCH[k]??null,live:false,d:EMBD[k]||'25.11.'}:{usd:null,eur:null,ch:null,live:false}}
+function mkt(){
+  const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hourCycle:'h23',weekday:'short',hour:'2-digit',minute:'2-digit',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  const d=`${p.year}-${p.month}-${p.day}`,m=(+p.hour)*60+(+p.minute),wk=p.weekday==='Sat'||p.weekday==='Sun',hol=HOL.includes(d),close=EARLY.includes(d)?780:960;
+  return {open:!wk&&!hol&&m>=570&&m<close,pre:!wk&&!hol&&m<570,hol,wk,d,early:EARLY.includes(d)}}
+
+/* ======================= 5. HISTORIE (Twelve Data) ======================= */
+async function tdFetch(iv,size){
+  const url='https://api.twelvedata.com/time_series?symbol='+encodeURIComponent(TD_SYMS.join(','))+'&interval='+iv+'&outputsize='+size+'&timezone=UTC&order=ASC&apikey='+encodeURIComponent(CFG.td);
+  const r=await fetch(url);const j=await r.json();
+  if(j.status==='error'||j.code)throw new Error(j.message||('Fehler '+j.code));
+  const out={};let err='';
+  TD_SYMS.forEach(s=>{const o=j[s];if(!o)return;if(o.status==='error'){err=err||o.message;return}if(!o.values)return;
+    out[s]=o.values.map(v=>[Date.parse(v.datetime.replace(' ','T')+(v.datetime.length>10?'Z':'T21:00:00Z')),+v.close]).filter(x=>x[1]>0&&!isNaN(x[0])).sort((a,b)=>a[0]-b[0])});
+  if(!out.URTH)throw new Error(err||'Keine Daten erhalten');
+  return out;
 }
-function sharesAt(f,t){return ORD.filter(o=>o.f===f.id&&ts(o.d)<=t).reduce((a,o)=>a+o.qty,0)}
-function investedAt(t){return ORD.filter(o=>ts(o.d)<=t).reduce((a,o)=>a+netOf(o),0)}
-function depotSeries(){
-  const P={};FUNDS.forEach(f=>P[f.id]=navPts(f));
-  const known=new Set();FUNDS.forEach(f=>P[f.id].forEach(p=>known.add(p.d)));
-  const start=ts('2026-08-07'),end=ts(ymd(Date.now()));
-  const out=[],inv=[];
-  for(let t=start;t<=end;t+=DAY){
-    let v=0;FUNDS.forEach(f=>{const s=sharesAt(f,t);if(s)v+=s*interp(P[f.id],t)});
-    const d=ymd(t);out.push({t,v,real:known.has(d)});inv.push({t,v:investedAt(t)});
+const TD_PLAN=[['1h',720,6*36e5,'3 Monate (stündlich)'],['5min',420,10*6e4,'1 Woche (5-Minuten)'],['1min',400,2*6e4,'heute (1-Minute)']];
+function tdStale([iv,,maxAge]){const at=HAT[iv]||0;if(!HIST[iv])return true;const m=mkt();if(!m.open&&Date.now()-at<12*36e5&&iv!=='1h')return false;return Date.now()-at>maxAge}
+async function loadHistory(force){
+  if(!CFG.td||tdState.busy)return;tdState.busy=true;let n=0;
+  for(const pl of TD_PLAN){
+    if(!force&&!tdStale(pl))continue;
+    if(n++)await waitTd(31000);
+    tdState.msg='Lade Kurshistorie: '+pl[3]+' …';renderTdStatus();
+    try{HIST[pl[0]]=await tdFetch(pl[0],pl[1]);HAT[pl[0]]=Date.now();CURVE={};LS.set('hist',HIST);LS.set('histAt',HAT);tdState.msg='✓ '+pl[3]+' geladen.';renderAll()}
+    catch(e){tdState.msg='⚠ '+(blocked(e.message)?'Abruf vom Browser blockiert – läuft die App von deiner GitHub-Adresse?':/credit|limit/i.test(e.message)?'Twelve-Data-Limit erreicht – in einer Minute geht es weiter.':e.message);renderTdStatus();if(/credit|limit/i.test(e.message)){await waitTd(61000);continue}break}
   }
-  const T=totals();
-  if(live.state==='live'){out.push({t:Date.now(),v:T.v,real:true});inv.push({t:Date.now(),v:inv[inv.length-1].v})}
-  else out[out.length-1].v=T.v;
-  return {out,inv};
+  tdState.busy=false;if(HIST['1h'])tdState.msg='✓ Kurshistorie aktuell ('+hm(Math.max(...Object.values(HAT)))+' Uhr).';renderTdStatus();
+}
+async function waitTd(ms){const end=Date.now()+ms;while(Date.now()<end){tdState.msg=tdState.msg.replace(/ – nächster Abruf.*$/,'')+' – nächster Abruf in '+Math.ceil((end-Date.now())/1000)+' s (Gratis-Limit)';renderTdStatus();await sleep(1000)}}
+let CURVE={};
+function fundCurve(f,iv){
+  const key=f.id+iv+mver;if(CURVE[key])return CURVE[key];
+  const P=HIST[iv];if(!P||!P[f.proxy]||P[f.proxy].length<2)return null;
+  const fx=P['EUR/USD'];
+  const e=P[f.proxy].map(([t,c])=>[t,c/((fx&&valAt(fx,t))||EURUSD)]);
+  const A=navPts(f).map(a=>({t:a.at,v:a.v}));
+  const eA=A.map(a=>valAt(e,a.t)??e[0][1]);
+  const out=[];let k=0;const L=A.length-1;
+  for(const [t,ev] of e){
+    while(k<L&&t>=A[k+1].t)k++;
+    let v;
+    if(t<A[0].t)v=A[0].v*ev/eA[0];
+    else if(k>=L)v=A[L].v*ev/eA[L];
+    else{const raw=A[k].v*ev/eA[k],endRaw=A[k].v*eA[k+1]/eA[k],r=A[k+1].v/endRaw;v=raw*(1+(r-1)*(t-A[k].t)/(A[k+1].t-A[k].t))}
+    out.push([t,v]);
+  }
+  return CURVE[key]=out;
+}
+function depotCurve(iv){
+  const key='dep'+iv+mver;if(CURVE[key])return CURVE[key];
+  const P=HIST[iv];if(!P||!P.URTH)return null;
+  const cs=FUNDS.map(f=>fundCurve(f,iv));if(cs.some(c=>!c))return null;
+  const out=[];
+  for(const [t] of P.URTH){let v=0;FUNDS.forEach((f,i)=>{const s=sharesAt(f,t);if(s){const p=valAt(cs[i],t);if(p)v+=s*p}});if(v>0)out.push([t,v])}
+  return CURVE[key]=out;
 }
 
-/* ================= Diagramm ================= */
-function chart(el,data,o={}){
-  el._d={data,o};
+/* ======================= 6. ZEITRÄUME ======================= */
+const RANGES=[['1m','1 Min'],['5m','5 Min'],['1h','1 Std'],['1d','1 Tag'],['1w','1 Woche'],['1mo','1 Monat'],['3mo','3 Monate'],['max','Max']];
+const FRANGES=[['1d','1 Tag'],['1w','1 Woche'],['1mo','1 Monat'],['3mo','3 Monate'],['max','Max']];
+function resample(arr,step){const m=new Map();arr.forEach(p=>m.set(Math.floor(p.t/step),p));return [...m.values()]}
+function series(rg,f){
+  const now=Date.now(),fi=f?FUNDS.indexOf(f):-1;
+  const snaps=from=>SNAP.filter(s=>s[0]>=from).map(s=>({t:s[0],v:f?s[2+fi]:s[1]})).filter(p=>p.v>0);
+  const curve=iv=>{const c=f?fundCurve(f,iv):depotCurve(iv);return c&&c.length>1?c.map(([t,v])=>({t,v})):null};
+  const after=(c)=>{const last=c[c.length-1].t;return c.concat(resample(snaps(last+1),6e4))};
+    const R=(pts,mode,src,extra={})=>({pts,mode,src,...extra});
+  if(rg==='1m'||rg==='5m'){const w=rg==='1m'?6e4:3e5,s=snaps(now-w);
+    if(s.length>=2)return R(s,'time','Live-Ticks');
+    const c=curve('1min');if(c){const n=rg==='1m'?2:6;return R(c.slice(-n),'idx','Letzte Minuten der letzten Sitzung',{note:'Markt geschlossen – Ticks kommen, sobald die US-Börse öffnet.'})}
+    return R([],'time','',{empty:'Sekunden-Ticks gibt es, solange die US-Börse geöffnet ist (Mo–Fr 15:30–22:00 Uhr) und Live-Kurse eingerichtet sind.'})}
+  if(rg==='1h'){const s=snaps(now-36e5);if(s.length>=2&&s[s.length-1].t-s[0].t>=12*6e4)return R(s,'time','Live-Ticks');
+    const c=curve('1min');if(c){const x=after(c);return R(x.slice(-60),'idx','1-Minuten-Kurse')}
+    if(s.length>=2)return R(s,'time','Live-Ticks');
+    return R([],'time','',{empty:'Für den Stunden-Chart: Live-Kurse und Kurshistorie unter „Einrichten“ aktivieren.'})}
+  if(rg==='1d'){let c=curve('1min'),src='1-Minuten-Kurse';if(!c){c=curve('5min');src='5-Minuten-Kurse'}
+    const today=ymd(now,dfNY),m=mkt(),sT=snaps(0).filter(p=>ymd(p.t,dfNY)===today);
+    if(c){const lt=c[c.length-1].t,lastD=ymd(lt,dfNY);
+      if(lastD===today)return R(c.filter(p=>ymd(p.t,dfNY)===today).concat(resample(sT.filter(p=>p.t>lt),6e4)),'idx',src);
+      if(!m.hol&&!m.wk&&!m.pre&&sT.length>=2)return R(resample(sT,3e4),'time','Live-Aufzeichnung heute');
+      return R(c.filter(p=>ymd(p.t,dfNY)===lastD),'idx',src+' · Sitzung '+dshort(lt))}
+    const s=snaps(ts(ymd(now))-12*36e5);if(s.length>=2)return R(resample(s,15e3),'time','Live-Aufzeichnung');
+    return R([],'time','',{empty:'Tageskurve: Kurshistorie (Twelve Data) unter „Einrichten“ aktivieren. Bis dahin: Vortag laut Bank '+dE(BANK.prevAbs)+' ('+pct(BANK.prevPct)+').'})}
+  if(rg==='1w'){const c=curve('5min');if(c){const x=after(c);return R(x.filter(p=>p.t>=now-7*DAY),'idx','5-Minuten-Kurse',{flows:!f})}}
+  const days={'1w':7,'1mo':31,'3mo':92,max:1e4}[rg];
+  const c=curve('1h');
+  if(c){const x=after(c).filter(p=>p.t>=now-days*DAY);return R(x,'idx','Stundenkurse',{flows:!f,inv:!f})}
+  // Fallback ohne Historie: bekannte offizielle Kurse, linear verbunden
+  if(f){const pts=navPts(f).filter(p=>p.t>=ts('2026-08-01')&&p.t>=now-days*DAY).map(p=>({t:p.t,v:p.v,real:true}));const e=est(f);if(e.est)pts.push({t:now,v:e.p,real:true});
+    return R(pts,'time','Offizielle Kurse',{note:'Für echte Schwankungen Kurshistorie aktivieren.'})}
+  const P={};FUNDS.forEach(g=>P[g.id]=navPts(g));const known=new Set();FUNDS.forEach(g=>P[g.id].forEach(p=>known.add(p.d)));
+  const out=[];for(let t=ts('2026-08-07');t<=ts(ymd(now));t+=DAY){let v=0;FUNDS.forEach(g=>{const s=sharesAt(g,t);if(s)v+=s*interp(P[g.id],t)});out.push({t,v,real:known.has(ymd(t))})}
+  out[out.length-1].v=totals().v;
+  return R(out.filter(p=>p.t>=now-days*DAY),'time','Offizielle Kurse, verbunden',{flows:true,inv:true,note:'Für echte Schwankungen Kurshistorie aktivieren (Einrichten → 2).'});
+}
+
+/* ======================= 7. DIAGRAMM ======================= */
+function thin(pts,max){if(pts.length<=max)return pts;const b=Math.ceil(pts.length/(max/2)),o=[];
+  for(let i=0;i<pts.length;i+=b){const seg=pts.slice(i,i+b);let lo=seg[0],hi=seg[0];seg.forEach(p=>{if(p.v<lo.v)lo=p;if(p.v>hi.v)hi=p});const a=lo.t<hi.t?[lo,hi]:[hi,lo];o.push(a[0]);if(a[1]!==a[0])o.push(a[1])}
+  if(o[o.length-1]!==pts[pts.length-1])o.push(pts[pts.length-1]);return o}
+function candles(pts,n){const b=Math.max(1,Math.ceil(pts.length/n)),o=[];
+  for(let i=0;i<pts.length;i+=b){const s=pts.slice(i,i+b);const prev=i?pts[i-1].v:s[0].v;o.push({t:s[0].t,t1:s[s.length-1].t,o:prev,c:s[s.length-1].v,h:Math.max(prev,...s.map(p=>p.v)),l:Math.min(prev,...s.map(p=>p.v))})}return o}
+function chart(el,S,o={}){
+  el._d={S,o};
   const draw=()=>{
-    const {data,o}=el._d,W=el.clientWidth,H=el.clientHeight;
-    if(!W||!H)return;
-    if(data.length<2){el.innerHTML='<div class="empty">'+(o.empty||'Noch keine Daten')+'</div>';return}
-    const pad={l:6,r:6,t:14,b:26};
-    let vs=data.map(d=>d.v);if(o.inv)vs=vs.concat(o.inv.map(d=>d.v));
-    let mn=Math.min(...vs),mx=Math.max(...vs);const sp=(mx-mn)||Math.abs(mx)*0.004||1;mn-=sp*.15;mx+=sp*.15;
-    const t0=data[0].t,t1=data[data.length-1].t;
-    const X=t=>pad.l+(t-t0)/((t1-t0)||1)*(W-pad.l-pad.r),Y=v=>pad.t+(mx-v)/(mx-mn)*(H-pad.t-pad.b);
-    const fl=o.inv&&o.inv.length?o.inv[o.inv.length-1].v-o.inv[0].v:0;const col=o.col||(data[data.length-1].v-data[0].v-fl>=0?'var(--up)':'var(--dn)');
-    const line=data.map((d,i)=>(i?'L':'M')+X(d.t).toFixed(1)+' '+Y(d.v).toFixed(1)).join('');
-    const area=line+'L'+X(t1).toFixed(1)+' '+(H-pad.b)+'L'+X(t0).toFixed(1)+' '+(H-pad.b)+'Z';
+    const {S,o}=el._d,W=el.clientWidth,H=el.clientHeight;if(!W||!H)return;
+    let pts=S.pts||[];
+    if(pts.length<2){el.innerHTML='<div class="empty">'+esc(S.empty||'Noch keine Daten')+'</div>';el._X=null;return}
+    const idx=S.mode==='idx',type=o.type==='candle'&&pts.length>=8?'candle':'line';
+    const pad={l:6,r:W>=320?44:8,t:14,b:24};
+    const cd=type==='candle'?candles(pts,Math.max(12,Math.min(70,Math.floor((W-pad.l-pad.r)/8)))):null;
+    const lp=type==='line'?thin(pts,Math.max(200,W*1.5)):pts;
+    let vs=(cd?cd.flatMap(c=>[c.h,c.l]):lp.map(p=>p.v));if(o.inv)vs=vs.concat(o.inv.map(p=>p.v));
+    let mn=Math.min(...vs),mx=Math.max(...vs);const sp=(mx-mn)||Math.abs(mx)*0.002||1;mn-=sp*.12;mx+=sp*.12;
+    const N=pts.length,t0=pts[0].t,t1=pts[N-1].t;
+    const iw=W-pad.l-pad.r;
+    const Xi=i=>pad.l+i/((N-1)||1)*iw;
+    const tIndex=new Map();pts.forEach((p,i)=>tIndex.set(p.t,i));
+    const idxOf=t=>{if(tIndex.has(t))return tIndex.get(t);let lo=0,hi=N-1;while(lo<hi){const m=(lo+hi+1)>>1;if(pts[m].t<=t)lo=m;else hi=m-1}return lo};
+    const X=idx?(t=>Xi(idxOf(t))):(t=>pad.l+(t-t0)/((t1-t0)||1)*iw);
+    const Y=v=>pad.t+(mx-v)/(mx-mn)*(H-pad.t-pad.b);
+    const flow=o.flowFn?o.flowFn(t0,t1):0;
+    const up=pts[N-1].v-pts[0].v-flow>=0,col=o.col||(up?'var(--up)':'var(--dn)');
     let g='';
-    for(let i=0;i<4;i++){const v=mn+(mx-mn)*(i+.5)/4,y=Y(v);g+=`<line x1="0" x2="${W}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
-      if(W>=300)g+=`<text x="${W-4}" y="${(y-4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--mute)">${esc(nf(o.dec??0).format(v))}</text>`}
-    const fx=o.fmtX||(t=>{const d=new Date(t);return d.getDate()+'.'+(d.getMonth()+1)+'.'});
+    for(let i=0;i<4;i++){const v=mn+(mx-mn)*(i+.5)/4,y=Y(v);g+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
+      if(pad.r>20)g+=`<text x="${W-2}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--mute)">${esc(nf(o.dec??0).format(v))}</text>`}
+    // Startlinie
+    if(o.zero&&mn<0&&mx>0){const yz=Y(0);g+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${yz.toFixed(1)}" y2="${yz.toFixed(1)}" stroke="var(--ink)" stroke-opacity=".55" stroke-dasharray="5 3"/>`}
+    const y0=Y(pts[0].v);g+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--mute)" stroke-opacity=".5" stroke-width="1"/>`;
+    const span=t1-t0,fx=o.fmtX||(t=>span<=1.5*DAY?hm(t):dshort(t));
     const nx=W<380?3:5;let xl='';
-    for(let i=0;i<nx;i++){const t=t0+(t1-t0)*i/(nx-1),x=X(t);xl+=`<text x="${x.toFixed(1)}" y="${H-7}" font-size="11" fill="var(--mute)" text-anchor="${i===0?'start':i===nx-1?'end':'middle'}">${esc(fx(t))}</text>`}
-    let inv='';
-    if(o.inv){inv=`<path d="${o.inv.map((d,i)=>(i?'L':'M')+X(d.t).toFixed(1)+' '+Y(d.v).toFixed(1)).join('')}" fill="none" stroke="var(--mute)" stroke-width="1.4" stroke-dasharray="4 4"/>`}
-    let mk='';(o.marks||data.filter(d=>d.real)).forEach(d=>{mk+=`<circle cx="${X(d.t).toFixed(1)}" cy="${Y(d.v).toFixed(1)}" r="3.2" fill="var(--card)" stroke="${col}" stroke-width="2"/>`});
-    const gid='g'+Math.random().toString(36).slice(2,7);
-    el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" aria-label="${esc(o.label||'Kursverlauf')}" role="img"><defs><linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>${g}<path d="${area}" fill="url(#${gid})"/>${inv}<path d="${line}" fill="none" stroke="${col}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>${mk}${xl}<g class="xh" style="display:none"><line y1="${pad.t}" y2="${H-pad.b}" stroke="var(--mute)" stroke-width="1"/><circle r="5" fill="${col}" stroke="var(--card)" stroke-width="2"/></g></svg><div class="tip"></div>`;
-    el._X=X;el._Y=Y;el._W=W;
+    for(let i=0;i<nx;i++){const f=i/(nx-1),t=idx?pts[Math.round(f*(N-1))].t:t0+span*f,x=idx?Xi(Math.round(f*(N-1))):pad.l+f*iw;
+      xl+=`<text x="${x.toFixed(1)}" y="${H-6}" font-size="11" fill="var(--mute)" text-anchor="${i===0?'start':i===nx-1?'end':'middle'}">${esc(fx(t))}</text>`}
+    // Tagesgrenzen bei idx-Ansicht
+    if(idx&&span>1.5*DAY&&span<20*DAY){let last=ymd(pts[0].t,dfNY);pts.forEach((p,i)=>{const d=ymd(p.t,dfNY);if(d!==last){last=d;g+=`<line x1="${Xi(i).toFixed(1)}" x2="${Xi(i).toFixed(1)}" y1="${pad.t}" y2="${H-pad.b}" stroke="var(--line)"/>`}})}
+    let body='';
+    if(cd){const bw=iw/cd.length*.68;cd.forEach((c,i)=>{const x=pad.l+(i+.5)*iw/cd.length,cu=c.c>=c.o,cc=cu?'var(--up)':'var(--dn)',yo=Y(c.o),yc=Y(c.c);
+      body+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${Y(c.h).toFixed(1)}" y2="${Y(c.l).toFixed(1)}" stroke="${cc}" stroke-width="1.2"/><rect x="${(x-bw/2).toFixed(1)}" y="${Math.min(yo,yc).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1.2,Math.abs(yc-yo)).toFixed(1)}" fill="${cc}" rx="1"/>`})}
+    else{const line=lp.map((p,i)=>(i?'L':'M')+X(p.t).toFixed(1)+' '+Y(p.v).toFixed(1)).join('');
+      const gid='g'+Math.random().toString(36).slice(2,7);
+      body=`<defs><linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".26"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${line}L${X(t1).toFixed(1)} ${H-pad.b}L${X(t0).toFixed(1)} ${H-pad.b}Z" fill="url(#${gid})"/><path d="${line}" fill="none" stroke="${col}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`}
+    if(o.inv&&o.inv.length>1)body+=`<path d="${o.inv.map((p,i)=>(i?'L':'M')+X(p.t).toFixed(1)+' '+Y(p.v).toFixed(1)).join('')}" fill="none" stroke="var(--mute)" stroke-width="1.3" stroke-dasharray="4 4"/>`;
+    (o.marks||pts.filter(p=>p.real)).forEach(p=>{if(p.t<t0||p.t>t1)return;body+=`<circle cx="${X(p.t).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="3.4" fill="var(--card)" stroke="${o.markCol||col}" stroke-width="2"/>`});
+    // Hoch/Tief
+    let hi=0,lo=0;pts.forEach((p,i)=>{if(p.v>pts[hi].v)hi=i;if(p.v<pts[lo].v)lo=i});
+    if(type==='line'&&N>10){[[hi,-7,'Hoch'],[lo,15,'Tief']].forEach(([i,dy])=>{const x=X(pts[i].t),y=Y(pts[i].v);body+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="var(--ink)"/><text x="${Math.min(Math.max(x,30),W-pad.r-30).toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="middle" font-size="10.5" fill="var(--mute)">${esc(nf(o.dec??0).format(pts[i].v))}</text>`})}
+    const last=pts[N-1];if(type==='line')body+=`<circle cx="${X(last.t).toFixed(1)}" cy="${Y(last.v).toFixed(1)}" r="4" fill="${col}"${S.mode==='time'&&S.src==='Live-Ticks'?' class="flash"':''}/>`;
+    el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'Kursverlauf')}">${g}${body}${xl}<g class="xh" style="display:none"><line y1="${pad.t}" y2="${H-pad.b}" stroke="var(--mute)"/><circle r="5" fill="${col}" stroke="var(--card)" stroke-width="2"/></g></svg><div class="tip"></div>`;
+    el._X=X;el._Y=Y;el._W=W;el._pts=pts;
   };
   el._draw=draw;
   if(!el._ro){el._ro=new ResizeObserver(()=>el._draw());el._ro.observe(el);
-    const move=e=>{const d=el._d;if(!d||d.data.length<2||!el._X)return;const r=el.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
-      let best=0,bd=1e9;d.data.forEach((p,i)=>{const dx=Math.abs(el._X(p.t)-x);if(dx<bd){bd=dx;best=i}});
-      const p=d.data[best],px=el._X(p.t),py=el._Y(p.v),xh=el.querySelector('.xh'),tip=el.querySelector('.tip');if(!xh)return;
-      xh.style.display='';xh.querySelector('line').setAttribute('x1',px);xh.querySelector('line').setAttribute('x2',px);const c=xh.querySelector('circle');c.setAttribute('cx',px);c.setAttribute('cy',py);
-      const ft=d.o.fmtTip||(t=>new Date(t).toLocaleDateString('de-DE'));
-      tip.textContent=ft(p.t)+' · '+(d.o.fmtV||eur)(p.v);tip.style.display='block';tip.style.left=Math.min(Math.max(px,70),el._W-70)+'px'};
+    const move=e=>{if(!el._X)return;const pts=el._pts,r=el.getBoundingClientRect(),x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+      let lo=0,hi=pts.length-1;while(hi-lo>1){const m=(lo+hi)>>1;if(el._X(pts[m].t)<x)lo=m;else hi=m}
+      const p=Math.abs(el._X(pts[lo].t)-x)<Math.abs(el._X(pts[hi].t)-x)?pts[lo]:pts[hi];
+      const px=el._X(p.t),py=el._Y(p.v),xh=el.querySelector('.xh'),tip=el.querySelector('.tip');if(!xh)return;
+      xh.style.display='';const ln=xh.querySelector('line');ln.setAttribute('x1',px);ln.setAttribute('x2',px);const c=xh.querySelector('circle');c.setAttribute('cx',px);c.setAttribute('cy',py);
+      const d=el._d,ch=p.v/pts[0].v-1,span=pts[pts.length-1].t-pts[0].t;
+      const when=span<=2*DAY?(span<=15*6e4?hms(p.t):hm(p.t))+' Uhr':new Date(p.t).toLocaleDateString('de-DE')+(d.S.mode==='idx'?' '+hm(p.t):'');
+      tip.textContent=when+' · '+(d.o.fmtV||eur)(p.v)+' · '+pct(ch*100);tip.style.display='block';tip.style.left=Math.min(Math.max(px,95),el._W-95)+'px'};
     const leave=()=>{const xh=el.querySelector('.xh'),tip=el.querySelector('.tip');if(xh)xh.style.display='none';if(tip)tip.style.display='none'};
     el.addEventListener('pointermove',move);el.addEventListener('pointerdown',move);el.addEventListener('pointerleave',leave);el.addEventListener('touchmove',move,{passive:true});el.addEventListener('touchend',leave);
   }
   draw();
 }
-function spark(f){
-  const pts=navPts(f).filter(p=>p.t>=ts('2026-08-01'));const W=96,H=40;
-  const vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),t0=pts[0].t,t1=pts[pts.length-1].t;
-  const d=pts.map((p,i)=>(i?'L':'M')+(2+(p.t-t0)/(t1-t0)*(W-4)).toFixed(1)+' '+(3+(mx-p.v)/((mx-mn)||1)*(H-6)).toFixed(1)).join('');
-  return `<svg class="spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d}" fill="none" stroke="${f.col}" stroke-width="2" stroke-linejoin="round"/></svg>`;
-}
+function statsHtml(S,fmt,flowFn){const p=S.pts||[];if(p.length<2)return '';
+  const a=p[0].v,b=p[p.length-1].v,fl=flowFn?flowFn(p[0].t,p[p.length-1].t):0;let hi=-1e18,lo=1e18;p.forEach(x=>{hi=Math.max(hi,x.v);lo=Math.min(lo,x.v)});
+  const ch=b-a-fl,base=a+(fl>0?fl:0);
+  return `<div><span>Veränderung${fl>1?'*':''}</span><b class="${ud(ch)}">${pct(ch/base*100)}</b><span class="${ud(ch)}">${dE(ch,fmt===3?3:2)}</span></div><div><span>Hoch</span><b>${nf(fmt).format(hi)}</b></div><div><span>Tief</span><b>${nf(fmt).format(lo)}</b></div><div><span>Spanne</span><b>${nf(1).format((hi/lo-1)*100)} %</b></div>`}
+const flowFn=(t0,t1)=>investedAt(t1)-investedAt(t0);
+function statsPL(S){const p=S.pts;if(p.length<2)return '';const e=p[p.length-1],inv=investedAt(e.t);let hi=-1e18,lo=1e18;p.forEach(x=>{hi=Math.max(hi,x.v);lo=Math.min(lo,x.v)});
+  return `<div><span>Aktuell</span><b class="${ud(e.v)}">${dE(e.v,0)}</b><span class="${ud(e.v)}">${pct(e.v/inv*100)}</span></div><div><span>Bestwert</span><b class="${ud(hi)}">${dE(hi,0)}</b></div><div><span>Tiefstwert</span><b class="${ud(lo)}">${dE(lo,0)}</b></div><div><span>Veränderung</span><b class="${ud(e.v-p[0].v)}">${dE(e.v-p[0].v,0)}</b></div>`}
 
-/* ================= Darstellung ================= */
+/* ======================= 8. DARSTELLUNG ======================= */
 function ageBadge(f,e){
   if(e.est)return '<span class="badge live">Live-Schätzung</span>';
   const b=base(f),days=Math.round((ts(ymd(Date.now()))-ts(b.d))/DAY);
-  const when=b.man?'nachgetragen ':'';
-  if(f.id==='etf'&&!b.man&&days===0)return `<span class="badge">Börse ${f.ptime} Uhr</span>`;
-  return days<=0?`<span class="badge">Kurs ${when}heute</span>`:`<span class="badge old">Kurs ${when}vom ${dDE(b.d).slice(0,6)} · ${days} Tag${days>1?'e':''} alt</span>`;
+  if(f.id==='etf'&&!b.man&&days===0)return '<span class="badge">Börse 19:47 Uhr</span>';
+  return days<=0?`<span class="badge">Kurs ${b.man?'nachgetragen ':''}heute</span>`:`<span class="badge old">Kurs vom ${dDE(b.d).slice(0,6)} · ${days} Tag${days>1?'e':''} alt</span>`;
 }
+function liveLabel(){if(live.state==='live'){const m=mkt();return (live.wsOk&&m.open?'Live · Ticks':'Live')+' · '+hm(live.lastTick||live.at)}return live.state==='loading'?'Lädt…':live.state==='error'?'Live gestört':'Stand Bank'}
 function renderHeader(){
-  const T=totals(),pill=$('#livePill'),txt=$('#liveTxt');
-  pill.className='pill'+(live.state==='live'?' live':live.state==='error'?' err':'');
-  txt.textContent=live.state==='live'?'Live · '+hm(live.at):live.state==='loading'?'Lädt…':live.state==='error'?'Live gestört':'Stand Bank';
-  $('#sheetPill').className=pill.className;$('#sheetPillTxt').textContent=txt.textContent;
+  const T=totals(),pill=$('#livePill');
+  pill.className='pill'+(isLive()?' live':live.state==='error'?' err':'');$('#liveTxt').textContent=liveLabel();
+  $('#sheetPill').className=pill.className;$('#sheetPillTxt').textContent=$('#liveTxt').textContent;
   $('#heroVal').textContent=eur(T.v);
   const bank=T.v-T.inv,real=T.v-T.gross;
-  let today;
-  if(live.state==='live'&&Math.abs(T.v-T.bv)>0.005){today=`<div class="chip">Live seit letztem Kurs<b class="${T.v>=T.bv?'pos':'neg'}">${dE(T.v-T.bv)} · ${pct((T.v/T.bv-1)*100)}</b></div>`}
-  else today=`<div class="chip">Zum Vortag (Bank, ${BANK.asOf.slice(0,6)})<b class="${BANK.prevAbs>=0?'pos':'neg'}">${dE(BANK.prevAbs)} · ${pct(BANK.prevPct)}</b></div>`;
-  $('#heroChips').innerHTML=today+
-   `<div class="chip">Seit Kauf (wie Bank)<b class="${bank>=0?'pos':'neg'}">${dE(bank)} · ${pct(bank/T.inv*100)}</b></div>`+
-   `<div class="chip">Inkl. Kaufkosten<b class="${real>=0?'pos':'neg'}">${dE(real)} · ${pct(real/T.gross*100)}</b></div>`;
+  const today=isLive()&&Math.abs(T.v-T.bv)>0.005?`<div class="chip">Seit letztem offiziellen Kurs<b class="${T.v>=T.bv?'pos':'neg'}">${dE(T.v-T.bv)} · ${pct((T.v/T.bv-1)*100)}</b></div>`:`<div class="chip">Zum Vortag (Bank, ${BANK.asOf.slice(0,6)})<b class="${BANK.prevAbs>=0?'pos':'neg'}">${dE(BANK.prevAbs)} · ${pct(BANK.prevPct)}</b></div>`;
+  $('#heroChips').innerHTML=today+`<div class="chip">Seit Kauf (wie Bank)<b class="${bank>=0?'pos':'neg'}">${dE(bank)} · ${pct(bank/T.inv*100)}</b></div><div class="chip">Inkl. Kaufkosten<b class="${real>=0?'pos':'neg'}">${dE(real)} · ${pct(real/T.gross*100)}</b></div>`;
+  const m=mkt();$('#mktStat').innerHTML=`<span class="dot" style="background:${m.open?'#3ddc97':'#ffd166'}"></span>`+esc(m.open?('US-Börse offen'+(m.early?' (verkürzt bis 19:00)':' bis 22:00 Uhr')):m.hol?'US-Börse heute geschlossen (Feiertag)':m.wk?'Wochenende – US-Börse geschlossen':m.pre?'US-Börse öffnet um 15:30 Uhr':'US-Börse geschlossen – öffnet nächsten Handelstag 15:30 Uhr');
 }
+function segHtml(list,cur,attr){return list.map(([k,l])=>`<button data-${attr}="${k}" class="${k===cur?'on':''}">${l}</button>`).join('')}
 function renderMain(){
-  const el=$('#mainFig'),now=Date.now();let data,o={},hint='';
-  if(['10m','1h','1d'].includes(range)){
-    const from=range==='10m'?now-6e5:range==='1h'?now-36e5:ts(ymd(now))-12*36e5;
-    data=SNAP.filter(s=>s.t>=from).map(s=>({t:s.t,v:s.v}));
-    o.fmtX=t=>hm(t);o.fmtTip=t=>hm(t)+' Uhr';o.marks=[];o.dec=0;
-    o.empty=live.state==='live'?'Live-Verlauf wird gerade aufgezeichnet – in wenigen Minuten erscheint hier die Kurve.':'Minuten-Verlauf gibt es, sobald Live-Kurse laufen (Einrichten). Bis dahin: Vortag laut Bank '+dE(BANK.prevAbs)+' ('+pct(BANK.prevPct)+').';
-    hint='Live-Verlauf aus der App';
-  }else{
-    const {out,inv}=depotSeries();const days={'1w':7,'1m':30,'3m':90,max:1e4}[range];const from=now-days*DAY;
-    data=out.filter(d=>d.t>=from);const iv=inv.filter(d=>d.t>=from);
-    o.inv=iv;o.dec=0;hint='Punkte = echte Kurse · gestrichelt = eingezahlt';
+  $('#rangeSeg').innerHTML=segHtml(RANGES,range,'r');
+  document.querySelectorAll('#typeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.t===ctype));
+  let S=series(range,null),fl=S.flows?flowFn:null;
+  $('#modeSeg').style.display=S.flows?'':'none';document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.m===+adj));
+  const pl=S.flows&&adj&&S.pts.length;
+  if(pl){S={...S,inv:false,pts:S.pts.map(p=>({...p,v:p.v-investedAt(p.t)}))};fl=null}
+  const inv=S.inv&&S.pts.length?S.pts.map(p=>({t:p.t,v:investedAt(p.t)})):null;
+  chart($('#mainFig'),S,{type:ctype,inv,flowFn:fl,label:'Depotentwicklung',col:pl?(S.pts[S.pts.length-1].v>=0?'var(--up)':'var(--dn)'):null,fmtV:pl?(v=>dE(v)):null,zero:pl});
+  $('#mainStats').innerHTML=pl?statsPL(S):statsHtml(S,2,fl);
+  $('#chartSrc').textContent=S.src||'';
+  $('#mainHint').textContent=[S.note,S.inv?'gestrichelt = eingezahlter Betrag':'',pl?'Depotwert minus eingezahlter Betrag (wie Bank)':'',fl?'*ohne Einzahlungen':'',S.mode==='idx'?'Nächte & Wochenenden ausgeblendet':''].filter(Boolean).join(' · ');
   }
-  chart(el,data,o);
-  if(data.length>=2){const a=data[0].v,b=data[data.length-1].v;
-    const label={'10m':'10 Min','1h':'1 Std','1d':'heute','1w':'1 Woche','1m':'1 Monat','3m':'3 Monate',max:'seit Start'}[range];
-    const flow=o.inv&&o.inv.length?o.inv[o.inv.length-1].v-o.inv[0].v:0;
-    $('#rangeDelta').innerHTML=`<b class="${ud(b-a-flow)}">${dE(b-a-flow)}</b> <span class="mute">${label}${flow>1?' (ohne Einzahlungen)':''}</span>`;
-  }else $('#rangeDelta').textContent='';
-  $('#rangeHint').textContent=hint;
-  $('#chartAsOf').textContent=live.state==='live'?'live':'Kurse '+BANK.asOf.slice(0,10);
-  document.querySelectorAll('#rangeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.r===range));
-}
+function spark(f){const pts=navPts(f).filter(p=>p.t>=ts('2026-08-01'));const c=fundCurve(f,'1h');const src=c&&c.length>20?thin(c.slice(-200).map(([t,v])=>({t,v})),60):pts;
+  const W=96,H=40,vs=src.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),t0=src[0].t,t1=src[src.length-1].t;
+  const d=src.map((p,i)=>(i?'L':'M')+(2+(c&&c.length>20?i/(src.length-1):(p.t-t0)/(t1-t0))*(W-4)).toFixed(1)+' '+(3+(mx-p.v)/((mx-mn)||1)*(H-6)).toFixed(1)).join('');
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d}" fill="none" stroke="${f.col}" stroke-width="2" stroke-linejoin="round"/></svg>`}
 function renderDepot(){
   const T=totals();
-  $('#posCount').textContent=FUNDS.length+' Positionen';
   $('#allocBar').innerHTML=FUNDS.map(f=>`<i style="width:${(posVal(f).v/T.v*100).toFixed(2)}%;background:${f.col}"></i>`).join('');
   $('#allocLegend').innerHTML=FUNDS.map(f=>`<span style="--c:${f.col}">${esc(f.short)} ${nf(1).format(posVal(f).v/T.v*100)} %</span>`).join('');
   $('#posList').innerHTML=FUNDS.map(f=>{const p=posVal(f),inv=f.shares*f.avg,g=p.v-inv;
     return `<button class="pos-card" data-fund="${f.id}" style="--c:${f.col}"><div class="h"><div><div class="nm">${esc(f.name)}</div><div class="isin">${f.isin} · ${nf(3).format(f.shares)} Stück</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>
     <div class="b"><div><div class="big num">${eur(p.v)}</div><div class="small"><span class="${ud(g)}">${dE(g)} · ${pct(g/inv*100)}</span> <span class="mute">· Kurs ${eur(p.p,f.id==='etf'?3:2)}</span></div><div style="margin-top:6px">${ageBadge(f,p)}${p.est?` <span class="small ${ud(p.r)}">${pct(p.r*100)} heute</span>`:''}</div></div>${spark(f)}</div></button>`}).join('');
-  // nächste Ausführungen
-  const now=new Date(),y=now.getFullYear(),m=now.getMonth();
-  const next=(day)=>{let d=new Date(y,m,day);if(d<=now)d=new Date(y,m+1,day);while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d};
-  const items=[{d:next(15),f:F('gc'),amt:129.69},{d:next(15),f:F('fid'),amt:131.56},{d:next(14),f:F('etf'),amt:40.40}];
-  $('#nextList').innerHTML=items.sort((a,b)=>a.d-b.d).map(i=>{const days=Math.ceil((i.d-now)/DAY);
-    return `<li class="ord"><div><b>${esc(i.f.short)}</b><span class="tag${i.f.id==='etf'?' vl':''}">${esc(i.f.plan.lbl)}</span><div class="small mute">${i.d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'})} · in ${days} Tagen</div></div><div class="r"><b class="num">${eur(i.amt)}</b><div class="small mute">davon Anlage ${eur(i.f.plan.amt)}</div></div></li>`}).join('')+
-   `<li class="ord"><div><b>Lastschrift gesamt</b><div class="small mute">Sparpläne pro Monat</div></div><div class="r"><b class="num">${eur(129.69+131.56)}</b><div class="small mute">statt 250,00 € angelegt</div></div></li>`;
+  const now=new Date(),y=now.getFullYear(),mo=now.getMonth();
+  const next=day=>{let d=new Date(y,mo,day);if(d<=now)d=new Date(y,mo+1,day);while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d};
+  const items=FUNDS.map(f=>({d:next(f.plan.day),f}));
+  $('#nextList').innerHTML=items.sort((a,b)=>a.d-b.d).map(({d,f})=>{const days=Math.ceil((d-now)/DAY),p=posVal(f).p;
+    return `<li class="ord"><div><b>${esc(f.short)}</b><span class="tag${f.id==='etf'?' vl':''}">${esc(f.plan.lbl)}</span><div class="small mute">${d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'})} · in ${days} Tagen · ≈ ${nf(3).format(f.plan.amt/p)} Stück zum heutigen Kurs</div></div><div class="r"><b class="num">${eur(f.plan.debit)}</b><div class="small mute">Anlage ${eur(f.plan.amt)}</div></div></li>`}).join('')+
+   `<li class="ord"><div><b>Lastschriften pro Monat</b><div class="small mute">davon ${eur(250+40)} angelegt (VL meist vom Arbeitgeber)</div></div><div class="r"><b class="num">${eur(129.69+131.56+40.40)}</b></div></li>`;
 }
-let fFund='all',fType='all';
+let fFund='all',fTyp='all';
 function renderOrders(){
   const g=ORD.reduce((a,o)=>a+grossOf(o),0),c=ORD.reduce((a,o)=>a+costOf(o),0);
-  $('#ordStats').innerHTML=`<div><span>Orders</span><b>${ORD.length}</b></div><div><span>Lastschriften gesamt</span><b>${eur(g)}</b></div><div><span>davon Kosten</span><b class="dn">${eur(c)}</b></div>`;
+  $('#ordStats').innerHTML=`<div><span>Orders</span><b>${ORD.length}</b></div><div><span>Lastschriften gesamt</span><b>${eur(g)}</b></div><div><span>davon Kosten</span><b class="dn">${eur(c)}</b></div><div><span>Ø Kaufkurs-Verlust</span><b>${pct((totals().v/totals().inv-1)*100)}</b></div><div><span>Erste Order</span><b>07.08.2026</b></div><div><span>Stück gesamt</span><b>${nf(3).format(FUNDS.reduce((a,f)=>a+f.shares,0))}</b></div>`;
+  const months={};ORD.forEach(o=>{const k=o.d.slice(0,7);(months[k]=months[k]||{gc:0,fid:0,etf:0})[o.f]+=o.amt});
+  const mk=Object.keys(months).sort(),mxm=Math.max(...mk.map(k=>months[k].gc+months[k].fid+months[k].etf));
+  $('#ordMonths').innerHTML=mk.map(k=>{const m=months[k],s=m.gc+m.fid+m.etf;return `<div class="hbar"><span>${MON[+k.slice(5)-1].slice(0,3)} ${k.slice(2,4)}</span><div class="tr">${FUNDS.map(f=>`<i style="width:${(m[f.id]/mxm*100).toFixed(2)}%;background:${f.col}"></i>`).join('')}</div><b>${nf(0).format(s)} €</b></div>`}).join('')+`<div class="legend" style="margin-top:8px">${FUNDS.map(f=>`<span style="--c:${f.col}">${esc(f.short)}</span>`).join('')}</div>`;
   $('#fFund').innerHTML=[['all','Alle Fonds'],...FUNDS.map(f=>[f.id,f.short])].map(([k,l])=>`<button data-ff="${k}" class="${fFund===k?'on':''}">${esc(l)}</button>`).join('');
-  $('#fType').innerHTML=[['all','Alle Arten'],['Einzug','Einzug'],['VL-Zahlung','VL-Zahlung'],['unbekannt','Sonstige']].map(([k,l])=>`<button data-ft="${k}" class="${fType===k?'on':''}">${l}</button>`).join('');
-  const list=ORD.filter(o=>(fFund==='all'||o.f===fFund)&&(fType==='all'||o.type===fType)).sort((a,b)=>b.d.localeCompare(a.d));
+  $('#fType').innerHTML=[['all','Alle Arten'],['Einzug','Einzug'],['VL-Zahlung','VL-Zahlung'],['unbekannt','Sonstige']].map(([k,l])=>`<button data-ft="${k}" class="${fTyp===k?'on':''}">${l}</button>`).join('');
+  const list=ORD.filter(o=>(fFund==='all'||o.f===fFund)&&(fTyp==='all'||o.type===fTyp)).sort((a,b)=>b.d.localeCompare(a.d));
   let html='',cur='';
-  list.forEach(o=>{const f=F(o.f),mk=o.d.slice(0,7);
-    if(mk!==cur){if(cur)html+='</ul></div>';cur=mk;const [y,m]=mk.split('-');
-      const sum=list.filter(x=>x.d.startsWith(mk)).reduce((a,x)=>a+x.amt,0);
-      html+=`<div class="mh row"><span>${MON[+m-1]} ${y}</span><span>${eur(sum)}</span></div><div class="card" style="padding:4px 16px"><ul class="list">`}
+  list.forEach(o=>{const f=F(o.f),k=o.d.slice(0,7),now=posVal(f).p,buyNav=o.p/(1+(isCost(o)?f.aa:0));
+    if(k!==cur){if(cur)html+='</ul></div>';cur=k;const sum=list.filter(x=>x.d.startsWith(k)).reduce((a,x)=>a+x.amt,0);html+=`<div class="mh row"><span>${MON[+k.slice(5)-1]} ${k.slice(0,4)}</span><span>${eur(sum)}</span></div><div class="card" style="padding:4px 16px"><ul class="list">`}
     const tg=o.type==='VL-Zahlung'?'vl':o.type==='unbekannt'?'unk':'';
-    html+=`<li class="ord" style="border-left:0"><div><b style="color:${f.col}">${esc(f.short)}</b><span class="tag ${tg}">${o.type==='unbekannt'?'Unbekannt':o.type}</span><div class="small mute">${dDE(o.d)} · ${nf(3).format(o.qty)} Stück à ${eur(o.p)} · Unterdepot ${o.sub}</div>
-      ${o.type==='unbekannt'?'<div class="note">Gutschrift ohne Lastschrift – die Bank zählt sie nicht als Einzahlung. Wahrscheinlich eine Wiederanlage oder Bonusanteile.</div>':`<div class="note">angelegt ${eur(netOf(o))} · ${f.costLbl} ${eur(costOf(o))}</div>`}</div>
-      <div class="r"><b class="num">${eur(o.amt)}</b></div></li>`});
+    html+=`<li class="ord"><div><b style="color:${f.col}">${esc(f.short)}</b><span class="tag ${tg}">${o.type==='unbekannt'?'Unbekannt':o.type}</span><div class="small mute">${dDE(o.d)} · ${nf(3).format(o.qty)} Stück à ${eur(o.p)} · Unterdepot ${o.sub}</div>
+      ${o.type==='unbekannt'?'<div class="note">Gutschrift ohne Lastschrift – zählt nicht als Einzahlung. Wahrscheinlich Wiederanlage oder Bonusanteile.</div>':`<div class="note">angelegt ${eur(netOf(o))} · ${f.costLbl} ${eur(costOf(o))} · heute ${eur(o.qty*now)}</div>`}</div>
+      <div class="r"><b class="num">${eur(o.amt)}</b><div class="small ${ud(now-buyNav)}">${pct((now/buyNav-1)*100)}</div></div></li>`});
   if(cur)html+='</ul></div>';
   $('#ordList').innerHTML=html||'<div class="card mute">Keine Orders für diesen Filter.</div>';
 }
-function stockEUR(s){const q=Q[s],L=live.state==='live'&&q&&typeof q.c==='number';const p=L?q.c:STK[s].p;return {usd:p,eur:p/(L&&Q.FXE?EURUSD*(1+fxr()):EURUSD),ch:L?q.dp:STK[s].ch,live:L}}
-function lookThrough(){
-  const m={};FUNDS.forEach(f=>{const v=posVal(f).v;f.hold.forEach(([s,w])=>{const k=s==='GOOG'?'GOOGL':s;(m[k]=m[k]||{s:k,v:0,by:{}});m[k].v+=w/100*v;m[k].by[f.id]=(m[k].by[f.id]||0)+w/100*v})});
-  return Object.values(m).sort((a,b)=>b.v-a.v);
-}
+function heatColor(ch){if(ch==null)return 'var(--card2)';const a=Math.min(1,Math.abs(ch)/3);return `color-mix(in srgb,${ch>=0?'var(--up)':'var(--dn)'} ${Math.round(18+a*52)}%,var(--card2))`}
+let lookAll=false,anSort='exp';
 function renderMarkt(){
-  const T=totals(),L=lookThrough(),max=L[0].v;
-  $('#mktNews').innerHTML=NEWS.map(n=>`<li>${esc(n)}</li>`).join('');
-  $('#lookList').innerHTML='<table><thead><tr><th>Aktie</th><th class="n">Dein Anteil</th><th class="n">vom Depot</th></tr></thead><tbody>'+L.slice(0,12).map(x=>{const st=STK[x.s];
-    const bars=FUNDS.filter(f=>x.by[f.id]).map(f=>`<i style="width:${(x.by[f.id]/max*100).toFixed(1)}%;background:${f.col};display:inline-block;height:100%"></i>`).join('');
-    return `<tr><td><div class="stk"><b>${esc(x.s==='GOOGL'?'Alphabet':st.n)}</b></div><div class="wbar" style="display:flex">${bars}</div></td><td class="n">${eur(x.v)}</td><td class="n">${nf(1).format(x.v/T.v*100)} %</td></tr>`}).join('')+'</tbody></table>';
+  const T=totals(),L=lookThrough();
+  $('#mktNews').innerHTML=NEWS.map(([h,t])=>`<li><b>${esc(h)}:</b> ${esc(t)}</li>`).join('');
+  const H=L.slice(0,36),anyLive=H.some(x=>stockQ(x.k).live);
+  $('#heatSrc').textContent=anyLive?'live':'Schluss 25.11.';
+  $('#heat').innerHTML=H.map(x=>{const q=stockQ(x.k),r=REG[x.k];return `<div style="--g:${(x.v).toFixed(0)};--hc:${heatColor(q.ch)}" title="${esc(r.n)}"><b>${esc(r.n)}</b>${eur(x.v,0)}<br><span>${q.ch==null?'–':pct(q.ch,1)}</span></div>`}).join('');
+  const qq=($('#lookQ').value||'').trim().toLowerCase();
+  const rows=L.filter(x=>!qq||REG[x.k].n.toLowerCase().includes(qq)||x.k.toLowerCase().includes(qq));
+  const shown=qq||lookAll?rows:rows.slice(0,25),max=L[0].v;
+  $('#lookTable').innerHTML='<thead><tr><th>Aktie</th><th class="n">Kurs €</th><th class="n">Tag</th><th class="n">Dein €</th><th class="n hide-s">Depot</th></tr></thead><tbody>'+shown.map(x=>{const r=REG[x.k],q=stockQ(x.k);
+    const bars=FUNDS.filter(f=>x.by[f.id]).map(f=>`<i style="width:${(x.by[f.id]/max*100).toFixed(1)}%;background:${f.col}"></i>`).join('');
+    return `<tr><td class="stk"><b>${esc(r.n)}</b><span>${esc(SECN[r.s])} · ${esc(CTRY[r.c]||r.c)}</span><div class="wbar">${bars}</div></td><td class="n">${q.eur?nf(2).format(q.eur):'<span class="mute">–</span>'}</td><td class="n ${ud(q.ch??0)}">${q.ch==null?'<span class="mute">'+(q.d||'–')+'</span>':pct(q.ch)}</td><td class="n">${eur(x.v)}</td><td class="n hide-s">${nf(2).format(x.v/T.v*100)} %</td></tr>`}).join('')+'</tbody>';
+  $('#lookMore').textContent=qq?rows.length+' Treffer':lookAll?'Weniger anzeigen':'Alle '+L.length+' Aktien anzeigen';
   const top10=L.slice(0,10).reduce((a,x)=>a+x.v,0);
-  $('#lookCallout').innerHTML=`Rund <b>${nf(0).format(top10/T.v*100)} %</b> deines Depots (${eur(top10,0)}) stecken in nur zehn Konzernen. Microsoft, Alphabet, Apple und Amazon stecken in allen drei Fonds, TSMC in zweien – die drei Fonds bewegen sich deshalb oft im Gleichschritt.`;
-  const all=Object.keys(STK).filter(s=>s!=='GOOG');
-  const inF=s=>FUNDS.filter(f=>f.hold.some(([h])=>h===s||(s==='GOOGL'&&h==='GOOG')));
-  $('#stkAsOf').textContent=live.state==='live'?'Live-Kurse (US-Börse) · in € zum aktuellen Dollarkurs':'Schlusskurse 25.11.2026 (Netflix 17.11.) · € zum EZB-Kurs 1,0975 $';
-  $('#stkTable').innerHTML='<thead><tr><th>Aktie</th><th class="n">Kurs €</th><th class="n hide-s">Kurs $</th><th class="n">Tag</th><th>In</th></tr></thead><tbody>'+
-    all.map(s=>{const st=STK[s],k=stockEUR(s);return {s,st,k}}).sort((a,b)=>(b.k.ch??-99)-(a.k.ch??-99)).map(({s,st,k})=>
-    `<tr><td class="stk"><b>${esc(st.n)}</b><span>${s==='SMSN'?'005930.KS':s} · ${esc(st.s)} · ${esc(st.c)}</span>${st.note?`<div class="note">${esc(st.note)}</div>`:''}</td><td class="n">${nf(2).format(k.eur)}</td><td class="n hide-s">${nf(2).format(k.usd)}</td><td class="n ${ud(k.ch??0)}">${k.ch==null?'<span class="mute">'+(st.pd||'–')+'</span>':pct(k.ch)}</td><td><div class="fdots">${inF(s).map(f=>`<i style="--c:${f.col}" title="${esc(f.short)}"></i>`).join('')}</div></td></tr>`).join('')+'</tbody>';
+  $('#lookCallout').innerHTML=`Du besitzt indirekt Anteile an <b>${L.length} bekannten Unternehmen</b> (tatsächlich über 1.300). Die zehn größten machen <b>${nf(0).format(top10/T.v*100)} %</b> deines Depots aus (${eur(top10,0)}). Microsoft, Alphabet, Apple und Amazon stecken in allen drei Fonds.`;
+  queueVisible(shown.map(x=>x.k).concat(H.map(x=>x.k)));
+  // Analysten
+  const ex={};L.forEach(x=>ex[x.k]=x.v);
+  const items=Object.keys(AN).map(k=>{const a=AN[k],q=stockQ(k),cur=q.usd||EMB[k];return {k,a,cur,up:(a[2]/cur-1)*100,lo:(a[3]/cur-1)*100,exp:ex[k]||0,q}});
+  const cov=items.reduce((s,i)=>s+i.exp,0),wup=items.reduce((s,i)=>s+i.exp*i.up,0)/cov,wlo=items.reduce((s,i)=>s+i.exp*i.lo,0)/cov;
+  $('#anIntro').textContent=`Die ${items.length} wichtigsten Einzelwerte decken ${eur(cov,0)} (${nf(0).format(cov/T.v*100)} %) deines Depots ab.`;
+  $('#anSum').innerHTML=`<div><span>Ø Kursziel-Potenzial (gewichtet)</span><b class="${ud(wup)}">${pct(wup,1)}</b><span>wenn alle Ø-Kursziele einträfen</span></div><div><span>Pessimistischstes Szenario</span><b class="${ud(wlo)}">${pct(wlo,1)}</b><span>niedrigste Analystenziele</span></div>`;
+  $('#anSort').innerHTML=[['exp','Nach deinem Anteil'],['up','Nach Potenzial'],['eps','Nach Gewinnwachstum']].map(([k,l])=>`<button data-as="${k}" class="${anSort===k?'on':''}">${l}</button>`).join('');
+  items.sort((a,b)=>anSort==='up'?b.up-a.up:anSort==='eps'?b.a[6][1]-a.a[6][1]:b.exp-a.exp);
+  $('#anList').innerHTML=items.map(({k,a,cur,up,exp,q})=>{const r=REG[k],lo=Math.min(a[3],cur),hi=Math.max(a[4],cur),P=v=>((v-lo)/(hi-lo)*100).toFixed(1);
+    const rc=REC[r.q],rb=rc?(()=>{const t=rc.sb+rc.b+rc.h+rc.s+rc.ss||1;return `<div class="recbar" title="Kaufen/Halten/Verkaufen">${[[rc.sb,'var(--up)'],[rc.b,'color-mix(in srgb,var(--up) 55%,var(--card2))'],[rc.h,'var(--mute)'],[rc.s,'color-mix(in srgb,var(--dn) 55%,var(--card2))'],[rc.ss,'var(--dn)']].map(([n,c])=>n?`<i style="flex:${n};background:${c}"></i>`:'').join('')}</div><div class="note">Finnhub aktuell: ${rc.sb+rc.b} Kaufen · ${rc.h} Halten · ${rc.s+rc.ss} Verkaufen</div>`})():'';
+    return `<div class="an"><div class="hd"><div class="stk"><b>${esc(r.n)}</b><span>${k==='SMSN'?'':esc(r.q)+' · '}${esc(SECN[r.s])} · dein Anteil ${eur(exp,0)}</span></div><span class="rate ${a[0]==='Strong Buy'?'sb':a[0]==='Buy'?'b':'h'}">${a[0]==='Strong Buy'?'Starker Kauf':a[0]==='Buy'?'Kaufen':'Halten'} · ${a[1]}</span></div>
+      <div class="row small" style="margin-top:6px"><span>Kurs ${usd(cur)} ${q.live?'<span class="badge live">live</span>':''}</span><span>Ø-Ziel <b>${usd(a[2])}</b> <span class="${ud(up)}">${pct(up,1)}</span></span></div>
+      <div class="rng"><div class="ln"></div><div class="band" style="left:${P(a[3])}%;width:${(P(a[4])-P(a[3])).toFixed(1)}%"></div><div class="mk avg" style="left:${P(a[2])}%"></div><div class="mk cur" style="left:${P(cur)}%"></div></div>
+      <div class="rnglbl"><span>Tiefstes Ziel ${usd(a[3],0)}</span><span>Höchstes ${usd(a[4],0)}</span></div>
+      <div class="gchips"><span>Umsatz ${pct(a[5][0],0)} / ${pct(a[5][1],0)}</span><span>Gewinn je Aktie ${pct(a[6][0],0)} / ${pct(a[6][1],0)}</span><span class="mute">Stand ${a[7]}</span></div>
+      ${NOTE[k]?`<div class="note" style="margin-top:6px">${esc(NOTE[k])}</div>`:''}${rb}</div>`}).join('')+
+    `<p class="small mute" style="margin:10px 0 0">Balken: grauer Bereich = Spanne der Analystenziele, blaue Marke = Ø-Ziel, dunkle Marke = aktueller Kurs. Wachstum: laufendes / nächstes Geschäftsjahr.</p>`;
+  queueRecs(Object.keys(AN).map(k=>REG[k].q).filter(Boolean));
 }
+function dailyCloses(c){const m=new Map();c.forEach(([t,v])=>m.set(ymd(t,dfNY),v));return m}
+function riskMetrics(){
+  const cs=FUNDS.map(f=>fundCurve(f,'1h'));if(cs.some(c=>!c))return null;
+  const ds=cs.map(dailyCloses),days=[...ds[0].keys()].filter(d=>ds.every(m=>m.has(d))&&d>='2026-08-07').sort();
+  if(days.length<15)return null;
+  const T=totals(),w=FUNDS.map(f=>posVal(f).v/T.v);
+  const R=FUNDS.map((f,i)=>days.slice(1).map((d,j)=>ds[i].get(d)/ds[i].get(days[j])-1));
+  const port=R[0].map((_,j)=>R.reduce((a,r,i)=>a+w[i]*r[j],0));
+  const sd=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1))};
+  const corr=(a,b)=>{const ma=a.reduce((x,y)=>x+y,0)/a.length,mb=b.reduce((x,y)=>x+y,0)/b.length;let c=0,va=0,vb=0;a.forEach((x,i)=>{c+=(x-ma)*(b[i]-mb);va+=(x-ma)**2;vb+=(b[i]-mb)**2});return c/Math.sqrt(va*vb)};
+  let idx=1,peak=1,mdd=0;port.forEach(r=>{idx*=1+r;peak=Math.max(peak,idx);mdd=Math.min(mdd,idx/peak-1)});
+  const best=Math.max(...port),worst=Math.min(...port),bi=port.indexOf(best),wi=port.indexOf(worst);
+  return {vol:sd(port)*Math.sqrt(252),vols:R.map(r=>sd(r)*Math.sqrt(252)),mdd,best,worst,bd:days[bi+1],wd:days[wi+1],n:port.length,M:R.map(a=>R.map(b=>corr(a,b))),up:port.filter(r=>r>0).length,cur:idx/peak-1,var95:-1.645*sd(port)}
+}
+function bars(obj,labels,colorFn){const tot=Object.values(obj).reduce((a,b)=>a+b,0),max=Math.max(...Object.values(obj));
+  return Object.entries(obj).sort((a,b)=>b[1]-a[1]).filter(([,v])=>v>0.05).map(([k,v])=>`<div class="hbar"><span>${esc(labels[k]||k)}</span><div class="tr"><i style="width:${(v/max*100).toFixed(1)}%;background:${colorFn?colorFn(k):'var(--brand)'}"></i></div><b>${nf(1).format(v/tot*100)} %</b></div>`).join('')}
+const REGN={US:'USA',EU:'Europa',AS:'Asien o. Japan',JP:'Japan',OT:'Sonstige/Kasse'};
 function renderAnalyse(){
   const T=totals(),bank=T.v-T.inv,real=T.v-T.gross;
   $('#truth').innerHTML=`<div><span>Sparkassen-Sicht</span><b class="${ud(bank)}">${pct(bank/T.inv*100)}</b><span>${dE(bank)} auf ${eur(T.inv)}</span></div><div><span>Dein echtes Geld</span><b class="${ud(real)}">${pct(real/T.gross*100)}</b><span>${dE(real)} auf ${eur(T.gross)}</span></div>`;
-  $('#truthTxt').textContent=`Die Bank rechnet ab dem Anlagebetrag ohne Ausgabeaufschlag. Tatsächlich abgebucht wurden ${eur(T.gross)}. Bis zur schwarzen Null fehlen nach Bank-Sicht ${pct((T.inv/T.v-1)*100)}, gemessen an deinem echten Geld ${pct((T.gross/T.v-1)*100)}.`;
-  let tc=0;const rows=FUNDS.map(f=>{const v=posVal(f).v,ac=fundCost(f),run=v*f.ter/100;tc+=run;return `<tr><td><b style="color:${f.col}">${esc(f.short)}</b><div class="note">${f.costLbl} ${nf(2).format(f.aa*100)} % · lfd. ${nf(2).format(f.ter)} % p.a.</div></td><td class="n">${eur(ac)}</td><td class="n">${eur(run)}</td></tr>`});
-  $('#costTable').innerHTML=`<thead><tr><th>Fonds</th><th class="n">Schon bezahlt</th><th class="n">Lfd. pro Jahr</th></tr></thead><tbody>${rows.join('')}<tr><td><b>Gesamt</b></td><td class="n"><b>${eur(T.cost)}</b></td><td class="n"><b>${eur(tc)}</b></td></tr></tbody>`;
+  $('#truthTxt').textContent=`Die Bank rechnet ab dem Anlagebetrag ohne Ausgabeaufschlag; tatsächlich abgebucht wurden ${eur(T.gross)}. Bis zur schwarzen Null fehlen nach Bank-Sicht ${pct((T.inv/T.v-1)*100)}, gemessen an deinem echten Geld ${pct((T.gross/T.v-1)*100)}.`;
+  const rm=riskMetrics();
+  if(rm){$('#riskKv').innerHTML=`<div><span>Schwankung p. a. (Volatilität)</span><b>${nf(1).format(rm.vol*100)} %</b></div><div><span>Max. Rückgang seit Start</span><b class="dn">${pct(rm.mdd*100,1)}</b></div><div><span>Abstand zum Hoch</span><b class="${ud(rm.cur)}">${pct(rm.cur*100,1)}</b></div>
+      <div><span>Bester Tag</span><b class="up">${pct(rm.best*100)}</b></div><div><span>Schlechtester Tag</span><b class="dn">${pct(rm.worst*100)}</b></div><div><span>Typ. Tagesrisiko (95 %)</span><b>${eur(Math.abs(rm.var95)*T.v,0)}</b></div>`;
+    $('#riskTxt').textContent=`Berechnet aus ${rm.n} Handelstagen mit deiner heutigen Gewichtung. Bester Tag ${dDE(rm.bd)}, schlechtester ${dDE(rm.wd)}; an ${rm.up} von ${rm.n} Tagen ging es aufwärts. „Typisches Tagesrisiko“: an 19 von 20 Tagen sollte der Tagesverlust kleiner sein. Einzelfonds: ${FUNDS.map((f,i)=>f.short+' '+nf(1).format(rm.vols[i]*100)+' %').join(', ')}.`;
+    $('#corr').innerHTML='<thead><tr><th></th>'+FUNDS.map(f=>`<th class="n" style="color:${f.col}">${({gc:'Champions',fid:'Tech',etf:'World'})[f.id]}</th>`).join('')+'</tr></thead><tbody>'+FUNDS.map((f,i)=>`<tr><td style="text-align:left"><b style="color:${f.col}">${esc(f.short)}</b></td>${rm.M[i].map(c=>`<td style="background:color-mix(in srgb,var(--brand) ${Math.round(Math.max(0,c)*45)}%,transparent)">${nf(2).format(c)}</td>`).join('')}</tr>`).join('')+'</tbody>';}
+  else{$('#riskKv').innerHTML='';$('#riskTxt').textContent='Volatilität, maximaler Rückgang, beste und schlechteste Tage sowie die Korrelation werden aus der Kurshistorie berechnet – bitte unter „Einrichten → 2“ Twelve Data aktivieren.';$('#corr').innerHTML=''}
+  const sect={},reg={};FUNDS.forEach(f=>{const v=posVal(f).v;Object.entries(f.sect).forEach(([k,x])=>sect[k]=(sect[k]||0)+v*x/100);Object.entries(f.reg).forEach(([k,x])=>reg[k]=(reg[k]||0)+v*x/100)});
+  $('#sectBars').innerHTML=bars(sect,SECN);$('#regBars').innerHTML=bars(reg,REGN);
+  let tc=0;const rows=FUNDS.map(f=>{const v=posVal(f).v,ac=fundCost(f),run=v*f.ter/100;tc+=run;return `<tr><td><b style="color:${f.col}">${esc(f.short)}</b><div class="note">${f.costLbl} ${nf(2).format(f.aa*100)} % · lfd. ${nf(2).format(f.ter)} % p.a.</div></td><td class="n">${eur(ac)}</td><td class="n">${eur(run)}</td><td class="n hide-s">${eur(run*10+ac,0)}</td></tr>`});
+  $('#costTable').innerHTML=`<thead><tr><th>Fonds</th><th class="n">Schon bezahlt</th><th class="n">Lfd. p. a.</th><th class="n hide-s">10 Jahre*</th></tr></thead><tbody>${rows.join('')}<tr><td><b>Gesamt</b></td><td class="n"><b>${eur(T.cost)}</b></td><td class="n"><b>${eur(tc)}</b></td><td class="n hide-s"><b>${eur(tc*10+T.cost,0)}</b></td></tr></tbody>`;
   const yrPlan=125*12*(F('gc').aa+F('fid').aa)+40*12*F('etf').aa;
-  $('#costCallout').innerHTML=`Deine Sparpläne kosten zusätzlich rund <b>${eur(yrPlan,0)} pro Jahr</b> an Aufschlägen (aus 261,25 € Lastschrift werden 250 € angelegt). Die laufenden Kosten von ${eur(tc,0)} im Jahr ziehen die Fonds still vom Kurs ab – sie sind in den Kursen schon enthalten. Als Sparkassen-Mitarbeiter lohnt sich ein Blick, ob für dich Mitarbeiterkonditionen ohne Ausgabeaufschlag gelten.`;
-  const L=lookThrough(),top10=L.slice(0,10).reduce((a,x)=>a+x.v,0);
-  const usa=FUNDS.reduce((a,f)=>a+posVal(f).v*f.usa/100,0);const tech=posVal(F('fid')).v;
-  $('#riskKv').innerHTML=`<div><span>Top-10-Aktien (Durchschau)</span><b>${nf(0).format(top10/T.v*100)} %</b></div><div><span>Anteil USA (geschätzt)</span><b>${nf(0).format(usa/T.v*100)} %</b></div><div><span>Reiner Tech-Fonds</span><b>${nf(0).format(tech/T.v*100)} %</b></div><div><span>Fonds mit Ø-Kosten</span><b>${nf(2).format(tc/T.v*100)} % p.a.</b></div>`;
-  $('#riskTxt').textContent='Die US-Quote ist ein gewichteter Wert aus den Länderangaben der Fonds (GlobalChampions 61,8 %, Global Technology 53,5 %, MSCI World 72,8 %). Durch die Überschneidungen reagiert dein Depot stark auf große US-Technologiewerte – das hat die Novemberkorrektur gezeigt.';
+  $('#costCallout').innerHTML=`Die Sparpläne kosten zusätzlich rund <b>${eur(yrPlan,0)} pro Jahr</b> an Aufschlägen (aus 261,25 € Lastschrift werden 250 € angelegt). Die laufenden Kosten von ${eur(tc,0)} im Jahr stecken bereits im Kurs. *10 Jahre: bisherige Aufschläge + laufende Kosten auf den heutigen Bestand, ohne Wachstum. Als Sparkassen-Mitarbeiter lohnt sich die Frage nach Mitarbeiterkonditionen ohne Ausgabeaufschlag.`;
+  const L=lookThrough(),top10=L.slice(0,10).reduce((a,x)=>a+x.v,0),semi=['NVDA','TSM','AVGO','ASML','TXN','SMSN','MU','AMD','MCHP','ASMPT','AMAT','LRCX','INTC','IFX'].reduce((a,k)=>a+(L.find(x=>x.k===k)?.v||0),0);
+  const hhi=L.reduce((a,x)=>a+(x.v/T.v)**2,0);
+  $('#klKv').innerHTML=`<div><span>Top-10-Aktien (Durchschau)</span><b>${nf(0).format(top10/T.v*100)} %</b></div><div><span>Halbleiter &amp; Chips</span><b>${nf(0).format(semi/T.v*100)} %</b></div><div><span>Reiner Tech-Fonds</span><b>${nf(0).format(posVal(F('fid')).v/T.v*100)} %</b></div><div><span>Effektive Anzahl Aktien*</span><b>≈ ${nf(0).format(1/hhi)}</b></div><div><span>Ø laufende Kosten</span><b>${nf(2).format(tc/T.v*100)} % p.a.</b></div><div><span>Anteil USA</span><b>${nf(0).format((reg.US||0)/T.v*100)} %</b></div>`;
   projection();
 }
-function projection(){
-  const M=+$('#pjM').value,R=+$('#pjR').value,Y=+$('#pjY').value,T=totals();
+function projection(){const M=+$('#pjM').value,R=+$('#pjR').value,Y=+$('#pjY').value,T=totals();
   $('#pjMv').textContent=eur(M,0);$('#pjRv').textContent=nf(1).format(R)+' %';$('#pjYv').textContent=Y+' Jahre';
-  const r=Math.pow(1+R/100,1/12)-1,n=Y*12;const fvP=T.v*Math.pow(1+r,n),fvM=r?M*(Math.pow(1+r,n)-1)/r:M*n;
-  const paid=T.v+M*n,fv=fvP+fvM;
-  $('#pjOut').innerHTML=`<div><span>Depot nach ${Y} Jahren</span><b>${eur(fv,0)}</b></div><div><span>davon Einzahlungen</span><b>${eur(paid,0)}</b><span class="${ud(fv-paid)}">Ertrag ${dE(fv-paid,0)}</span></div>`;
-}
+  const r=Math.pow(1+R/100,1/12)-1,n=Y*12,fv=T.v*Math.pow(1+r,n)+(r?M*(Math.pow(1+r,n)-1)/r:M*n),paid=T.v+M*n;
+  $('#pjOut').innerHTML=`<div><span>Depot nach ${Y} Jahren</span><b>${eur(fv,0)}</b></div><div><span>davon Einzahlungen</span><b>${eur(paid,0)}</b><span class="${ud(fv-paid)}">Ertrag ${dE(fv-paid,0)}</span></div>`}
+function renderTdStatus(){const e=$('#tdStatus');if(e)e.textContent=tdState.msg||(CFG.td?(HIST['1h']?'✓ Kurshistorie geladen.':'Schlüssel gespeichert.'):'Noch kein Schlüssel – Kurven basieren auf den offiziellen Kursen.')}
 function renderSettings(){
-  $('#apiKey').value=CFG.key;$('#ivl').value=String(CFG.ivl);
+  if(document.activeElement!==$('#apiKey'))$('#apiKey').value=CFG.key;if(document.activeElement!==$('#tdKey'))$('#tdKey').value=CFG.td;$('#ivl').value=String(CFG.ivl);
   $('#manualList').innerHTML=FUNDS.map(f=>{const b=base(f);return `<label class="f" for="man-${f.id}">${esc(f.short)} <span class="mute">(aktuell ${eur(b.p,f.id==='etf'?3:2)}, ${dDE(b.d)}${b.man?', nachgetragen':''})</span></label><div style="display:flex;gap:8px"><input type="number" inputmode="decimal" step="0.001" id="man-${f.id}" placeholder="${nf(2).format(b.p)}"><button class="btn" data-man="${f.id}">Übernehmen</button></div>`}).join('');
-  if(!$('#keyStatus').textContent)$('#keyStatus').textContent=CFG.key?'Schlüssel gespeichert.':'Noch kein Schlüssel hinterlegt – die App zeigt den letzten Bank-Stand.';
+  if(!$('#keyStatus').textContent)$('#keyStatus').textContent=CFG.key?'Schlüssel gespeichert.':'Noch kein Schlüssel hinterlegt.';
+  renderTdStatus();
 }
 /* Fondsblatt */
-let openF=null;
+let fAll=false;
 function renderSheet(){
-  const f=openF;if(!f)return;const p=posVal(f),inv=f.shares*f.avg,g=p.v-inv,gross=fundGross(f),cost=fundCost(f);
+  const f=openF;if(!f)return;const p=posVal(f),inv=f.shares*f.avg,g=p.v-inv,gross=fundGross(f),cost=fundCost(f),dec=f.id==='etf'?3:2;
   $('#fKind').textContent=f.kind;$('#fName').textContent=f.name;$('#fIsin').textContent='ISIN '+f.isin+' · WKN '+f.wkn+' · '+f.venue;
-  $('#fPrice').textContent=eur(p.p,f.id==='etf'?3:2);
-  $('#fChips').innerHTML=`<div class="chip">Kursstand<b>${p.est?'Live-Schätzung '+pct(p.r*100):(base(f).man?'nachgetragen ':'')+dDE(base(f).d)}</b></div><div class="chip">Einstandskurs<b>${eur(f.avg)}</b></div><div class="chip">Abstand<b class="${g>=0?'pos':'neg'}">${pct((p.p/f.avg-1)*100)}</b></div>`;
-  const pts=navPts(f).filter(x=>x.t>=ts('2026-08-01'));
-  if(p.est)pts.push({t:Date.now(),d:'',v:p.p});
-  const buys=ORD.filter(o=>o.f===f.id&&isCost(o)).map(o=>({t:ts(o.d),v:interp(pts,ts(o.d))}));
-  chart($('#fundFig'),pts,{col:f.col,marks:buys,dec:f.id==='etf'?1:0,fmtV:v=>eur(v,f.id==='etf'?3:2),label:'Kursverlauf '+f.short});
-  $('#fDelta').innerHTML=`<b class="${ud(p.p-pts[0].v)}">${pct((p.p/pts[0].v-1)*100)}</b> <span class="mute">seit ${dDE(pts[0].d||f.pdate).slice(0,6)}</span>`;
+  $('#fPrice').textContent=eur(p.p,dec);
+  $('#fChips').innerHTML=`<div class="chip">Kursstand<b>${p.est?'Live '+pct(p.r*100):(base(f).man?'nachgetragen ':'')+dDE(base(f).d)}</b></div><div class="chip">Einstandskurs<b>${eur(f.avg)}</b></div><div class="chip">Abstand<b class="${g>=0?'pos':'neg'}">${pct((p.p/f.avg-1)*100)}</b></div>`;
+  renderSheetChart();
   $('#fKv').innerHTML=`<div><span>Wert</span><b>${eur(p.v)}</b></div><div><span>Stück</span><b>${nf(3).format(f.shares)}</b></div><div><span>Gewinn/Verlust (Bank)</span><b class="${ud(g)}">${dE(g)}</b></div>
     <div><span>Angelegt (Bank)</span><b>${eur(inv)}</b></div><div><span>Abgebucht inkl. Kosten</span><b>${eur(gross)}</b></div><div><span>Echt G/V</span><b class="${ud(p.v-gross)}">${pct((p.v/gross-1)*100)}</b></div>
-    <div><span>${f.costLbl}</span><b>${nf(2).format(f.aa*100)} % · ${eur(cost)}</b></div><div><span>Laufende Kosten</span><b>${nf(2).format(f.ter)} % p.a.</b></div><div><span>${esc(f.plan.lbl)}</span><b>${eur(f.plan.amt)} / Monat</b></div>`;
+    <div><span>${f.costLbl}</span><b>${nf(2).format(f.aa*100)} % · ${eur(cost)}</b></div><div><span>Laufende Kosten</span><b>${nf(2).format(f.ter)} % p.a.</b></div><div><span>${esc(f.plan.lbl)}</span><b>${eur(f.plan.amt)} / Monat</b></div>
+    <div><span>Break-even Kurs (Bank)</span><b>${eur(f.avg)}</b></div><div><span>Break-even inkl. Kosten</span><b>${eur(gross/f.shares)}</b></div><div><span>Nötiges Plus</span><b>${pct((gross/f.shares/p.p-1)*100,1)}</b></div>`;
   $('#fLots').innerHTML=f.lots?'<h3 style="margin-top:16px">Unterdepots</h3><ul class="list">'+f.lots.map(([n,l,s])=>`<li class="ord"><div><b>${n}</b> <span class="mute">${esc(l)}</span></div><div class="r num">${nf(3).format(s)} Stück · ${eur(s*p.p)}</div></li>`).join('')+'</ul>':'';
-  const b=base(f);
-  $('#fLive').innerHTML=live.state!=='live'?`<p style="margin:0">Gerade ohne Live-Daten: angezeigt wird der ${b.man?'nachgetragene':'offizielle'} Kurs vom ${dDE(b.d)}. Mit Live-Kursen schätzt die App den heutigen Wert aus den Top-10-Aktien (${nf(1).format(f.hold.reduce((a,h)=>a+h[1],0))} % des Fonds) und für den Rest aus dem ${esc(f.proxyName)}.</p>`:
-    p.est?`<p style="margin:0">Basis: ${eur(b.p,f.id==='etf'?3:2)} vom ${dDE(b.d)}. Bewegung heute: <b class="${ud(p.r)}">${pct(p.r*100)}</b> in Euro. Direkt abgedeckt: ${f.id==='etf'?'100 % über den '+esc(f.proxyName):nf(1).format(p.cov)+' % über Einzelaktien'}${p.proxyUsed&&f.id!=='etf'?', Rest über '+esc(f.proxyName):''}. Abweichungen zum offiziellen Preis von einigen Zehntelprozent sind normal.</p>`:
-    `<p style="margin:0">Live-Daten laufen, aber seit dem Kurs vom ${dDE(b.d)} hat die US-Börse noch nicht neu gehandelt – der offizielle Kurs ist aktuell.</p>`;
-  const sum=f.hold.reduce((a,h)=>a+h[1],0);
-  $('#fHoldSrc').textContent=f.hsrc;
-  $('#fHold').innerHTML='<thead><tr><th>Aktie</th><th class="n">Kurs €</th><th class="n">Tag</th><th class="n">Anteil</th><th class="n hide-s">Dein €</th></tr></thead><tbody>'+f.hold.map(([s,w])=>{const st=STK[s],k=stockEUR(s);
-    return `<tr><td class="stk"><b>${esc(st.n)}</b><span>${s==='SMSN'?'005930.KS':s} · ${esc(st.c)}</span><div class="wbar" style="--c:${f.col}"><i style="width:${(w/f.hold[0][1]*100).toFixed(1)}%"></i></div></td><td class="n">${nf(2).format(k.eur)}</td><td class="n ${ud(k.ch??0)}">${k.ch==null?'<span class="mute">'+(st.pd||'–')+'</span>':pct(k.ch)}</td><td class="n"><b>${nf(2).format(w)} %</b></td><td class="n hide-s">${eur(w/100*p.v)}</td></tr>`}).join('')+'</tbody>';
-  $('#fHoldFoot').textContent=`Die Top 10 machen ${nf(2).format(sum)} % des Fonds aus; die übrigen ${nf(2).format(100-sum)} % verteilen sich auf ${f.positions-10} weitere Werte. „Dein €“ = dein indirekter Anteil an der Aktie.`;
-  $('#fOrders').innerHTML=ORD.filter(o=>o.f===f.id).sort((a,b)=>b.d.localeCompare(a.d)).map(o=>`<li class="ord"><div><b>${dDE(o.d)}</b><span class="tag ${o.type==='VL-Zahlung'?'vl':o.type==='unbekannt'?'unk':''}">${o.type==='unbekannt'?'Unbekannt':o.type}</span><div class="small mute">${nf(3).format(o.qty)} Stück à ${eur(o.p)}</div></div><div class="r"><b class="num">${eur(o.amt)}</b><div class="small ${ud(p.p-o.p/(1+(isCost(o)?f.aa:0)))}">${pct((p.p/(o.p/(1+(isCost(o)?f.aa:0)))-1)*100)}</div></div></li>`).join('');
+  const b=base(f),cw=f.core.reduce((a,h)=>a+h[1],0);
+  $('#fLive').innerHTML=!isLive()?`<p style="margin:0">Ohne Live-Daten wird der ${b.man?'nachgetragene':'offizielle'} Kurs vom ${dDE(b.d)} angezeigt. Mit Live-Kursen schätzt die App den heutigen Wert aus den Top-10-Aktien (${nf(1).format(cw)} % des Fonds) und für den Rest aus dem ${esc(f.proxyName)}, umgerechnet in Euro.</p>`:
+    p.est?`<p style="margin:0">Basis ${eur(b.p,dec)} vom ${dDE(b.d)}, Bewegung seitdem <b class="${ud(p.r)}">${pct(p.r*100)}</b> in Euro. Direkt abgedeckt: ${f.id==='etf'?'100 % über den '+esc(f.proxyName):nf(1).format(p.cov)+' % über Einzelaktien'+(p.proxyUsed?', Rest über '+esc(f.proxyName):'')}. Die Kurve darüber ist an jedem bekannten offiziellen Kurs ausgerichtet; Abweichungen von einigen Zehntelprozent sind normal.</p>`:
+    `<p style="margin:0">Live-Daten laufen; seit dem Kurs vom ${dDE(b.d)} hat die US-Börse noch nicht neu gehandelt – der offizielle Kurs ist aktuell.</p>`;
+  $('#fSect').innerHTML='<h3>Branchen</h3>'+bars(f.sect,SECN,()=>f.col);$('#fReg').innerHTML='<h3>Regionen</h3>'+bars(f.reg,REGN,()=>f.col);
+  const qq=($('#fQ').value||'').trim().toLowerCase(),rows=f.all.filter(h=>!qq||REG[h.k].n.toLowerCase().includes(qq));
+  const shown=qq||fAll?rows:rows.slice(0,25),maxw=f.all[0].w;
+  $('#fHoldSrc').textContent=f.src;
+  $('#fHold').innerHTML='<thead><tr><th>Aktie</th><th class="n">Kurs €</th><th class="n">Tag</th><th class="n">Anteil</th><th class="n hide-s">Dein €</th></tr></thead><tbody>'+shown.map(h=>{const r=REG[h.k],q=stockQ(h.k);
+    return `<tr><td class="stk"><b>${esc(r.n)}</b><span>${esc(SECN[r.s])} · ${esc(CTRY[r.c]||r.c)}${h.old?' · Stand '+esc(h.old):''}</span><div class="wbar" style="--c:${f.col}"><i style="width:${(h.w/maxw*100).toFixed(1)}%"></i></div></td><td class="n">${q.eur?nf(2).format(q.eur):'<span class="mute">–</span>'}</td><td class="n ${ud(q.ch??0)}">${q.ch==null?'<span class="mute">'+(q.d||'–')+'</span>':pct(q.ch)}</td><td class="n"><b>${nf(2).format(h.w)} %</b>${h.est||h.old?'<div class="note">ca.</div>':''}</td><td class="n hide-s">${eur(h.w/100*p.v)}</td></tr>`}).join('')+'</tbody>';
+  $('#fMore').textContent=qq?rows.length+' Treffer':fAll?'Weniger anzeigen':'Alle '+f.all.length+' bekannten Positionen anzeigen';$('#fMore').style.display=f.all.length>25||qq?'':'none';
+  const sum=f.all.reduce((a,h)=>a+h.w,0);
+  $('#fHoldFoot').textContent=`Angezeigt: ${f.all.length} von ${nf(0).format(f.positions)} Positionen mit zusammen ${nf(1).format(Math.min(sum,100))} % des Fonds. Kurse ohne Live-Daten: Schluss 25.11.; Werte ohne US-Notierung haben keinen Live-Kurs.`;
+  queueVisible(shown.map(h=>h.k));
+  $('#fOrders').innerHTML=ORD.filter(o=>o.f===f.id).sort((a,b)=>b.d.localeCompare(a.d)).map(o=>{const bn=o.p/(1+(isCost(o)?f.aa:0));return `<li class="ord"><div><b>${dDE(o.d)}</b><span class="tag ${o.type==='VL-Zahlung'?'vl':o.type==='unbekannt'?'unk':''}">${o.type==='unbekannt'?'Unbekannt':o.type}</span><div class="small mute">${nf(3).format(o.qty)} Stück à ${eur(o.p)}</div></div><div class="r"><b class="num">${eur(o.amt)}</b><div class="small ${ud(p.p-bn)}">${pct((p.p/bn-1)*100)}</div></div></li>`}).join('');
 }
-function renderAll(){renderHeader();renderMain();renderDepot();renderOrders();renderMarkt();renderAnalyse();renderSettings();renderSheet()}
+function renderSheetChart(){const f=openF;if(!f)return;const dec=f.id==='etf'?3:2;
+  $('#fRangeSeg').innerHTML=segHtml(FRANGES,fRange,'fr');document.querySelectorAll('#fTypeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.t===fType));
+  const S=series(fRange,f);const c=S.mode==='idx'?S.pts:null;
+  const marks=ORD.filter(o=>o.f===f.id&&isCost(o)).map(o=>{const t=Date.parse(o.d+'T20:00:00Z');if(!S.pts.length||t<S.pts[0].t||t>S.pts[S.pts.length-1].t)return null;const v=c?(()=>{let best=c[0];c.forEach(p=>{if(Math.abs(p.t-t)<Math.abs(best.t-t))best=p});return best})():{t:ts(o.d),v:interp(navPts(f),ts(o.d))};return c?v:{t:v.t,v:v.v}}).filter(Boolean);
+  chart($('#fundFig'),S,{type:fType,marks,markCol:f.col,col:f.col,dec:f.id==='etf'?1:0,fmtV:v=>eur(v,dec),label:'Kursverlauf '+f.short});
+  $('#fStats').innerHTML=statsHtml(S,dec,null);$('#fSrc').textContent=S.src||'';}
+function renderAll(){renderHeader();if(curView==='depot'){renderMain();renderDepot()}else renderDepot();renderOrders();if(curView==='markt')renderMarkt();if(curView==='analyse')renderAnalyse();renderSettings();if(openF)renderSheet()}
 
-/* ================= Navigation ================= */
-const VIEWS=['depot','orders','markt','analyse','einrichten'];
-const TITLES={depot:'Mein Depot',orders:'Orders',markt:'Markt',analyse:'Analyse',einrichten:'Einrichten'};
+/* ======================= 9. NAVIGATION ======================= */
+const VIEWS=['depot','orders','markt','analyse','einrichten'],TITLES={depot:'Mein Depot',orders:'Orders',markt:'Markt',analyse:'Analyse',einrichten:'Einrichten'};
 function route(){
   const h=(location.hash||'').slice(1);
-  if(h.startsWith('fonds-')&&F(h.slice(6))){openF=F(h.slice(6));renderSheet();$('#sheet').classList.add('on');$('#sheet').scrollTop=0;document.body.style.overflow='hidden';return}
+  if(h.startsWith('fonds-')&&F(h.slice(6))){openF=F(h.slice(6));fAll=false;$('#fQ').value='';renderSheet();$('#sheet').classList.add('on');$('#sheet').scrollTop=0;document.body.style.overflow='hidden';return}
   openF=null;$('#sheet').classList.remove('on');document.body.style.overflow='';
-  const v=VIEWS.includes(h)?h:'depot';
-  VIEWS.forEach(x=>$('#v-'+x).classList.toggle('on',x===v));
-  document.querySelectorAll('nav.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
-  $('#pageTitle').textContent=TITLES[v];$('#hero').style.display=v==='depot'||v==='analyse'?'':'none';
-  if(v==='depot')renderMain();
+  curView=VIEWS.includes(h)?h:'depot';
+  VIEWS.forEach(x=>$('#v-'+x).classList.toggle('on',x===curView));
+  document.querySelectorAll('nav.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===curView));
+  $('#pageTitle').textContent=TITLES[curView];$('#hero').style.display=curView==='depot'||curView==='analyse'?'':'none';
+  if(curView==='depot'){renderMain();renderDepot()}if(curView==='markt')renderMarkt();if(curView==='analyse')renderAnalyse();
 }
 window.addEventListener('hashchange',route);
 
-/* ================= Live-Daten ================= */
-function symbols(){return [...Object.keys(STK).filter(s=>!STK[s].nolive&&s!=='GOOG'),...PROXIES]}
+/* ======================= 10. LIVE-DATEN ======================= */
+const CORE=[...new Set(FUNDS.flatMap(f=>f.core.map(([k])=>REG[k].q)).filter(Boolean).concat(PROXIES))];
 async function quote(sym,key){
   const r=await fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(key));
-  if(r.status===401||r.status===403)throw new Error('Schlüssel ungültig');
-  if(r.status===429)throw new Error('Abruflimit erreicht – längeres Intervall wählen');
+  if(r.status===401||r.status===403)throw new Error('Schlüssel ungültig oder Wert nicht im Gratis-Tarif');
+  if(r.status===429)throw new Error('Limit');
   if(!r.ok)throw new Error('Server antwortet mit '+r.status);
   const j=await r.json();if(typeof j.c!=='number'||!j.c)throw new Error('keine Daten für '+sym);
-  return {c:j.c,dp:typeof j.dp==='number'?j.dp:(j.pc?(j.c/j.pc-1)*100:0),pc:j.pc,t:(j.t||Date.now()/1000)*1000};
+  return {c:j.c,dp:typeof j.dp==='number'?j.dp:(j.pc?(j.c/j.pc-1)*100:0),pc:j.pc,t:(j.t||Date.now()/1000)*1000,at:Date.now()};
 }
 async function refresh(manual){
-  if(!CFG.key){live.state='off';renderAll();if(manual)flashBtn();return}
+  if(!CFG.key){live.state='off';renderAll();if(manual)location.hash='#einrichten';return}
   if(live.busy)return;live.busy=true;$('#refreshBtn').classList.add('spin');
-  if(live.state!=='live')live.state='loading';renderHeader();
-  const syms=symbols();const res=await Promise.allSettled(syms.map(s=>quote(s,CFG.key)));
-  let ok=0,firstErr='';
-  res.forEach((r,i)=>{if(r.status==='fulfilled'){Q[syms[i]]=r.value;ok++}else if(!firstErr)firstErr=r.reason&&r.reason.message||'Fehler'});
+  if(!isLive())live.state='loading';renderHeader();
+  const res=await Promise.allSettled(CORE.map(s=>quote(s,CFG.key)));let ok=0,err='';
+  res.forEach((r,i)=>{if(r.status==='fulfilled'){const o=Q[CORE[i]];const n=r.value;if(o&&o.lt&&o.lt>n.t){o.pc=n.pc;o.at=n.at}else{Q[CORE[i]]={...n,lt:o&&o.lt}}ok++}else if(!err)err=r.reason&&r.reason.message||'Fehler'});
   live.busy=false;$('#refreshBtn').classList.remove('spin');
-  if(!ok){live.state='error';live.err=/fetch|Load failed|NetworkError/i.test(firstErr)?'Kursabruf vom Browser blockiert – die App muss von einer eigenen Adresse laufen (siehe Anleitung).':firstErr;$('#keyStatus').textContent='⚠ '+live.err;renderAll();return}
-  // Synonyme
-  if(Q.GOOGL)Q.GOOG=Q.GOOGL;
-  live.state='live';live.at=Date.now();live.err='';LS.set('quotes',Q);LS.set('quotesAt',live.at);
-  const v=totals().v,last=SNAP[SNAP.length-1];
-  if(!last||Date.now()-last.t>10000){SNAP.push({t:Date.now(),v});const cut=Date.now()-8*DAY;SNAP=SNAP.filter(s=>s.t>cut).slice(-6000);LS.set('snaps',SNAP)}
-  $('#keyStatus').textContent=`✓ Live verbunden – ${ok} von ${syms.length} Kursen geladen (${hm(live.at)} Uhr).`;
-  renderAll();
+  if(!ok){live.state='error';live.err=blocked(err)?'Kursabruf blockiert – die App muss von deiner eigenen Adresse laufen.':err;$('#keyStatus').textContent='⚠ '+live.err;renderAll();return}
+  live.state='live';live.at=Date.now();LS.set('quotes',Q);LS.set('quotesAt',live.at);
+  $('#keyStatus').textContent=`✓ Live verbunden – ${ok} von ${CORE.length} Kursen (${hm(live.at)} Uhr)${live.wsOk?', Tick-Verbindung aktiv':''}.`;
+  snapshot(true);renderAll();wsStart();
 }
-function flashBtn(){location.hash='#einrichten'}
-function schedule(){clearInterval(timer);if(CFG.key)timer=setInterval(()=>{if(!document.hidden)refresh()},CFG.ivl*1000)}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&CFG.key)refresh()});
+function snapshot(force){const T=totals();const last=SNAP[SNAP.length-1],now=Date.now();
+  if(!force&&last&&now-last[0]<2000)return;if(last&&Math.abs(last[1]-T.v)<0.001&&now-last[0]<60000&&!force)return;
+  SNAP.push([now,+T.v.toFixed(3),...FUNDS.map(f=>+est(f).p.toFixed(4))]);}
+function persistSnaps(){const now=Date.now(),o=[];let lastM=-1,last15=-1;
+  for(const s of SNAP){const age=now-s[0];if(age>8*DAY)continue;
+    if(age<3*36e5){o.push(s);continue}
+    if(age<3*DAY){const m=Math.floor(s[0]/6e4);if(m!==lastM){o.push(s);lastM=m}continue}
+    const q=Math.floor(s[0]/9e5);if(q!==last15){o.push(s);last15=q}}
+  SNAP=o;LS.set('snaps2',SNAP)}
+function wsStart(){
+  if(!CFG.key||live.ws||typeof WebSocket==='undefined')return;
+  try{const ws=new WebSocket('wss://ws.finnhub.io?token='+encodeURIComponent(CFG.key));live.ws=ws;
+    ws.onopen=()=>{live.wsOk=true;CORE.forEach(s=>ws.send(JSON.stringify({type:'subscribe',symbol:s})));renderHeader()};
+    ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(x){return}if(m.type!=='trade'||!m.data)return;
+      m.data.forEach(tr=>{const q=Q[tr.s];if(!q||!q.pc||!(tr.p>0))return;if(q.lt&&tr.t<q.lt)return;q.c=tr.p;q.dp=(tr.p/q.pc-1)*100;q.t=tr.t;q.lt=tr.t;dirty=true;live.lastTick=Date.now()})};
+    ws.onclose=()=>{live.ws=null;live.wsOk=false;if(CFG.key)setTimeout(wsStart,15000)};
+    ws.onerror=()=>{};
+  }catch(e){live.ws=null}
+}
+// Nachlade-Warteschlange für weitere Aktien & Analysten-Empfehlungen (Finnhub-Limit 60/min)
+const LQ=[],LQS=new Set();let lqBusy=false,lazyDirty=false;
+function queueVisible(keys){if(!CFG.key||!isLive())return;keys.forEach(k=>{const s=REG[k]&&REG[k].q;if(!s||CORE.includes(s))return;const q=Q[s];if(q&&Date.now()-(q.at||0)<10*6e4)return;const id='q:'+s;if(LQS.has(id))return;LQS.add(id);LQ.push(id)});pump()}
+function queueRecs(syms){if(!CFG.key||!isLive())return;syms.forEach(s=>{const r=REC[s];if(r&&Date.now()-r.at<12*36e5)return;const id='r:'+s;if(LQS.has(id))return;LQS.add(id);LQ.push(id)});pump()}
+async function pump(){if(lqBusy)return;lqBusy=true;
+  while(LQ.length&&CFG.key){const id=LQ.shift(),[kind,s]=id.split(':');
+    try{if(kind==='q'){Q[s]=await quote(s,CFG.key)}else{const r=await fetch('https://finnhub.io/api/v1/stock/recommendation?symbol='+encodeURIComponent(s)+'&token='+encodeURIComponent(CFG.key));if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j)&&j[0])REC[s]={sb:j[0].strongBuy||0,b:j[0].buy||0,h:j[0].hold||0,s:j[0].sell||0,ss:j[0].strongSell||0,at:Date.now(),p:j[0].period}}lazyDirty=true}
+    catch(e){if(/Limit/.test(e.message)){LQ.unshift(id);await sleep(20000);continue}}
+    LQS.delete(id);await sleep(2200)}
+  lqBusy=false;LS.set('quotes',Q);LS.set('recs',REC)}
+let tickN=0;
+setInterval(()=>{tickN++;
+  if(dirty&&isLive()){dirty=false;snapshot(false);renderHeader();
+    if(!openF&&curView==='depot'){if(['1m','5m','1h','1d'].includes(range))renderMain();if(tickN%3===0)renderDepot()}
+    if(openF&&tickN%2===0){renderSheetChart();$('#fPrice').textContent=eur(posVal(openF).p,openF.id==='etf'?3:2)}}
+  if(tickN%10===0){if(lazyDirty||isLive()){lazyDirty=false;if(curView==='markt'&&!openF&&!document.activeElement?.matches('input'))renderMarkt();if(openF&&!document.activeElement?.matches('input'))renderSheet()}}
+  if(tickN%30===0)persistSnaps();
+  if(tickN%300===0&&CFG.td)loadHistory(false);
+  if(tickN%60===0)renderHeader();
+},1000);
+let pollT=null;
+function schedule(){clearInterval(pollT);if(CFG.key)pollT=setInterval(()=>{if(!document.hidden)refresh()},CFG.ivl*1000)}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)persistSnaps();else if(CFG.key){refresh();if(!live.ws)wsStart()}});
+window.addEventListener('pagehide',persistSnaps);
 
-/* ================= Ereignisse ================= */
-$('#rangeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;range=b.dataset.r;renderMain()});
+/* ======================= 11. EREIGNISSE ======================= */
+$('#rangeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;range=b.dataset.r;LS.set('range',range);renderMain()});
+$('#modeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;adj=b.dataset.m==='1';LS.set('adj',adj);renderMain()});
+$('#typeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ctype=b.dataset.t;LS.set('ctype',ctype);renderMain()});
+$('#fRangeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fRange=b.dataset.fr;renderSheetChart()});
+$('#fTypeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fType=b.dataset.t;renderSheetChart()});
 $('#posList').addEventListener('click',e=>{const b=e.target.closest('[data-fund]');if(b)location.hash='#fonds-'+b.dataset.fund});
 $('#sheetBack').addEventListener('click',()=>{location.hash='#depot'});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openF)location.hash='#depot'});
 $('#fFund').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fFund=b.dataset.ff;renderOrders()});
-$('#fType').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fType=b.dataset.ft;renderOrders()});
-$('#refreshBtn').addEventListener('click',()=>refresh(true));
+$('#fType').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fTyp=b.dataset.ft;renderOrders()});
+$('#anSort').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;anSort=b.dataset.as;renderMarkt()});
+$('#lookQ').addEventListener('input',renderMarkt);$('#lookMore').addEventListener('click',()=>{if(($('#lookQ').value||'').trim())return;lookAll=!lookAll;renderMarkt()});
+$('#fQ').addEventListener('input',renderSheet);$('#fMore').addEventListener('click',()=>{if(($('#fQ').value||'').trim())return;fAll=!fAll;renderSheet()});
+$('#refreshBtn').addEventListener('click',()=>{refresh(true);if(CFG.td)loadHistory(false)});
 ['pjM','pjR','pjY'].forEach(id=>$('#'+id).addEventListener('input',projection));
-$('#saveKey').addEventListener('click',()=>{CFG.key=$('#apiKey').value.trim();CFG.ivl=+$('#ivl').value;LS.set('key',CFG.key);LS.set('ivl',CFG.ivl);$('#keyStatus').textContent=CFG.key?'Gespeichert – verbinde…':'Kein Schlüssel eingetragen.';schedule();refresh()});
+$('#saveKey').addEventListener('click',()=>{CFG.key=$('#apiKey').value.trim();CFG.ivl=+$('#ivl').value;LS.set('key',CFG.key);LS.set('ivl',CFG.ivl);$('#keyStatus').textContent=CFG.key?'Gespeichert – verbinde…':'Kein Schlüssel eingetragen.';if(live.ws){live.ws.close();live.ws=null}schedule();refresh()});
 $('#testKey').addEventListener('click',async()=>{const k=$('#apiKey').value.trim();if(!k){$('#keyStatus').textContent='Bitte zuerst einen Schlüssel eintragen.';return}
-  $('#keyStatus').textContent='Teste…';try{const q=await quote('AAPL',k);$('#keyStatus').textContent=`✓ Verbindung klappt – Apple ${usd(q.c)} (${pct(q.dp)}).`}catch(err){$('#keyStatus').textContent='⚠ '+(/fetch|Load failed|NetworkError/i.test(err.message)?'Kursabruf vom Browser blockiert – die App muss von einer eigenen Adresse laufen (siehe Anleitung).':err.message)}});
-$('#clearKey').addEventListener('click',()=>{CFG.key='';LS.set('key','');live.state='off';clearInterval(timer);$('#keyStatus').textContent='Schlüssel entfernt.';renderAll()});
+  $('#keyStatus').textContent='Teste…';try{const q=await quote('AAPL',k);$('#keyStatus').textContent=`✓ Verbindung klappt – Apple ${usd(q.c)} (${pct(q.dp)}).`}catch(err){$('#keyStatus').textContent='⚠ '+(blocked(err.message)?'Kursabruf blockiert – die App muss von deiner eigenen Adresse laufen.':err.message)}});
+$('#clearKey').addEventListener('click',()=>{CFG.key='';LS.set('key','');live.state='off';clearInterval(pollT);if(live.ws)live.ws.close();$('#keyStatus').textContent='Schlüssel entfernt.';renderAll()});
 $('#ivl').addEventListener('change',()=>{CFG.ivl=+$('#ivl').value;LS.set('ivl',CFG.ivl);schedule()});
+$('#saveTd').addEventListener('click',()=>{CFG.td=$('#tdKey').value.trim();LS.set('td',CFG.td);tdState.msg=CFG.td?'Gespeichert – lade Historie…':'';renderTdStatus();if(CFG.td)loadHistory(true)});
+$('#reloadTd').addEventListener('click',()=>{if(CFG.td)loadHistory(true)});
+$('#clearTd').addEventListener('click',()=>{CFG.td='';LS.set('td','');HIST={};HAT={};CURVE={};LS.set('hist',{});LS.set('histAt',{});tdState.msg='Schlüssel und Historie entfernt.';renderAll()});
 $('#manualList').addEventListener('click',e=>{const b=e.target.closest('[data-man]');if(!b)return;const id=b.dataset.man,inp=$('#man-'+id);const v=parseFloat(String(inp.value).replace(/\./g,'').replace(',','.'));
   const f=F(id);if(!(v>0)||v>f.price*3||v<f.price/3){inp.focus();$('#dataStatus').textContent='Bitte einen plausiblen Kurs eintragen.';return}
-  MAN[id]={p:v,d:ymd(Date.now()),t:Date.now()};LS.set('manual',MAN);$('#dataStatus').textContent=f.short+': Kurs '+eur(v,id==='etf'?3:2)+' übernommen.';renderAll()});
-$('#clearSnaps').addEventListener('click',()=>{SNAP=[];LS.set('snaps',SNAP);$('#dataStatus').textContent='Live-Verlauf gelöscht.';renderMain()});
-$('#clearManual').addEventListener('click',()=>{MAN={};LS.set('manual',MAN);$('#dataStatus').textContent='Nachgetragene Kurse gelöscht.';renderAll()});
+  MAN[id]={p:v,d:ymd(Date.now()),t:Date.now()};LS.set('manual',MAN);mver++;CURVE={};$('#dataStatus').textContent=f.short+': Kurs '+eur(v,id==='etf'?3:2)+' übernommen.';renderAll()});
+$('#clearSnaps').addEventListener('click',()=>{SNAP=[];LS.set('snaps2',SNAP);$('#dataStatus').textContent='Live-Verlauf gelöscht.';renderMain()});
+$('#clearManual').addEventListener('click',()=>{MAN={};LS.set('manual',MAN);mver++;CURVE={};$('#dataStatus').textContent='Nachgetragene Kurse gelöscht.';renderAll()});
 
-/* App-Icon für den Home-Bildschirm */
 try{const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d');x.fillStyle='#1240e0';x.fillRect(0,0,180,180);
   x.strokeStyle='#fff';x.lineWidth=12;x.lineCap='round';x.lineJoin='round';x.beginPath();x.moveTo(34,124);x.lineTo(70,88);x.lineTo(98,108);x.lineTo(146,56);x.stroke();
   x.fillStyle='#3ddc97';x.beginPath();x.arc(146,56,13,0,7);x.fill();$('#touchIcon').href=c.toDataURL('image/png')}catch(e){}
 
-/* Start */
-if(live.at&&Date.now()-live.at>36e5)Q={};
-renderAll();route();
+if(live.at&&Date.now()-live.at>36e5)Object.keys(Q).forEach(k=>{if(Date.now()-(Q[k].at||0)>36*36e5)delete Q[k]});
+LS.set('snaps',null);
+route();renderAll();
 if(CFG.key){schedule();refresh()}
+if(CFG.td)loadHistory(false);
 }
 </script>
 </body>
