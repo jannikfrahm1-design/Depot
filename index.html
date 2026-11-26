@@ -229,6 +229,8 @@ nav.tabs a.on{color:var(--brand)}
     <div class="stats" id="mainStats"></div>
     <div class="ctl"><div class="seg" id="typeSeg"><button data-t="line" class="on">Linie</button><button data-t="candle">Kerzen</button></div><div class="seg" id="modeSeg"><button data-m="0">Depotwert</button><button data-m="1">Gewinn/Verlust</button></div></div><div class="small mute" id="mainHint" style="margin-top:8px"></div>
   </div>
+  <div class="card"><h2>Kennzahlen</h2><div class="kv k3" id="kpi"></div><p class="small mute" id="kpiNote" style="margin:10px 0 0"></p></div>
+  <div class="card"><h2>Wer bewegt dein Depot?</h2><div id="attr"></div></div>
   <div class="card">
     <div class="row"><h2 style="margin:0">Aufteilung</h2><span class="small mute">3 Positionen</span></div>
     <div class="alloc" id="allocBar"></div>
@@ -244,6 +246,7 @@ nav.tabs a.on{color:var(--brand)}
 </section>
 
 <section class="view" id="v-news">
+  <div class="card"><h2>Termine</h2><ul class="list" id="termine"></ul><button class="btn link" id="termMore"></button></div>
   <div class="filters" id="newsF"></div>
   <p class="small mute" id="newsInfo" style="margin:4px 2px 12px"></p>
   <button class="newbtn" id="newsNew" hidden>Neue Meldungen anzeigen</button>
@@ -289,6 +292,7 @@ nav.tabs a.on{color:var(--brand)}
     <div class="duo" id="truth"></div>
     <p class="small mute" style="margin:10px 0 0" id="truthTxt"></p>
   </div>
+  <div class="card"><h2>Depot vs. Weltmarkt</h2><p class="small mute" style="margin:-4px 0 0">Zeitgewichtete Entwicklung seit 07.08., Start = 0 %.</p><div class="fig" id="benchFig"></div><div class="legend" id="benchLeg" style="margin-top:10px"></div><p class="small mute" id="benchTxt" style="margin:10px 0 0"></p></div>
   <div class="card">
     <h2>Risiko-Kennzahlen</h2>
     <div class="kv k3" id="riskKv"></div>
@@ -308,6 +312,15 @@ nav.tabs a.on{color:var(--brand)}
     <div class="kv" id="klKv"></div>
   </div>
   <div class="card">
+    <h2>Stresstest: Was wäre, wenn …?</h2>
+    <div class="filters" id="stPre"></div>
+    <label class="f" for="stM">Gesamtmarkt: <span id="stMv"></span></label><input type="range" id="stM" min="-40" max="30" step="1">
+    <label class="f" for="stT">Technologie zusätzlich: <span id="stTv"></span></label><input type="range" id="stT" min="-40" max="30" step="1">
+    <label class="f" for="stF">Euro gegenüber Dollar: <span id="stFv"></span></label><input type="range" id="stF" min="-15" max="15" step="1">
+    <div class="duo" id="stOut" style="margin-top:14px"></div><p class="small mute" id="stTxt" style="margin:10px 0 0"></p>
+  </div>
+  <div class="card"><h2>Steuern</h2><div class="kv k3" id="taxKv"></div><div class="small" id="taxTxt" style="margin-top:12px;line-height:1.5"></div></div>
+  <div class="card">
     <h2>Sparplan-Rechner</h2>
     <p class="small mute" style="margin-top:-4px">Rechenbeispiel mit konstanter Rendite – keine Prognose.</p>
     <label class="f" for="pjM">Monatliche Anlage: <span id="pjMv"></span></label>
@@ -323,7 +336,7 @@ nav.tabs a.on{color:var(--brand)}
 <section class="view" id="v-einrichten">
   <div class="card">
     <h2>1 · Live-Kurse (Finnhub)</h2>
-    <p style="margin-top:0">Liefert Echtzeit-Kurse der US-Börse und die tagesaktuellen Meldungen im News-Bereich – über eine Dauerverbindung kommt jeder Handel sekundengenau an. Fonds haben nur einen offiziellen Preis pro Tag; die App schätzt daraus laufend den aktuellen Wert (letzter offizieller Kurs × Bewegung der Top-10-Aktien bzw. eines passenden Index-ETFs, in Euro).</p>
+    <p style="margin-top:0">Liefert Echtzeit-Kurse der US-Börse und die tagesaktuellen Meldungen im News-Bereich (automatisch übersetzt) – über eine Dauerverbindung kommt jeder Handel sekundengenau an. Fonds haben nur einen offiziellen Preis pro Tag; die App schätzt daraus laufend den aktuellen Wert (letzter offizieller Kurs × Bewegung der Top-10-Aktien bzw. eines passenden Index-ETFs, in Euro).</p>
     <label class="f" for="apiKey">Finnhub API-Schlüssel</label>
     <input type="password" id="apiKey" autocomplete="off" autocapitalize="off" spellcheck="false">
     <label class="f" for="ivl">Kurse zusätzlich abrufen alle</label>
@@ -343,6 +356,14 @@ nav.tabs a.on{color:var(--brand)}
     <input type="password" id="tdKey" autocomplete="off" autocapitalize="off" spellcheck="false">
     <div class="btns"><button class="btn" id="saveTd">Speichern &amp; laden</button><button class="btn ghost" id="reloadTd">Neu laden</button><button class="btn ghost" id="clearTd">Entfernen</button></div>
     <div class="status" id="tdStatus"></div>
+  </div>
+  <div class="card">
+    <h2>3 · Übersetzung der News</h2>
+    <p style="margin-top:0">Meldungen werden automatisch über den kostenlosen Dienst MyMemory ins Deutsche übersetzt und auf dem iPhone zwischengespeichert. Ohne Angabe reicht das Tageslimit für rund 15 Meldungen; mit einer E-Mail-Adresse erhöht MyMemory das Limit auf das Zehnfache (die Adresse geht nur an MyMemory).</p>
+    <label class="f" for="trMail">E-Mail-Adresse (optional)</label>
+    <input type="text" inputmode="email" id="trMail" autocomplete="email" autocapitalize="off" spellcheck="false">
+    <div class="btns"><button class="btn" id="saveMail">Speichern</button></div>
+    <div class="status small mute" id="mailStatus"></div>
   </div>
   <div class="card">
     <h2>Offiziellen Kurs nachtragen</h2>
@@ -381,6 +402,7 @@ nav.tabs a.on{color:var(--brand)}
       <div class="ctl"><div class="seg" id="fTypeSeg"><button data-t="line" class="on">Linie</button><button data-t="candle">Kerzen</button></div><span class="small mute">Punkte = deine Käufe</span></div>
     </div>
     <div class="card"><h2>Deine Position</h2><div class="kv k3" id="fKv"></div><div id="fLots"></div></div>
+    <div class="card"><h2>Steckbrief</h2><div class="facts" id="fFacts"></div></div>
     <div class="card"><h2>So entsteht der Live-Wert</h2><div id="fLive" class="small"></div></div>
     <div class="card"><h2>Branchen &amp; Regionen</h2><div id="fSect"></div><div id="fReg" style="margin-top:10px"></div></div>
     <div class="card">
@@ -543,7 +565,7 @@ const blocked=m=>/fetch|Load failed|NetworkError|access control/i.test(m||'');
 function valAt(s,t){if(!s||!s.length||t<s[0][0])return null;let lo=0,hi=s.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(s[m][0]<=t)lo=m;else hi=m-1}return s[lo][1]}
 
 /* ======================= 3. ZUSTAND ======================= */
-const CFG={key:LS.get('key',''),ivl:LS.get('ivl',60),td:LS.get('td','')};
+const CFG={key:LS.get('key',''),ivl:LS.get('ivl',60),td:LS.get('td',''),mail:LS.get('mail','')};
 if(CFG.ivl<30)CFG.ivl=30;
 let MAN=LS.get('manual',{});
 let SNAP=LS.get('snaps2',[]);        // [t, depot, gc, fid, etf]
@@ -812,7 +834,7 @@ function spark(f){const pts=navPts(f).filter(p=>p.t>=ts('2026-08-01'));const c=f
   const d=src.map((p,i)=>(i?'L':'M')+(2+(c&&c.length>20?i/(src.length-1):(p.t-t0)/(t1-t0))*(W-4)).toFixed(1)+' '+(3+(mx-p.v)/((mx-mn)||1)*(H-6)).toFixed(1)).join('');
   return `<svg class="spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d}" fill="none" stroke="${f.col}" stroke-width="2" stroke-linejoin="round"/></svg>`}
 function renderDepot(){
-  const T=totals();
+  const T=totals();renderKPI();renderAttr();
   $('#allocBar').innerHTML=FUNDS.map(f=>`<i style="width:${(posVal(f).v/T.v*100).toFixed(2)}%;background:${f.col}"></i>`).join('');
   $('#allocLegend').innerHTML=FUNDS.map(f=>`<span style="--c:${f.col}">${esc(f.short)} ${nf(1).format(posVal(f).v/T.v*100)} %</span>`).join('');
   $('#posList').innerHTML=FUNDS.map(f=>{const p=posVal(f),inv=f.shares*f.avg,g=p.v-inv;
@@ -917,7 +939,7 @@ function renderAnalyse(){
   const L=lookThrough(),top10=L.slice(0,10).reduce((a,x)=>a+x.v,0),semi=['NVDA','TSM','AVGO','ASML','TXN','SMSN','MU','AMD','MCHP','ASMPT','AMAT','LRCX','INTC','IFX'].reduce((a,k)=>a+(L.find(x=>x.k===k)?.v||0),0);
   const hhi=L.reduce((a,x)=>a+(x.v/T.v)**2,0);
   $('#klKv').innerHTML=`<div><span>Top-10-Aktien (Durchschau)</span><b>${nf(0).format(top10/T.v*100)} %</b></div><div><span>Halbleiter &amp; Chips</span><b>${nf(0).format(semi/T.v*100)} %</b></div><div><span>Reiner Tech-Fonds</span><b>${nf(0).format(posVal(F('fid')).v/T.v*100)} %</b></div><div><span>Effektive Anzahl Aktien*</span><b>≈ ${nf(0).format(1/hhi)}</b></div><div><span>Ø laufende Kosten</span><b>${nf(2).format(tc/T.v*100)} % p.a.</b></div><div><span>Anteil USA</span><b>${nf(0).format((reg.US||0)/T.v*100)} %</b></div>`;
-  projection();
+  renderBench();renderStress();renderTax();projection();
 }
 function projection(){const M=+$('#pjM').value,R=+$('#pjR').value,Y=+$('#pjY').value,T=totals();
   $('#pjMv').textContent=eur(M,0);$('#pjRv').textContent=nf(1).format(R)+' %';$('#pjYv').textContent=Y+' Jahre';
@@ -925,7 +947,7 @@ function projection(){const M=+$('#pjM').value,R=+$('#pjR').value,Y=+$('#pjY').v
   $('#pjOut').innerHTML=`<div><span>Depot nach ${Y} Jahren</span><b>${eur(fv,0)}</b></div><div><span>davon Einzahlungen</span><b>${eur(paid,0)}</b><span class="${ud(fv-paid)}">Ertrag ${dE(fv-paid,0)}</span></div>`}
 function renderTdStatus(){const e=$('#tdStatus');if(e)e.textContent=tdState.msg||(CFG.td?(HIST['1h']?'✓ Kurshistorie geladen.':'Schlüssel gespeichert.'):'Noch kein Schlüssel – Kurven basieren auf den offiziellen Kursen.')}
 function renderSettings(){
-  if(document.activeElement!==$('#apiKey'))$('#apiKey').value=CFG.key;if(document.activeElement!==$('#tdKey'))$('#tdKey').value=CFG.td;$('#ivl').value=String(CFG.ivl);
+  if(document.activeElement!==$('#apiKey'))$('#apiKey').value=CFG.key;if(document.activeElement!==$('#tdKey'))$('#tdKey').value=CFG.td;if(document.activeElement!==$('#trMail'))$('#trMail').value=CFG.mail;$('#ivl').value=String(CFG.ivl);
   $('#manualList').innerHTML=FUNDS.map(f=>{const b=base(f);return `<label class="f" for="man-${f.id}">${esc(f.short)} <span class="mute">(aktuell ${eur(b.p,f.id==='etf'?3:2)}, ${dDE(b.d)}${b.man?', nachgetragen':''})</span></label><div style="display:flex;gap:8px"><input type="number" inputmode="decimal" step="0.001" id="man-${f.id}" placeholder="${nf(2).format(b.p)}"><button class="btn" data-man="${f.id}">Übernehmen</button></div>`}).join('');
   if(!$('#keyStatus').textContent)$('#keyStatus').textContent=CFG.key?'Schlüssel gespeichert.':'Noch kein Schlüssel hinterlegt.';
   renderTdStatus();
@@ -934,6 +956,7 @@ function renderSettings(){
 let fAll=false;
 function renderSheet(){
   const f=openF;if(!f)return;const p=posVal(f),inv=f.shares*f.avg,g=p.v-inv,gross=fundGross(f),cost=fundCost(f),dec=f.id==='etf'?3:2;
+  $('#fFacts').innerHTML=FACTS[f.id].map(([l,v])=>`<div><span>${esc(l)}</span><b>${esc(v)}</b></div>`).join('');
   $('#fKind').textContent=f.kind;$('#fName').textContent=f.name;$('#fIsin').textContent='ISIN '+f.isin+' · WKN '+f.wkn+' · '+f.venue;
   $('#fPrice').textContent=eur(p.p,dec);
   $('#fChips').innerHTML=`<div class="chip">Kursstand<b>${p.est?'Live '+pct(p.r*100):(base(f).man?'nachgetragen ':'')+dDE(base(f).d)}</b></div><div class="chip">Einstandskurs<b>${eur(f.avg)}</b></div><div class="chip">Abstand<b class="${g>=0?'pos':'neg'}">${pct((p.p/f.avg-1)*100)}</b></div>`;
@@ -1075,16 +1098,37 @@ function newsCard(n){
   if(n.ed){const [bv,bl]=n.big();img=`<div class="stat"><b>${esc(bv)}</b><span>${esc(bl)}</span></div>`;kick=n.kick;kc=n.kc;h=n.h;teaser=n.teaser();body=n.body();meta='Hintergrund · '+dDE(n.d)}
   else{const k=symKey(n.sym),r=k&&REG[k],q=k?stockQ(k):null;
     img=`<div class="stat"><b>${r?esc(r.n):'Markt'}</b><span>${q&&q.ch!=null?pct(q.ch)+' heute':esc(n.src||'')}</span></div>`+(n.img&&/^https:\/\//.test(n.img)?`<img src="${esc(n.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:'');
-    kick=r?r.n.toUpperCase():'MÄRKTE';kc=q&&q.ch!=null?(q.ch<0?'red':'green'):'blue';h=esc(n.h);teaser=esc(teaserOf(n.s));
-    body=(n.s?H4('Die Meldung')+P(esc(n.s)):'')+(k?stockDeep(k):depotDeep())+(/^https:\/\//.test(n.url||'')?`<p><a href="${esc(n.url)}" target="_blank" rel="noopener">Originalartikel bei ${esc(n.src||'der Quelle')} lesen →</a></p>`:'');
-    meta=esc(n.src||'Finnhub')+' · '+ago(n.t)}
+    const tr=TR[n.id]||{};kick=r?r.n.toUpperCase():'MÄRKTE';kc=q&&q.ch!=null?(q.ch<0?'red':'green'):'blue';h=esc(tr.h||n.h);teaser=esc(tr.tz||teaserOf(n.s));
+    body=(n.s?H4('Die Meldung')+`<p class="msg">${esc(tr.s||n.s)}</p>`:'')+(k?stockDeep(k):depotDeep())+(/^https:\/\//.test(n.url||'')?`<p><a href="${esc(n.url)}" target="_blank" rel="noopener">Originalartikel bei ${esc(n.src||'der Quelle')} lesen →</a></p>`:'');
+    meta=esc(n.src||'Finnhub')+' · '+ago(n.t)+`<span class="trl">${tr.h?' · automatisch übersetzt':''}</span>`}
   return `<article class="nw" data-id="${esc(n.id)}"><div class="im">${img}</div><div class="pad"><span class="kick ${kc}">${esc(kick)}</span><h3>${n.ed?esc(h):h}</h3><p class="tz">${n.ed?esc(teaser):teaser}</p><div class="meta">${meta}</div>
     <details${OPEN.has(String(n.id))?' open':''}><summary><span class="more">Weiterlesen</span><span class="less">Weniger anzeigen</span></summary><div class="deep">${body}</div></details></div></article>`}
-function renderNews(){
+
+/* Übersetzung (MyMemory, kostenlos, mit Cache) */
+let TR=LS.get('tr',{});const TRQ=[];let trBusy=false,trStop=LS.get('trStop',0);
+const isEn=s=>/\b(the|and|of|to|for|with|on|is|are|its|said|shares|stock)\b/i.test(s||'');
+function decodeEnt(x){const t=document.createElement('textarea');t.innerHTML=x;return t.value}
+async function trText(txt){const chunks=[];let cur='';(String(txt).match(/[^.!?]+[.!?]*\s*/g)||[String(txt)]).forEach(p=>{if((cur+p).length>450){if(cur)chunks.push(cur);cur=p.slice(0,450)}else cur+=p});if(cur)chunks.push(cur);
+  const out=[];for(const c of chunks){const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(c.trim())+'&langpair=en%7Cde'+(CFG.mail?'&de='+encodeURIComponent(CFG.mail):''));
+    if(r.status===429)throw new Error('quota');const j=await r.json();const t=j&&j.responseData&&j.responseData.translatedText;
+    if(j.responseStatus==429||/MYMEMORY WARNING|QUOTA|LIMIT/i.test(t||''))throw new Error('quota');if(!t)throw new Error('leer');out.push(decodeEnt(t));await sleep(250)}
+  return out.join(' ')}
+function trWant(id,full){if(Date.now()<trStop)return;const k=id+(full?'#s':'');if(TRQ.includes(k))return;if(full)TRQ.unshift(k);else TRQ.push(k);trPump()}
+async function trPump(){if(trBusy)return;trBusy=true;
+  while(TRQ.length){const k=TRQ.shift(),[id,f]=k.split('#'),n=(NW.items||[]).find(x=>x.id===id);if(!n)continue;const t=TR[id]||(TR[id]={});
+    try{if(f){if(!t.s&&n.s)t.s=await trText(n.s)}else{if(!t.h)t.h=await trText(n.h);const tz=teaserOf(n.s);if(!t.tz&&tz)t.tz=await trText(tz)}t.at=Date.now();trApply(id)}
+    catch(e){if(e.message==='quota'){trStop=Date.now()+12*36e5;LS.set('trStop',trStop);TRQ.length=0;renderNewsInfo();break}}
+    await sleep(300)}
+  trBusy=false;const ids=new Set((NW.items||[]).map(n=>n.id));Object.keys(TR).forEach(k=>{if(!ids.has(k))delete TR[k]});LS.set('tr',TR)}
+function trApply(id){const a=document.querySelector('.nw[data-id="'+CSS.escape(id)+'"]');if(!a)return;const t=TR[id];
+  if(t.h)a.querySelector('h3').textContent=t.h;if(t.tz)a.querySelector('.tz').textContent=t.tz;const m=a.querySelector('.msg');if(m&&t.s)m.textContent=t.s;const l=a.querySelector('.trl');if(l&&t.h)l.textContent=' · automatisch übersetzt'}
+function renderNewsInfo(){$('#newsInfo').textContent=CFG.key?(NW.at?`${(NW.items||[]).length} Meldungen · aktualisiert ${ago(NW.at)} · `+(Date.now()<trStop?'Übersetzungs-Tageslimit erreicht – neue Meldungen bis morgen im Original (E-Mail unter Einrichten erhöht das Limit).':'automatisch ins Deutsche übersetzt'):'Lade aktuelle Meldungen…'):'Tagesaktuelle Meldungen erscheinen, sobald Live-Kurse eingerichtet sind. Bis dahin: Hintergründe vom 26.11.'}
+function renderNews(){renderTermine();
   $('#newsF').innerHTML=[['all','Alle'],['mine','Mein Depot'],['mkt','Märkte'],['ed','Hintergründe']].map(([k,l])=>`<button data-nf="${k}" class="${newsF===k?'on':''}">${l}</button>`).join('');
   const L=newsList();
-  $('#newsInfo').textContent=CFG.key?(NW.at?`${(NW.items||[]).length} Meldungen · aktualisiert ${ago(NW.at)} · Agenturmeldungen im Original (meist Englisch), Einordnung auf Deutsch`:'Lade aktuelle Meldungen…'):'Tagesaktuelle Meldungen erscheinen, sobald Live-Kurse eingerichtet sind. Bis dahin: Hintergründe vom 26.11.';
+  renderNewsInfo();
   $('#newsFeed').innerHTML=L.map(newsCard).join('')||'<div class="card mute">Keine Meldungen in dieser Auswahl.</div>';
+  L.filter(n=>!n.ed).slice(0,30).forEach(n=>{const t=TR[n.id];if(!(t&&t.h)&&isEn(n.h+' '+n.s))trWant(n.id,false);if(OPEN.has(n.id)&&!(t&&t.s)&&n.s)trWant(n.id,true)});
   queueNews(false);
 }
 function queueNews(force){if(!CFG.key||!isLive())return;if(!force&&Date.now()-(NW.at||0)<30*6e4)return;NW.at=Date.now();LS.set('news',NW);
@@ -1095,6 +1139,86 @@ function addNews(arr,sym){const seen=new Set((NW.items||[]).map(n=>n.h.toLowerCa
     let s=sym;if(!s&&j.related){const r=String(j.related).split(',').map(x=>x.trim()).find(x=>symKey(x));if(r)s=r}
     NW.items.push({id:'f'+(j.id||Math.random().toString(36).slice(2)),h,s:String(j.summary||'').slice(0,2000),src:String(j.source||''),url:String(j.url||''),img:String(j.image||''),t:(j.datetime||0)*1000,sym:s||null})});
   NW.items=NW.items.filter(n=>n.t>Date.now()-5*DAY).sort((a,b)=>b.t-a.t).slice(0,90);LS.set('news',NW);newsDirty=true}
+
+/* ======================= PROFI-MODULE ======================= */
+const FACTS={
+ gc:[['Fondsgesellschaft','Deka Investment GmbH'],['Auflage','27.12.2006'],['Fondsvolumen','ca. 15–16 Mrd. €'],['Positionen','≈ 142 Aktien'],['Laufende Kosten','1,45 % p. a.'],['Ausgabeaufschlag','3,75 %'],['Ertragsverwendung','ausschüttend'],['Geschäftsjahr','01.12.–30.11.'],['Risikoklasse (SRI)','4 von 7'],['Morningstar','★★★★★'],['Aktienquote','97,4 %'],['Top-10-Anteil','44,6 %']],
+ fid:[['Fondsgesellschaft','FIL Investment Management (Lux.)'],['Auflage','01.09.1999'],['Fondsvolumen','33,75 Mrd. € (30.09.2026)'],['Positionen','98 Aktien'],['Laufende Kosten','1,89 % p. a.'],['Ausgabeaufschlag','5,25 %'],['Ertragsverwendung','ausschüttend'],['Geschäftsjahr','01.05.–30.04.'],['Risikoklasse (SRI)','4 von 7'],['Vergleichsindex','MSCI ACWI Information Technology'],['Fondsdomizil','Luxemburg'],['Top-10-Anteil','45,6 %']],
+ etf:[['Fondsgesellschaft','Deka Investment GmbH'],['Auflage','04.09.2018'],['Fondsvolumen','ca. 5,4 Mrd. €'],['Index','MSCI World (≈ 1.280 Werte)'],['Laufende Kosten (TER)','0,30 % p. a.'],['Kaufkosten bei dir','≈ 1 %'],['Replikation','physisch, vollständig'],['Ertragsverwendung','ausschüttend, quartalsweise'],['Tracking Difference','≈ 0,03 %'],['Fondsdomizil','Deutschland'],['Handel','gettex, Xetra u. a.'],['Top-10-Anteil','≈ 26,6 %']]};
+let EARN=LS.get('earn',{});
+const MACRO=[['2026-11-27','US-Börse verkürzt bis 19:00 Uhr','Black Friday nach Thanksgiving'],['2026-12-09','Zinsentscheid US-Notenbank','Markt rechnet mit Anhebung'],['2026-12-14','VL-Zahlung MSCI World ETF','≈ 40,40 € (meist um den 13./14.)'],['2026-12-15','Sparpläne GlobalChampions & Global Tech','Lastschrift 261,25 €'],['2026-12-17','Zinsentscheid EZB',''],['2026-12-24','US-Börse verkürzt','Heiligabend'],['2026-12-25','US-Börse geschlossen','Weihnachten'],['2027-01-04','Vorabpauschale 2026 fließt zu','Basiszins 3,20 %'],['2027-01-14','VL-Zahlung MSCI World ETF',''],['2027-01-15','Sparpläne GlobalChampions & Global Tech','']];
+let _tw={k:'',v:null};
+function dailyPrices(){
+  const hasTD=FUNDS.every(f=>fundCurve(f,'1h'));let dates=[],P={},bench=null;
+  if(hasTD){const maps=FUNDS.map(f=>dailyCloses(fundCurve(f,'1h')));dates=[...maps[0].keys()].filter(d=>d>='2026-08-07'&&maps.every(m=>m.has(d))).sort();
+    FUNDS.forEach((f,i)=>P[f.id]=dates.map(d=>maps[i].get(d)));
+    const H=HIST['1h'],fx=H['EUR/USD'],um=new Map();H.URTH.forEach(([t,c])=>um.set(ymd(t,dfNY),c/((fx&&valAt(fx,t))||EURUSD)));bench=dates.map(d=>um.get(d)??null)}
+  else{for(let t=ts('2026-08-07');t<=ts(ymd(Date.now()));t+=DAY){const w=new Date(t).getDay();if(w===0||w===6)continue;dates.push(ymd(t))}FUNDS.forEach(f=>{const n=navPts(f);P[f.id]=dates.map(d=>interp(n,ts(d)))})}
+  const today=ymd(Date.now());
+  if(dates.length&&dates[dates.length-1]<today&&FUNDS.some(f=>est(f).est)){dates.push(today);FUNDS.forEach(f=>P[f.id].push(est(f).p));if(bench){const q=Q.URTH;bench.push(bench[bench.length-1]&&q&&fresh(q,{d:dates[dates.length-2]})?bench[bench.length-1]*(1+rEUR('URTH')):bench[bench.length-1])}}
+  else if(dates.length){FUNDS.forEach(f=>P[f.id][P[f.id].length-1]=est(f).p)}
+  return {dates,P,bench,src:hasTD?'td':'nav'}}
+function twr(){const key=mver+'|'+(HAT['1h']||0)+'|'+Math.floor(Date.now()/6e4)+'|'+live.state;if(_tw.k===key)return _tw.v;
+  const D=dailyPrices(),idx=[1],bidx=D.bench?[1]:null,fidx={};FUNDS.forEach(f=>fidx[f.id]=[1]);
+  for(let i=1;i<D.dates.length;i++){const tp=ts(D.dates[i-1]);let a=0,b=0;FUNDS.forEach(f=>{const s=sharesAt(f,tp);a+=s*D.P[f.id][i];b+=s*D.P[f.id][i-1];fidx[f.id].push(fidx[f.id][i-1]*D.P[f.id][i]/D.P[f.id][i-1])});
+    idx.push(idx[i-1]*(b>0?a/b:1));if(bidx){const x=D.bench[i],y=D.bench[i-1];bidx.push(bidx[i-1]*(x&&y?x/y:1))}}
+  _tw={k:key,v:{...D,idx,bidx,fidx}};return _tw.v}
+function perf(arr,n){if(!arr||arr.length<2)return null;const i=Math.max(0,arr.length-1-n);return (arr[arr.length-1]/arr[i]-1)*100}
+function renderKPI(){const W=twr(),T=totals(),rm=riskMetrics();
+  const cell=(l,v,c='',s='')=>`<div><span>${l}</span><b class="${c}">${v}</b>${s?`<span class="mute" style="font-size:11px">${s}</span>`:''}</div>`;
+  const p=n=>perf(W.idx,n),b=n=>W.bidx?perf(W.bidx,n):null,f=(v)=>v==null?'–':pct(v,1);
+  $('#kpi').innerHTML=cell('1 Woche',f(p(5)),ud(p(5)||0),b(5)!=null?'MSCI World '+f(b(5)):'')+cell('1 Monat',f(p(21)),ud(p(21)||0),b(21)!=null?'MSCI World '+f(b(21)):'')+cell('Seit Start (zeitgew.)',f(p(9999)),ud(p(9999)||0),b(9999)!=null?'MSCI World '+f(b(9999)):'')+
+    cell('Volatilität p. a.',rm?nf(1).format(rm.vol*100)+' %':'–')+cell('Max. Rückgang',rm?pct(rm.mdd*100,1):'–',rm?'dn':'')+cell('Laufende Kosten',eur(FUNDS.reduce((a,f)=>a+posVal(f).v*f.ter/100,0),0)+' p. a.');
+  $('#kpiNote').textContent=(W.src==='td'?'Zeitgewichtete Rendite aus Tageskursen – Einzahlungen verfälschen sie nicht, so rechnen auch Fondsgesellschaften. ':'Näherung aus den offiziellen Kursen; mit Kurshistorie (Einrichten → 2) exakt und mit MSCI-World-Vergleich. ')+'MSCI World = Index in Euro, gemessen am iShares MSCI World ETF.'}
+function attribution(){if(!isLive())return null;const rows=[];let cov=0;
+  lookThrough().forEach(x=>{const r=REG[x.k],q=r.q&&Q[r.q];if(!q||typeof q.dp!=='number'||Date.now()-(q.at||q.t||0)>36*36e5)return;const re=(1+q.dp/100)/(1+fxr())-1;rows.push({k:x.k,e:x.v*re,dp:re*100,v:x.v});cov+=x.v});
+  return {rows:rows.sort((a,b)=>b.e-a.e),cov}}
+function renderAttr(){const A=attribution(),T=totals();
+  if(!A||!A.rows.length){$('#attr').innerHTML='<p class="small mute" style="margin:0">Sobald Live-Kurse laufen, siehst du hier, welche Aktien dein Depot heute nach oben oder unten gezogen haben – in Euro, über alle Fonds hinweg.</p>';return}
+  const top=A.rows.filter(r=>r.e>0).slice(0,5),flop=A.rows.filter(r=>r.e<0).slice(-5).reverse(),mx=Math.max(...A.rows.map(r=>Math.abs(r.e)),0.01);
+  const row=r=>`<div class="hbar"><span>${esc(REG[r.k].n)}</span><div class="tr"><i style="width:${(Math.abs(r.e)/mx*100).toFixed(1)}%;background:${r.e>=0?'var(--up)':'var(--dn)'}"></i></div><b class="${ud(r.e)}">${dE(r.e)}</b></div>`;
+  const m=mkt(),sum=A.rows.reduce((a,r)=>a+r.e,0);
+  $('#attr').innerHTML=`<p class="small mute" style="margin:0 0 8px">${m.open?'Heute':'Letzter US-Handelstag'} · ${A.rows.length} Aktien mit Live-Kurs decken ${eur(A.cov,0)} (${nf(0).format(A.cov/T.v*100)} %) ab, Beitrag zusammen <b class="${ud(sum)}">${dE(sum)}</b>.</p>`+
+    (top.length?'<h3>Zugpferde</h3>'+top.map(row).join(''):'')+(flop.length?'<h3 style="margin-top:12px">Bremser</h3>'+flop.map(row).join(''):'')+
+    `<h3 style="margin-top:12px">Je Fonds (Live-Schätzung)</h3>`+FUNDS.map(f=>{const p=posVal(f),d=f.shares*(p.p-p.b.p);return `<div class="hbar"><span style="color:${f.col}">${esc(f.short)}</span><div class="tr"><i style="width:${Math.min(100,Math.abs(p.r)*100/3*100).toFixed(1)}%;background:${d>=0?'var(--up)':'var(--dn)'}"></i></div><b class="${ud(d)}">${dE(d)}</b></div>`}).join('')}
+function renderBench(){const el=$('#benchFig'),W=twr();
+  const series=[{n:'Dein Depot',c:'var(--brand)',w:3,a:W.idx}];if(W.bidx)series.push({n:'MSCI World (€)',c:'var(--mute)',w:2,a:W.bidx,dash:'5 4'});
+  FUNDS.forEach(f=>{const a=W.fidx[f.id],first=W.dates.findIndex(d=>sharesAt(f,ts(d))>0);if(first<0)return;const base=a[first];series.push({n:f.short,c:f.col,w:1.4,a:a.map((v,i)=>i<first?null:v/base)})});
+  el._s=series;const draw=()=>{const s=el._s,Wd=el.clientWidth,H=el.clientHeight;if(!Wd||W.dates.length<2){el.innerHTML='<div class="empty">Zu wenig Daten</div>';return}
+    const vals=s.flatMap(x=>x.a.filter(v=>v!=null));let mn=Math.min(...vals),mx=Math.max(...vals);const sp=mx-mn||.01;mn-=sp*.1;mx+=sp*.1;
+    const pad={l:6,r:Wd>=320?46:8,t:12,b:24},N=W.dates.length,X=i=>pad.l+i/(N-1)*(Wd-pad.l-pad.r),Y=v=>pad.t+(mx-v)/(mx-mn)*(H-pad.t-pad.b);
+    let g='';for(let i=0;i<4;i++){const v=mn+(mx-mn)*(i+.5)/4;g+=`<line x1="${pad.l}" x2="${Wd-pad.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4"/>`+(pad.r>20?`<text x="${Wd-2}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--mute)">${pct((v-1)*100,0)}</text>`:'')}
+    g+=`<line x1="${pad.l}" x2="${Wd-pad.r}" y1="${Y(1).toFixed(1)}" y2="${Y(1).toFixed(1)}" stroke="var(--ink)" stroke-opacity=".4"/>`;
+    const lines=s.slice().reverse().map(x=>{let d='',pen=false;x.a.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);pen=true});return `<path d="${d}" fill="none" stroke="${x.c}" stroke-width="${x.w}" ${x.dash?`stroke-dasharray="${x.dash}"`:''} stroke-linejoin="round"/>`}).join('');
+    let xl='';[0,.5,1].forEach((f,j)=>{const i=Math.round(f*(N-1));xl+=`<text x="${X(i).toFixed(1)}" y="${H-6}" font-size="11" fill="var(--mute)" text-anchor="${j===0?'start':j===2?'end':'middle'}">${dshort(ts(W.dates[i]))}</text>`});
+    el.innerHTML=`<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Depot im Vergleich zum MSCI World">${g}${lines}${xl}</svg>`};
+  if(!el._ro){el._ro=new ResizeObserver(()=>el._dr());el._ro.observe(el)}el._dr=draw;draw();
+  $('#benchLeg').innerHTML=series.map(x=>{const v=x.a[x.a.length-1];return `<span style="--c:${x.c}">${esc(x.n)} <b class="${ud(v-1)}">${v==null?'–':pct((v-1)*100,1)}</b></span>`}).join('');
+  const d=W.bidx?(W.idx[W.idx.length-1]-W.bidx[W.bidx.length-1])*100:null;
+  $('#benchTxt').textContent=W.bidx?`Seit dem ersten Kauf am 07.08. liegt dein Depot zeitgewichtet ${pct((W.idx[W.idx.length-1]-1)*100,1)}, der MSCI World in Euro ${pct((W.bidx[W.bidx.length-1]-1)*100,1)}. Differenz: ${pct(d,1)}. Ausgabeaufschläge sind hier nicht enthalten (sie stehen unter „Zwei Wahrheiten“).`:'Mit Kurshistorie (Einrichten → 2) kommt der Vergleich mit dem MSCI World dazu; die Linien hier basieren auf den offiziellen Kursen.'}
+const STRESS=[['Leichte Korrektur',-10,0,0],['Tech-Crash wie 2022',-15,-20,-6],['Euro erholt sich',0,0,8],['Starke Erholung',12,8,0]];
+let ST=[-10,0,0];
+function renderStress(){const T=totals(),m=depotMix(),[mk,tx,fx]=ST;
+  const dM=T.v*mk/100,dT=T.v*m.tech/100*tx/100,base=T.v+dM+dT,dF=-(m.usE*(1+mk/100))*(fx/100)/(1+fx/100),tot=dM+dT+dF;
+  $('#stPre').innerHTML=STRESS.map(([n,a,b,c],i)=>`<button data-st="${i}" class="${a===mk&&b===tx&&c===fx?'on':''}">${n}</button>`).join('');
+  [['stM',mk,' %'],['stT',tx,' %'],['stF',fx,' %']].forEach(([id,v])=>{$('#'+id).value=v;$('#'+id+'v').textContent=pct(v,0)});
+  $('#stOut').innerHTML=`<div><span>Depot danach</span><b>${eur(T.v+tot,0)}</b><span class="${ud(tot)}">${dE(tot,0)} · ${pct(tot/T.v*100,1)}</span></div><div><span>Zerlegung</span><span>Markt ${dE(dM,0)}</span><span>Tech-Zusatz ${dE(dT,0)}</span><span>Währung ${dE(dF,0)}</span></div>`;
+  $('#stTxt').textContent=`Vereinfachtes Modell: Alle Aktien bewegen sich mit dem Markt; Technologiewerte (${nf(0).format(m.tech)} % deines Depots) zusätzlich um den Tech-Wert; der US-Anteil (${nf(0).format(m.us)} %) wird mit der Euro-Bewegung umgerechnet. Kein Ersatz für eine echte Risikoanalyse, aber ein gutes Gefühl für die Größenordnung.`}
+function renderTax(){const T=totals(),g=T.v-T.gross,eff=0.25*1.055*0.7;
+  let vp=0;ORD.forEach(o=>{if(!isCost(o))return;const f=F(o.f),m=+o.d.slice(5,7);vp+=o.qty*posVal(f).p*0.032*0.7*(13-m)/12});
+  $('#taxKv').innerHTML=`<div><span>Steuer bei Verkauf heute</span><b>${eur(Math.max(0,g)*0.7*0.25*1.055)}</b></div><div><span>Steuerlicher ${g>=0?'Gewinn':'Verlust'}</span><b class="${ud(g)}">${dE(g)}</b></div><div><span>davon steuerwirksam (70 %)</span><b class="${ud(g)}">${dE(g*0.7)}</b></div>
+    <div><span>Effektiver Steuersatz Fonds</span><b>${nf(2).format(eff*100)} %</b></div><div><span>Vorabpauschale 2026 höchstens</span><b>${eur(vp,0)}</b></div><div><span>Sparerpauschbetrag</span><b>1.000 € p. a.</b></div>`;
+  $('#taxTxt').innerHTML=`<p>Alle drei Fonds sind Aktienfonds: <b>30 % der Erträge bleiben steuerfrei</b> (Teilfreistellung). Auf den Rest fallen 25 % Abgeltungsteuer plus Solidaritätszuschlag an – effektiv ${nf(2).format(eff*100)} % auf Kursgewinne (ohne Kirchensteuer).</p>
+    <p>Steuerlich zählen die Ausgabeaufschläge zu den Anschaffungskosten. Würdest du heute verkaufen, entstünde ein Verlust von ${eur(Math.abs(Math.min(0,g)))}, davon wären ${eur(Math.abs(Math.min(0,g))*0.7)} mit künftigen Gewinnen verrechenbar.</p>
+    <p><b>Vorabpauschale:</b> Für 2026 gilt ein Basiszins von 3,20 %; die Vorabpauschale fließt am 4. Januar 2027 zu. Weil du erst ab August gekauft hast, zählt nur der Rest des Jahres (je voller Monat vor dem Kauf ein Zwölftel weniger). Selbst im ungünstigsten Fall wären es höchstens etwa ${eur(vp,0)}, davon 70 % steuerpflichtig – das deckt ein Freistellungsauftrag (1.000 €) problemlos. Fallen die Fonds im Kalenderjahr insgesamt, entsteht gar keine Vorabpauschale.</p>
+    <p class="mute">Vereinfachte Darstellung, keine Steuerberatung. Die Höchstgrenze ist mit heutigen Kursen genähert, weil der Rücknahmepreis zum Jahresanfang maßgeblich ist.</p>`}
+let termAll=false;
+function renderTermine(){const now=Date.now(),items=MACRO.map(([d,t,s])=>({t:ts(d),d,h:t,s,k:'m'}));
+  Object.entries(EARN).forEach(([sym,e])=>{if(!e||!e.date)return;const k=symKey(sym);if(!k)return;items.push({t:ts(e.date),d:e.date,h:'Quartalszahlen '+REG[k].n,s:(e.hour==='bmo'?'vor US-Börsenstart':e.hour==='amc'?'nach US-Börsenschluss':'')+(e.eps!=null?' · erwarteter Gewinn je Aktie '+usd(e.eps):'')+' · dein Anteil '+eur(expo(k).v,0),k:'e'})});
+  const up=items.filter(i=>i.t>=ts(ymd(now))).sort((a,b)=>a.t-b.t).slice(0,termAll?14:5);
+  $('#termMore').textContent=termAll?'Weniger anzeigen':'Alle Termine anzeigen';
+  $('#termine').innerHTML=up.map(i=>{const days=Math.round((i.t-ts(ymd(now)))/DAY);return `<li class="ord"><div><b>${esc(i.h)}</b>${i.k==='e'?'<span class="tag">Zahlen</span>':''}<div class="small mute">${new Date(i.t).toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})}${i.s?' · '+esc(i.s):''}</div></div><div class="r small ${days<=3?'warn':'mute'}">${days===0?'heute':days===1?'morgen':'in '+days+' T.'}</div></li>`}).join('');
+  if(CFG.key&&isLive()){const syms=lookThrough().map(x=>REG[x.k].q).filter(q=>q&&!PROXIES.includes(q)).slice(0,12);syms.forEach(s=>{const e=EARN[s];if(e&&now-e.at<24*36e5)return;const id='e:'+s;if(LQS.has(id))return;LQS.add(id);LQ.push(id)});pump()}}
 
 /* ======================= 9. NAVIGATION ======================= */
 const VIEWS=['depot','news','orders','markt','analyse','einrichten'],TITLES={depot:'Mein Depot',news:'News',orders:'Orders',markt:'Markt',analyse:'Analyse',einrichten:'Einrichten'};
@@ -1157,7 +1281,9 @@ function queueVisible(keys){if(!CFG.key||!isLive())return;keys.forEach(k=>{const
 function queueRecs(syms){if(!CFG.key||!isLive())return;syms.forEach(s=>{const r=REC[s];if(r&&Date.now()-r.at<12*36e5)return;const id='r:'+s;if(LQS.has(id))return;LQS.add(id);LQ.push(id)});pump()}
 async function pump(){if(lqBusy)return;lqBusy=true;
   while(LQ.length&&CFG.key){const id=LQ.shift(),[kind,s]=id.split(':');
-    try{if(kind==='q'){Q[s]=await quote(s,CFG.key)}else if(kind==='n'||kind==='g'){const to=ymd(Date.now()),from=ymd(Date.now()-3*DAY);
+    try{if(kind==='q'){Q[s]=await quote(s,CFG.key)}else if(kind==='e'){const from=ymd(Date.now()),to=ymd(Date.now()+100*DAY);const r=await fetch('https://finnhub.io/api/v1/calendar/earnings?from='+from+'&to='+to+'&symbol='+encodeURIComponent(s)+'&token='+encodeURIComponent(CFG.key));if(r.status===429)throw new Error('Limit');
+      const j=r.ok?await r.json():{};const L=(j.earningsCalendar||[]).filter(x=>x.date>=from).sort((a,b)=>a.date.localeCompare(b.date));EARN[s]={at:Date.now(),date:L[0]?L[0].date:null,eps:L[0]&&typeof L[0].epsEstimate==='number'?L[0].epsEstimate:null,hour:L[0]?L[0].hour:''};LS.set('earn',EARN);if(curView==='news')renderTermine()}
+    else if(kind==='n'||kind==='g'){const to=ymd(Date.now()),from=ymd(Date.now()-3*DAY);
       const r=await fetch(kind==='g'?'https://finnhub.io/api/v1/news?category=general&token='+encodeURIComponent(CFG.key):'https://finnhub.io/api/v1/company-news?symbol='+encodeURIComponent(s)+'&from='+from+'&to='+to+'&token='+encodeURIComponent(CFG.key));
       if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j))addNews(j.sort((a,b)=>(b.datetime||0)-(a.datetime||0)).slice(0,kind==='g'?15:4),kind==='n'?s:null)}else{const r=await fetch('https://finnhub.io/api/v1/stock/recommendation?symbol='+encodeURIComponent(s)+'&token='+encodeURIComponent(CFG.key));if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j)&&j[0])REC[s]={sb:j[0].strongBuy||0,b:j[0].buy||0,h:j[0].hold||0,s:j[0].sell||0,ss:j[0].strongSell||0,at:Date.now(),p:j[0].period}}lazyDirty=true}
     catch(e){if(/Limit/.test(e.message)){LQ.unshift(id);await sleep(20000);continue}}
@@ -1192,8 +1318,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openF)location.hash
 $('#fFund').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fFund=b.dataset.ff;renderOrders()});
 $('#fType').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fTyp=b.dataset.ft;renderOrders()});
 $('#newsF').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;newsF=b.dataset.nf;renderNews()});
-$('#newsFeed').addEventListener('toggle',e=>{const a=e.target.closest&&e.target.closest('.nw');if(!a)return;if(e.target.open)OPEN.add(a.dataset.id);else OPEN.delete(a.dataset.id)},true);
+$('#newsFeed').addEventListener('toggle',e=>{const a=e.target.closest&&e.target.closest('.nw');if(!a)return;if(e.target.open){OPEN.add(a.dataset.id);if(a.dataset.id.startsWith('f')&&!(TR[a.dataset.id]&&TR[a.dataset.id].s))trWant(a.dataset.id,true)}else OPEN.delete(a.dataset.id)},true);
 $('#newsNew').addEventListener('click',()=>{OPEN.clear();renderNews();$('#newsNew').hidden=true;window.scrollTo(0,0)});
+$('#termMore').addEventListener('click',()=>{termAll=!termAll;renderTermine()});
+$('#stPre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const p=STRESS[+b.dataset.st];ST=[p[1],p[2],p[3]];renderStress()});
+['stM','stT','stF'].forEach((id,i)=>$('#'+id).addEventListener('input',e=>{ST[i]=+e.target.value;renderStress()}));
 $('#anSort').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;anSort=b.dataset.as;renderMarkt()});
 $('#lookQ').addEventListener('input',renderMarkt);$('#lookMore').addEventListener('click',()=>{if(($('#lookQ').value||'').trim())return;lookAll=!lookAll;renderMarkt()});
 $('#fQ').addEventListener('input',renderSheet);$('#fMore').addEventListener('click',()=>{if(($('#fQ').value||'').trim())return;fAll=!fAll;renderSheet()});
@@ -1205,6 +1334,7 @@ $('#testKey').addEventListener('click',async()=>{const k=$('#apiKey').value.trim
 $('#clearKey').addEventListener('click',()=>{CFG.key='';LS.set('key','');live.state='off';clearInterval(pollT);if(live.ws)live.ws.close();$('#keyStatus').textContent='Schlüssel entfernt.';renderAll()});
 $('#ivl').addEventListener('change',()=>{CFG.ivl=+$('#ivl').value;LS.set('ivl',CFG.ivl);schedule()});
 $('#saveTd').addEventListener('click',()=>{CFG.td=$('#tdKey').value.trim();LS.set('td',CFG.td);tdState.msg=CFG.td?'Gespeichert – lade Historie…':'';renderTdStatus();if(CFG.td)loadHistory(true)});
+$('#saveMail').addEventListener('click',()=>{CFG.mail=$('#trMail').value.trim();LS.set('mail',CFG.mail);trStop=0;LS.set('trStop',0);$('#mailStatus').textContent=CFG.mail?'Gespeichert – höheres Übersetzungslimit aktiv.':'Ohne E-Mail: Standard-Limit.'});
 $('#reloadTd').addEventListener('click',()=>{if(CFG.td)loadHistory(true)});
 $('#clearTd').addEventListener('click',()=>{CFG.td='';LS.set('td','');HIST={};HAT={};CURVE={};LS.set('hist',{});LS.set('histAt',{});tdState.msg='Schlüssel und Historie entfernt.';renderAll()});
 $('#manualList').addEventListener('click',e=>{const b=e.target.closest('[data-man]');if(!b)return;const id=b.dataset.man,inp=$('#man-'+id);const v=parseFloat(String(inp.value).replace(/\./g,'').replace(',','.'));
