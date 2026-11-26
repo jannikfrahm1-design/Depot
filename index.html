@@ -156,6 +156,33 @@ td.n,th.n{text-align:right;white-space:nowrap;font-feature-settings:"tnum"}
 .hbar .tr i{height:100%;display:block}
 .hbar b{text-align:right;font-weight:600;font-feature-settings:"tnum"}
 .mx td{text-align:center;font-feature-settings:"tnum"}
+.nw{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px}
+.nw .im{aspect-ratio:16/8;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--strip),#071447)}
+.nw .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.nw .stat{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px;color:#fff}
+.nw .stat b{font:700 clamp(34px,11vw,58px)/1 "Space Grotesk",sans-serif;letter-spacing:-1px}
+.nw .stat span{font-size:13px;opacity:.85;margin-top:4px}
+.nw .pad{padding:14px 16px 6px}
+.kick{display:inline-block;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.2px}
+.kick.red{background:#d7261e}.kick.blue{background:var(--brand)}.kick.green{background:#08875a}
+.nw h3{font:700 21px/1.2 "Space Grotesk",sans-serif;margin:8px 0 6px;text-wrap:balance}
+.nw .tz{margin:0 0 6px;font-size:16px}
+.nw .meta{font-size:12px;color:var(--mute)}
+.nw summary{cursor:pointer;list-style:none;font-weight:600;color:var(--brand);min-height:44px;display:flex;align-items:center}
+.nw summary::-webkit-details-marker{display:none}
+.nw summary .less,.nw details[open] summary .more{display:none}.nw details[open] summary .less{display:inline}
+.nw summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-4px 0 0 10px}
+.nw details[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.deep{font-size:15.5px;line-height:1.6;padding-bottom:10px}
+.deep h4{font:700 16px "Space Grotesk",sans-serif;margin:16px 0 6px}
+.deep p{margin:0 0 10px}
+.deep a{color:var(--brand);font-weight:600}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 12px}
+.facts div{background:var(--card2);border-radius:10px;padding:7px 10px}
+.facts span{display:block;font-size:12px;color:var(--mute)}
+.facts b{font:600 14px "Space Grotesk",sans-serif}
+.newbtn[hidden]{display:none}
+.newbtn{position:sticky;top:76px;z-index:5;display:block;margin:0 auto 10px;border:0;border-radius:99px;background:var(--brand);color:#fff;font-weight:600;min-height:40px;padding:0 16px}
 label.f{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 6px}
 input[type=text],input[type=number],input[type=password],input[type=search],select{width:100%;min-height:44px;font-size:16px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px}
 input[type=range]{width:100%;accent-color:var(--brand);min-height:32px}
@@ -216,6 +243,13 @@ nav.tabs a.on{color:var(--brand)}
   </div>
 </section>
 
+<section class="view" id="v-news">
+  <div class="filters" id="newsF"></div>
+  <p class="small mute" id="newsInfo" style="margin:4px 2px 12px"></p>
+  <button class="newbtn" id="newsNew" hidden>Neue Meldungen anzeigen</button>
+  <div id="newsFeed"></div>
+</section>
+
 <section class="view" id="v-orders">
   <div class="card"><h2>Orderübersicht</h2><div class="kv k3" id="ordStats"></div></div>
   <div class="card"><h2>Einzahlungen pro Monat</h2><div id="ordMonths"></div></div>
@@ -226,8 +260,7 @@ nav.tabs a.on{color:var(--brand)}
 </section>
 
 <section class="view" id="v-markt">
-  <div class="card"><h2>Marktlage</h2><ul class="bul" id="mktNews"></ul></div>
-  <div class="card">
+    <div class="card">
     <div class="row"><h2 style="margin:0">Heatmap deiner Aktien</h2><span class="small mute" id="heatSrc"></span></div>
     <p class="small mute" style="margin:6px 0 10px">Kachelgröße = dein Euro-Anteil über alle Fonds, Farbe = Tagesveränderung.</p>
     <div class="heat" id="heat"></div>
@@ -290,7 +323,7 @@ nav.tabs a.on{color:var(--brand)}
 <section class="view" id="v-einrichten">
   <div class="card">
     <h2>1 · Live-Kurse (Finnhub)</h2>
-    <p style="margin-top:0">Liefert Echtzeit-Kurse der US-Börse – über eine Dauerverbindung kommt jeder Handel sekundengenau an. Fonds haben nur einen offiziellen Preis pro Tag; die App schätzt daraus laufend den aktuellen Wert (letzter offizieller Kurs × Bewegung der Top-10-Aktien bzw. eines passenden Index-ETFs, in Euro).</p>
+    <p style="margin-top:0">Liefert Echtzeit-Kurse der US-Börse und die tagesaktuellen Meldungen im News-Bereich – über eine Dauerverbindung kommt jeder Handel sekundengenau an. Fonds haben nur einen offiziellen Preis pro Tag; die App schätzt daraus laufend den aktuellen Wert (letzter offizieller Kurs × Bewegung der Top-10-Aktien bzw. eines passenden Index-ETFs, in Euro).</p>
     <label class="f" for="apiKey">Finnhub API-Schlüssel</label>
     <input type="password" id="apiKey" autocomplete="off" autocapitalize="off" spellcheck="false">
     <label class="f" for="ivl">Kurse zusätzlich abrufen alle</label>
@@ -364,6 +397,7 @@ nav.tabs a.on{color:var(--brand)}
 
 <nav class="tabs" aria-label="Bereiche"><div class="in">
   <a href="#depot" data-v="depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/><path d="M7 6V4h10v2"/></svg>Depot</a>
+  <a href="#news" data-v="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="15" height="16" rx="2"/><path d="M18 8h3v10a2 2 0 0 1-2 2"/><path d="M7 8h7M7 12h7M7 16h4"/></svg>News</a>
   <a href="#orders" data-v="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Orders</a>
   <a href="#markt" data-v="markt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M15 6h5v5"/></svg>Markt</a>
   <a href="#analyse" data-v="analyse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/><path d="M8 13v-2M11 13V9M14 13v-3"/></svg>Analyse</a>
@@ -745,6 +779,7 @@ function ageBadge(f,e){
   if(e.est)return '<span class="badge live">Live-Schätzung</span>';
   const b=base(f),days=Math.round((ts(ymd(Date.now()))-ts(b.d))/DAY);
   if(f.id==='etf'&&!b.man&&days===0)return '<span class="badge">Börse 19:47 Uhr</span>';
+  if(isLive()&&days>0)return `<span class="badge">Offizieller Kurs ${dDE(b.d).slice(0,6)} · seitdem kein US-Handel</span>`;
   return days<=0?`<span class="badge">Kurs ${b.man?'nachgetragen ':''}heute</span>`:`<span class="badge old">Kurs vom ${dDE(b.d).slice(0,6)} · ${days} Tag${days>1?'e':''} alt</span>`;
 }
 function liveLabel(){if(live.state==='live'){const m=mkt();return (live.wsOk&&m.open?'Live · Ticks':'Live')+' · '+hm(live.lastTick||live.at)}return live.state==='loading'?'Lädt…':live.state==='error'?'Live gestört':'Stand Bank'}
@@ -814,7 +849,6 @@ function heatColor(ch){if(ch==null)return 'var(--card2)';const a=Math.min(1,Math
 let lookAll=false,anSort='exp';
 function renderMarkt(){
   const T=totals(),L=lookThrough();
-  $('#mktNews').innerHTML=NEWS.map(([h,t])=>`<li><b>${esc(h)}:</b> ${esc(t)}</li>`).join('');
   const H=L.slice(0,36),anyLive=H.some(x=>stockQ(x.k).live);
   $('#heatSrc').textContent=anyLive?'live':'Schluss 25.11.';
   $('#heat').innerHTML=H.map(x=>{const q=stockQ(x.k),r=REG[x.k];return `<div style="--g:${(x.v).toFixed(0)};--hc:${heatColor(q.ch)}" title="${esc(r.n)}"><b>${esc(r.n)}</b>${eur(x.v,0)}<br><span>${q.ch==null?'–':pct(q.ch,1)}</span></div>`}).join('');
@@ -933,8 +967,137 @@ function renderSheetChart(){const f=openF;if(!f)return;const dec=f.id==='etf'?3:
   $('#fStats').innerHTML=statsHtml(S,dec,null);$('#fSrc').textContent=S.src||'';}
 function renderAll(){renderHeader();if(curView==='depot'){renderMain();renderDepot()}else renderDepot();renderOrders();if(curView==='markt')renderMarkt();if(curView==='analyse')renderAnalyse();renderSettings();if(openF)renderSheet()}
 
+/* ======================= NEWS ======================= */
+let NW=LS.get('news',{items:[],at:0});if(!Array.isArray(NW.items))NW={items:[],at:0};
+let newsF='all',newsDirty=false;const OPEN=new Set();
+const symKey=q=>q?Object.keys(REG).find(k=>REG[k].q===q):null;
+function expo(k){const L=lookThrough(),T=totals(),x=L.find(y=>y.k===k);if(!x)return {v:0,p:0,rank:0,txt:'keinem deiner Fonds',n:L.length};
+  const txt=FUNDS.filter(f=>x.by[f.id]).map(f=>{const h=f.all.find(h=>h.k===k);return `${f.short} (${nf(2).format(h?h.w:0)} % Gewicht → ${eur(x.by[f.id])})`}).join(', ');
+  return {v:x.v,p:x.v/T.v*100,rank:L.indexOf(x)+1,txt,n:L.length}}
+function depotMix(){const T=totals(),sect={},reg={};FUNDS.forEach(f=>{const v=posVal(f).v;Object.entries(f.sect).forEach(([k,x])=>sect[k]=(sect[k]||0)+v*x/100);Object.entries(f.reg).forEach(([k,x])=>reg[k]=(reg[k]||0)+v*x/100)});
+  return {T,us:reg.US/T.v*100,tech:sect.T/T.v*100,usE:reg.US}}
+function navNear(f,d){const p=navPts(f);let b=p[0];p.forEach(x=>{if(x.d<=d)b=x});return b}
+const P=s=>`<p>${s}</p>`,H4=s=>`<h4>${s}</h4>`;
+const factsHtml=a=>`<div class="facts">${a.map(([l,v,c])=>`<div><span>${l}</span><b class="${c||''}">${v}</b></div>`).join('')}</div>`;
+function expoBlock(k,name){const e=expo(k);if(!e.v)return '';
+  return H4('Was das für dein Depot heißt')+P(`Du besitzt ${esc(name)} indirekt über ${e.txt}. Zusammen sind das <b>${eur(e.v)}</b> oder <b>${nf(2).format(e.p)} %</b> deines Depots – Platz ${e.rank} von ${e.n} bekannten Aktien in deinen Fonds.`)+
+    P(`Rechenbeispiel: Bewegt sich die Aktie um 10 %, ändert sich dein Depotwert allein dadurch um etwa <b>${eur(e.v*.1)}</b>. Bei einem Tagesausschlag von 3 % sind es rund ${eur(e.v*.03)}.`)}
+function stockDeep(k){const r=REG[k],q=stockQ(k),a=AN[k],e=expo(k),rc=REC[r.q];let h='';
+  const f=[['Kurs',q.usd?usd(q.usd)+' · '+eur(q.eur):'–'],['Tagesveränderung',q.ch==null?'–':pct(q.ch),ud(q.ch??0)],['Branche',esc(SECN[r.s])],['Land',esc(CTRY[r.c]||r.c)],['Dein Anteil',eur(e.v)],['Anteil am Depot',nf(2).format(e.p)+' %']];
+  if(a){const up=(a[2]/(q.usd||EMB[k])-1)*100;f.push(['Analysten',(a[0]==='Strong Buy'?'Starker Kauf':'Kaufen')+' ('+a[1]+')'],['Ø-Kursziel',usd(a[2])+' · '+pct(up,1),ud(up)],['Zielspanne',usd(a[3],0)+' – '+usd(a[4],0)],['Wachstum Gewinn/Aktie',pct(a[6][0],0)+' / '+pct(a[6][1],0)])}
+  if(rc)f.push(['Empfehlungen aktuell',`${rc.sb+rc.b} Kauf · ${rc.h} Halten · ${rc.s+rc.ss} Verkauf`]);
+  h+=H4('Die Aktie in Zahlen')+factsHtml(f);
+  h+=expoBlock(k,r.n);
+  if(a){const up=(a[2]/(q.usd||EMB[k])-1)*100,lo=(a[3]/(q.usd||EMB[k])-1)*100;
+    h+=H4('Einordnung der Analysten')+P(`${a[1]} Analysten bewerten ${esc(r.n)} im Konsens mit „${a[0]==='Strong Buy'?'Starker Kauf':'Kaufen'}“ (Stand ${a[7]}). Das durchschnittliche Kursziel liegt bei ${usd(a[2])} und damit ${pct(up,1)} vom aktuellen Kurs entfernt; selbst das niedrigste Ziel entspricht ${pct(lo,1)}. Erwartet wird ein Umsatzwachstum von ${pct(a[5][0],0)} im laufenden und ${pct(a[5][1],0)} im nächsten Geschäftsjahr, beim Gewinn je Aktie ${pct(a[6][0],0)} bzw. ${pct(a[6][1],0)}.`)+
+      P('Wichtig: Kursziele werden nach starken Kursbewegungen oft erst mit Verzögerung angepasst. Ein großer Abstand zum Ziel kann deshalb auch heißen, dass die Analysten noch nicht nachgezogen haben.')}
+  if(NOTE[k])h+=H4('Aktuell')+P(esc(NOTE[k]));
+  return h}
+function depotDeep(){const m=depotMix(),T=m.T,L=lookThrough().slice(0,5);
+  return H4('Einordnung für dein Depot')+P(`Allgemeine Marktmeldungen wirken auf dein Depot vor allem über zwei Hebel: Rund <b>${nf(0).format(m.us)} %</b> deines Geldes steckt in US-Aktien, rund <b>${nf(0).format(m.tech)} %</b> in Technologiewerten (Durchschau über alle drei Fonds). Bewegt sich der US-Technologiesektor um 1 %, ändert sich dein Depot erfahrungsgemäß um etwa ${eur(T.v*m.tech/100*.01+T.v*(m.us-m.tech*0.6)/100*.004,0)}.`)+
+    P('Deine fünf größten Einzelwerte über alle Fonds: '+L.map(x=>`${esc(REG[x.k].n)} ${eur(x.v,0)}`).join(', ')+'.')}
+/* Redaktionelle Hintergründe – Stand 26.11.2026 */
+const ED=[
+ {id:'ed-thx',d:'2026-11-26',kick:'BÖRSE',kc:'blue',h:'Thanksgiving: Wall Street macht Pause – darum steht dein Tech-Fonds still',
+  teaser:()=>'Die US-Börsen sind heute geschlossen, Freitag wird nur bis 19:00 Uhr gehandelt. Deshalb zeigt Global Technology noch den Kurs vom 25.11.',
+  big:()=>['Pause','US-Handel am 26.11.'],
+  body:()=>{const m=depotMix();return P('Am vierten Donnerstag im November feiern die USA Thanksgiving – NYSE und Nasdaq bleiben komplett geschlossen. Am Freitag danach („Black Friday“) wird verkürzt gehandelt: Schluss ist um 13:00 Uhr New Yorker Zeit, also 19:00 Uhr bei uns. An solchen Tagen ist das Handelsvolumen traditionell dünn, einzelne Ausschläge können dadurch größer ausfallen.')+
+    H4('Warum deine App heute den offiziellen Kurs zeigt')+P(`Rund ${nf(0).format(m.us)} % deines Depots stecken in US-Aktien. Die Live-Schätzung rechnet ab dem letzten offiziellen Fondspreis mit den Kursbewegungen der US-Börse weiter. Weil dort seit dem 25.11. kein Handel stattfand, gibt es nichts zu verrechnen – Global Technology bleibt bei 88,37 € (Rücknahmepreis 25.11.), GlobalChampions bei 431,17 € (26.11.).`)+
+    H4('Was trotzdem passiert')+P('Asien und Europa handeln normal. Im Global Technology Fund stecken TSMC (9,57 %) und Samsung (2,51 %), die heute in Taipeh und Seoul gehandelt wurden, sowie ASML (3,92 %) aus Amsterdam. Diese Bewegungen stecken erst im nächsten offiziellen Fidelity-Preis, den die Sparkasse morgen anzeigt.')+
+    P('Ab Freitag 15:30 Uhr laufen wieder Sekunden-Ticks – dann füllen sich die Charts „1 Min“ und „5 Min“, und das Etikett springt auf „Live-Schätzung“.')+
+    factsHtml([['Handel heute','geschlossen'],['Freitag 27.11.','15:30–19:00 Uhr'],['Dein US-Anteil',nf(0).format(m.us)+' %'],['Nächster voller Handelstag','Mo 30.11.']])}},
+ {id:'ed-nvda',d:'2026-11-26',kick:'NVIDIA',kc:'red',h:'NVIDIA-Absturz: Der KI-Primus hat rund 40 % verloren',
+  teaser:()=>`Allein am 20.11. fiel die Aktie um 14 %. Nach dem Rücktritt von CEO Jensen Huang ist der Markt nervös – du bist indirekt mit ${eur(expo('NVDA').v,0)} dabei.`,
+  big:()=>['−14 %','NVIDIA am 20.11.'],
+  body:()=>{const semi=['NVDA','TSM','AVGO','ASML','TXN','SMSN','MU','AMD','MCHP','ASMPT'].reduce((a,k)=>a+expo(k).v,0),T=totals();
+    return H4('Chronologie')+P('Im Oktober erreichte NVIDIA mit 243,37 $ ein Allzeithoch, kurz darauf brach die Aktie ihren langjährigen Aufwärtstrend. Am 12.11. trat Jensen Huang als Vorstandschef zurück, Finanzchefin Colette Kress übernahm übergangsweise. An diesem Tag lag die Aktie zeitweise 14,3 % im Minus und schloss 4,3 % tiefer.')+
+    P('Nach den Quartalszahlen am 17.11. ging es nachbörslich zunächst knapp 5 % auf 162,94 $ nach oben. Am 20.11. folgte der nächste Einbruch: −14,01 % auf 125,53 $. Bis zum 25.11. erholte sich die Aktie wieder auf rund 149 $ – die Schwankungen sind für einen Konzern dieser Größe außergewöhnlich.')+
+    H4('Was die Zahlen sagen')+P('Die Erwartungen an das Geschäft sind weiterhin enorm: Für das laufende Geschäftsjahr rechnen die Analysten mit gut 96 % mehr Umsatz und einer Verdopplung des Gewinns je Aktie. Der Kurs spiegelt also weniger schwache Zahlen als Unsicherheit über Führung und die Dauer des KI-Investitionsbooms.')+
+    stockDeep('NVDA')+H4('Der Halbleiter-Klumpen')+P(`NVIDIA steht nicht allein: Über alle drei Fonds hältst du Halbleiter- und Chipwerte (u. a. TSMC, Broadcom, ASML, Texas Instruments, Samsung) im Wert von <b>${eur(semi,0)}</b> – das sind ${nf(0).format(semi/T.v*100)} % deines Depots. Bewegt sich die ganze Branche, spürst du das deutlich.`)}},
+ {id:'ed-orcl',d:'2026-11-26',kick:'ORACLE',kc:'red',h:'Oracle auf 52-Wochen-Tief: Die Schulden-Sorgen wachsen',
+  teaser:()=>'Die Aktie rutschte am 25.11. zeitweise unter 100 $. Anleger zweifeln, ob sich die milliardenschweren KI-Rechenzentren rechnen.',
+  big:()=>['99,34 $','52-Wochen-Tief'],
+  body:()=>P('Am 25.11. eröffnete Oracle 5,7 % unter dem Vortag, fiel bis auf 99,34 $ und schloss bei 103,88 $ (−5,13 %). Das 52-Wochen-Hoch lag bei 250,25 $ – ein Großteil der KI-Rally ist damit wieder verloren.')+
+    H4('Hintergrund')+P('Oracle baut als Cloud-Anbieter in großem Stil Rechenzentren, unter anderem für OpenAI, und hat dafür im November rund 20 Mrd. $ neue Schulden aufgenommen. Der Preis für eine Absicherung gegen einen Zahlungsausfall (5-jähriger Credit Default Swap) stieg auf den Rekordwert von 356 Basispunkten; vor einem Jahr waren es weniger als 80.')+
+    P('Dem gegenüber steht ein gewaltiger Auftragsbestand von rund 664 Mrd. $ und ein Umsatzwachstum von zuletzt 29,6 %. Das Problem ist der negative freie Cashflow: Die Investitionen fließen heute ab, die Erträge kommen erst über Jahre.')+
+    stockDeep('ORCL')},
+ {id:'ed-eur',d:'2026-11-26',kick:'WÄHRUNG',kc:'blue',h:'Schwacher Euro polstert deine Verluste ab',
+  teaser:()=>`Ein Euro kostet nur noch 1,0975 $ – nahe dem Tief seit April 2025. Bei ${nf(0).format(depotMix().us)} % US-Aktien ist das Rückenwind für dich.`,
+  big:()=>['1,0975 $','EZB-Referenzkurs 26.11.'],
+  body:()=>{const m=depotMix();return P('Die EZB setzte den Referenzkurs am 24.11. auf 1,0963 $, am 25.11. auf 1,0935 $ und am 26.11. auf 1,0975 $. Seit Jahresbeginn hat der Euro knapp 7 % gegenüber dem Dollar verloren; Mitte November rutschte er unter 1,10 $ auf den tiefsten Stand seit Frühjahr 2025.')+
+    H4('Die Gründe')+P('Erstens die Zinsen: Die Märkte rechnen bis September 2027 mit vier Zinserhöhungen der US-Notenbank, aber nur drei der EZB – Dollar-Anlagen werden dadurch attraktiver. Zweitens politische und fiskalische Unsicherheit in Frankreich, drittens schwächere Wachstumsaussichten der Eurozone und Spekulationen um die nächste EZB-Spitze.')+
+    H4('So wirkt das auf dein Depot')+P(`Deine Fonds rechnen US-Kurse in Euro um. Fällt der Euro um 1 %, steigt der Euro-Wert einer US-Aktie um rund 1 % – auch wenn sich ihr Dollar-Kurs nicht bewegt. Bei rund ${nf(0).format(m.us)} % US-Anteil bewegt jeder Prozentpunkt Euro/Dollar dein Depot um etwa <b>${eur(m.usE*0.01,0)}</b>. Ein Teil der Dollar-Verluste im November wurde so abgefedert.`)+
+    P('Die Kehrseite: Erholt sich der Euro wieder, kostet dich das Rendite. Fondsanleger ohne Währungsabsicherung tragen dieses Risiko immer mit.')+
+    factsHtml([['EUR/USD 26.11.','1,0975 $'],['Seit Jahresbeginn','≈ −7 %'],['Dein US-Anteil',nf(0).format(m.us)+' %'],['1 % Euro-Bewegung','≈ '+eur(m.usE*0.01,0)]])}},
+ {id:'ed-zins',d:'2026-11-26',kick:'ZINSEN',kc:'blue',h:'US-Notenbank vor Zinserhöhung: Gegenwind für Wachstumsaktien',
+  teaser:()=>'Am 9. Dezember entscheidet die Fed – eine Anhebung gilt als nahezu sicher. Die EZB folgt am 17. Dezember.',
+  big:()=>['9.12.','Fed-Entscheid'],
+  body:()=>{const m=depotMix();return P('Der US-Leitzins liegt derzeit in einer Spanne von 3,75 bis 4,00 %. Laut dem Marktindikator CME FedWatch war am 25.11. eine Erhöhung zu rund 97 % eingepreist. In der Eurozone lag die Inflation im Oktober bei 4,0 % – auch die EZB steht unter Druck.')+
+    H4('Warum dich das betrifft')+P(`Höhere Zinsen senken den heutigen Wert von Gewinnen, die erst in vielen Jahren anfallen. Das trifft vor allem hoch bewertete Technologie- und Wachstumsaktien – und genau die dominieren dein Depot: rund ${nf(0).format(m.tech)} % Technologie in der Durchschau. Gleichzeitig stützen steigende US-Zinsen den Dollar, was den Effekt für dich als Euro-Anleger teilweise ausgleicht.`)+
+    H4('Termine im Blick')+factsHtml([['Fed-Entscheid','Mi 9.12.'],['Nächster Sparplan','Di 15.12.'],['EZB-Entscheid','Do 17.12.'],['US-Leitzins aktuell','3,75–4,00 %']])+
+    P('Dein Sparplan kauft am 15.12. genau zwischen beiden Entscheidungen. Für einen langfristigen Sparplan ist der Zeitpunkt aber nachrangig – schwankende Kurse sorgen dafür, dass du in schwachen Phasen mehr Anteile bekommst.')}},
+ {id:'ed-an',d:'2026-11-26',kick:'ANALYSE',kc:'green',h:'Analysten-Check: So viel Potenzial sehen Profis in deinen Top-Aktien',
+  teaser:()=>{const s=anSummary();return `Gewichtet nach deinem Anteil liegen die Ø-Kursziele ${pct(s.wup,0)} über den aktuellen Kursen. Am größten ist der Abstand bei ${s.top[0].n}.`},
+  big:()=>[pct(anSummary().wup,0),'Ø-Kursziel-Potenzial'],
+  body:()=>{const s=anSummary();return P(`Für ${s.items.length} deiner wichtigsten Einzelwerte liegen Konsens-Schätzungen von insgesamt rund ${s.items.reduce((a,i)=>a+i.a[1],0)} Analysten vor. Sie decken ${eur(s.cov,0)} deines Depots ab.`)+
+    H4('Größtes Potenzial laut Analysten')+factsHtml(s.top.slice(0,6).map(i=>[esc(i.n),pct(i.up,0)+' · Ziel '+usd(i.a[2],0),ud(i.up)]))+
+    H4('Am nächsten am Kursziel')+factsHtml(s.top.slice(-3).map(i=>[esc(i.n),pct(i.up,0)+' · Ziel '+usd(i.a[2],0),ud(i.up)]))+
+    P(`Im pessimistischsten Szenario – alle Aktien erreichen nur ihr jeweils niedrigstes Analystenziel – ergäbe sich gewichtet ${pct(s.wlo,1)}.`)+
+    P('Einordnung: Kursziele sind 12-Monats-Erwartungen und in der Praxis eher zu optimistisch. Nach Kursstürzen wie bei NVIDIA oder Oracle hinken sie oft hinterher. Als Stimmungsbild sind sie trotzdem nützlich – keine Kaufempfehlung.')}},
+ {id:'ed-nov',d:'2026-11-26',kick:'DEIN DEPOT',kc:'blue',h:'Dein November: Der Tech-Fonds trifft es am härtesten',
+  teaser:()=>{const c=novChanges();return `Seit den Käufen Mitte November: Global Technology ${pct(c.fid,1)}, GlobalChampions ${pct(c.gc,1)}, MSCI World ${pct(c.etf,1)}.`},
+  big:()=>[pct(novChanges().fid,1),'Global Technology seit 16.11.'],
+  body:()=>{const c=novChanges(),T=totals(),fid=F('fid'),gc=F('gc');
+    return P(`Gemessen an den offiziellen Preisen hat Global Technology seit dem Sparplankauf am 16.11. ${pct(c.fid,1)} verloren, GlobalChampions ${pct(c.gc,1)}, der MSCI-World-ETF seit der VL-Zahlung am 13.11. ${pct(c.etf,1)}. Der Unterschied erklärt sich aus der Zusammensetzung: Der Fidelity-Fonds ist zu rund 69 % Technologie und hält allein knapp 10 % TSMC – er reagiert auf die Halbleiter-Korrektur am stärksten.`)+
+    H4('Dein Stand')+factsHtml([['Depotwert',eur(T.v)],['Seit Kauf (Bank)',dE(T.v-T.inv),ud(T.v-T.inv)],['Inkl. Ausgabeaufschläge',dE(T.v-T.gross),ud(T.v-T.gross)],['Bezahlte Kaufkosten',eur(T.cost)]])+
+    H4('Der Sparplan-Effekt')+P(`Für 125 € bekommst du heute ${nf(3).format(125/posVal(fid).p)} Anteile Global Technology – im August waren es nur ${nf(3).format(125/(100.10/1.0525))}. Bei GlobalChampions sind es ${nf(3).format(125/posVal(gc).p)} statt ${nf(3).format(125/(467.74/1.0375))}. Fallende Kurse senken deinen Durchschnittspreis; erholt sich der Markt, profitieren gerade diese günstigeren Anteile.`)}}
+];
+function anSummary(){const ex={};lookThrough().forEach(x=>ex[x.k]=x.v);
+  const items=Object.keys(AN).map(k=>{const a=AN[k],cur=stockQ(k).usd||EMB[k];return {k,n:REG[k].n,a,up:(a[2]/cur-1)*100,lo:(a[3]/cur-1)*100,exp:ex[k]||0}});
+  const cov=items.reduce((s,i)=>s+i.exp,0);return {items,cov,wup:items.reduce((s,i)=>s+i.exp*i.up,0)/cov,wlo:items.reduce((s,i)=>s+i.exp*i.lo,0)/cov,top:[...items].sort((a,b)=>b.up-a.up)}}
+function novChanges(){const o={};[['fid','2026-11-16'],['gc','2026-11-16'],['etf','2026-11-13']].forEach(([id,d])=>{const f=F(id);o[id]=(posVal(f).p/navNear(f,d).v-1)*100});return o}
+function ago(t){const m=Math.round((Date.now()-t)/6e4);if(m<1)return 'gerade eben';if(m<60)return 'vor '+m+' Min';const h=Math.round(m/60);if(h<24)return 'vor '+h+' Std';return new Date(t).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})+' · '+hm(t)}
+function teaserOf(s){s=String(s||'').replace(/\s+/g,' ').trim();const parts=s.match(/[^.!?]+[.!?]+/g)||[s];let t=parts.slice(0,2).join(' ').trim();if(t.length>240)t=t.slice(0,237).replace(/\s\S*$/,'')+' …';return t}
+function newsList(){
+  const ed=ED.map(e=>({...e,ed:true,t:Date.parse(e.d+'T06:00:00Z')}));
+  const ag=(NW.items||[]).map(n=>({...n,ed:false})).sort((a,b)=>b.t-a.t);
+  let all;
+  if(newsF==='all'){const rec=ed.filter(e=>Date.now()-e.t<4*DAY),old=ed.filter(e=>Date.now()-e.t>=4*DAY);all=[];let i=0,j=0;
+    while(i<ag.length||j<rec.length){if(j<rec.length&&(all.length%3===0||i>=ag.length))all.push(rec[j++]);else all.push(ag[i++])}
+    all=all.concat(old)}
+  else all=ed.concat(ag).sort((a,b)=>b.t-a.t);
+  if(newsF==='mine')all=all.filter(n=>n.ed||symKey(n.sym));
+  else if(newsF==='mkt')all=all.filter(n=>!n.ed&&!symKey(n.sym));
+  else if(newsF==='ed')all=all.filter(n=>n.ed);
+  return all.slice(0,60)}
+function newsCard(n){
+  let img,kick,kc,h,teaser,body,meta;
+  if(n.ed){const [bv,bl]=n.big();img=`<div class="stat"><b>${esc(bv)}</b><span>${esc(bl)}</span></div>`;kick=n.kick;kc=n.kc;h=n.h;teaser=n.teaser();body=n.body();meta='Hintergrund · '+dDE(n.d)}
+  else{const k=symKey(n.sym),r=k&&REG[k],q=k?stockQ(k):null;
+    img=`<div class="stat"><b>${r?esc(r.n):'Markt'}</b><span>${q&&q.ch!=null?pct(q.ch)+' heute':esc(n.src||'')}</span></div>`+(n.img&&/^https:\/\//.test(n.img)?`<img src="${esc(n.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:'');
+    kick=r?r.n.toUpperCase():'MÄRKTE';kc=q&&q.ch!=null?(q.ch<0?'red':'green'):'blue';h=esc(n.h);teaser=esc(teaserOf(n.s));
+    body=(n.s?H4('Die Meldung')+P(esc(n.s)):'')+(k?stockDeep(k):depotDeep())+(/^https:\/\//.test(n.url||'')?`<p><a href="${esc(n.url)}" target="_blank" rel="noopener">Originalartikel bei ${esc(n.src||'der Quelle')} lesen →</a></p>`:'');
+    meta=esc(n.src||'Finnhub')+' · '+ago(n.t)}
+  return `<article class="nw" data-id="${esc(n.id)}"><div class="im">${img}</div><div class="pad"><span class="kick ${kc}">${esc(kick)}</span><h3>${n.ed?esc(h):h}</h3><p class="tz">${n.ed?esc(teaser):teaser}</p><div class="meta">${meta}</div>
+    <details${OPEN.has(String(n.id))?' open':''}><summary><span class="more">Weiterlesen</span><span class="less">Weniger anzeigen</span></summary><div class="deep">${body}</div></details></div></article>`}
+function renderNews(){
+  $('#newsF').innerHTML=[['all','Alle'],['mine','Mein Depot'],['mkt','Märkte'],['ed','Hintergründe']].map(([k,l])=>`<button data-nf="${k}" class="${newsF===k?'on':''}">${l}</button>`).join('');
+  const L=newsList();
+  $('#newsInfo').textContent=CFG.key?(NW.at?`${(NW.items||[]).length} Meldungen · aktualisiert ${ago(NW.at)} · Agenturmeldungen im Original (meist Englisch), Einordnung auf Deutsch`:'Lade aktuelle Meldungen…'):'Tagesaktuelle Meldungen erscheinen, sobald Live-Kurse eingerichtet sind. Bis dahin: Hintergründe vom 26.11.';
+  $('#newsFeed').innerHTML=L.map(newsCard).join('')||'<div class="card mute">Keine Meldungen in dieser Auswahl.</div>';
+  queueNews(false);
+}
+function queueNews(force){if(!CFG.key||!isLive())return;if(!force&&Date.now()-(NW.at||0)<30*6e4)return;NW.at=Date.now();LS.set('news',NW);
+  const syms=lookThrough().map(x=>REG[x.k].q).filter(q=>q&&!PROXIES.includes(q)).slice(0,12);
+  ['g:general',...syms.map(s=>'n:'+s)].reverse().forEach(id=>{if(LQS.has(id))return;LQS.add(id);LQ.unshift(id)});pump()}
+function addNews(arr,sym){const seen=new Set((NW.items||[]).map(n=>n.h.toLowerCase()));
+  arr.forEach(j=>{if(!j||!j.headline)return;const h=String(j.headline).slice(0,300);if(seen.has(h.toLowerCase()))return;seen.add(h.toLowerCase());
+    let s=sym;if(!s&&j.related){const r=String(j.related).split(',').map(x=>x.trim()).find(x=>symKey(x));if(r)s=r}
+    NW.items.push({id:'f'+(j.id||Math.random().toString(36).slice(2)),h,s:String(j.summary||'').slice(0,2000),src:String(j.source||''),url:String(j.url||''),img:String(j.image||''),t:(j.datetime||0)*1000,sym:s||null})});
+  NW.items=NW.items.filter(n=>n.t>Date.now()-5*DAY).sort((a,b)=>b.t-a.t).slice(0,90);LS.set('news',NW);newsDirty=true}
+
 /* ======================= 9. NAVIGATION ======================= */
-const VIEWS=['depot','orders','markt','analyse','einrichten'],TITLES={depot:'Mein Depot',orders:'Orders',markt:'Markt',analyse:'Analyse',einrichten:'Einrichten'};
+const VIEWS=['depot','news','orders','markt','analyse','einrichten'],TITLES={depot:'Mein Depot',news:'News',orders:'Orders',markt:'Markt',analyse:'Analyse',einrichten:'Einrichten'};
 function route(){
   const h=(location.hash||'').slice(1);
   if(h.startsWith('fonds-')&&F(h.slice(6))){openF=F(h.slice(6));fAll=false;$('#fQ').value='';renderSheet();$('#sheet').classList.add('on');$('#sheet').scrollTop=0;document.body.style.overflow='hidden';return}
@@ -943,7 +1106,7 @@ function route(){
   VIEWS.forEach(x=>$('#v-'+x).classList.toggle('on',x===curView));
   document.querySelectorAll('nav.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===curView));
   $('#pageTitle').textContent=TITLES[curView];$('#hero').style.display=curView==='depot'||curView==='analyse'?'':'none';
-  if(curView==='depot'){renderMain();renderDepot()}if(curView==='markt')renderMarkt();if(curView==='analyse')renderAnalyse();
+  if(curView==='depot'){renderMain();renderDepot()}if(curView==='markt')renderMarkt();if(curView==='analyse')renderAnalyse();if(curView==='news'){renderNews();$('#newsNew').hidden=true}
 }
 window.addEventListener('hashchange',route);
 
@@ -994,7 +1157,9 @@ function queueVisible(keys){if(!CFG.key||!isLive())return;keys.forEach(k=>{const
 function queueRecs(syms){if(!CFG.key||!isLive())return;syms.forEach(s=>{const r=REC[s];if(r&&Date.now()-r.at<12*36e5)return;const id='r:'+s;if(LQS.has(id))return;LQS.add(id);LQ.push(id)});pump()}
 async function pump(){if(lqBusy)return;lqBusy=true;
   while(LQ.length&&CFG.key){const id=LQ.shift(),[kind,s]=id.split(':');
-    try{if(kind==='q'){Q[s]=await quote(s,CFG.key)}else{const r=await fetch('https://finnhub.io/api/v1/stock/recommendation?symbol='+encodeURIComponent(s)+'&token='+encodeURIComponent(CFG.key));if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j)&&j[0])REC[s]={sb:j[0].strongBuy||0,b:j[0].buy||0,h:j[0].hold||0,s:j[0].sell||0,ss:j[0].strongSell||0,at:Date.now(),p:j[0].period}}lazyDirty=true}
+    try{if(kind==='q'){Q[s]=await quote(s,CFG.key)}else if(kind==='n'||kind==='g'){const to=ymd(Date.now()),from=ymd(Date.now()-3*DAY);
+      const r=await fetch(kind==='g'?'https://finnhub.io/api/v1/news?category=general&token='+encodeURIComponent(CFG.key):'https://finnhub.io/api/v1/company-news?symbol='+encodeURIComponent(s)+'&from='+from+'&to='+to+'&token='+encodeURIComponent(CFG.key));
+      if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j))addNews(j.sort((a,b)=>(b.datetime||0)-(a.datetime||0)).slice(0,kind==='g'?15:4),kind==='n'?s:null)}else{const r=await fetch('https://finnhub.io/api/v1/stock/recommendation?symbol='+encodeURIComponent(s)+'&token='+encodeURIComponent(CFG.key));if(r.status===429)throw new Error('Limit');const j=await r.json();if(Array.isArray(j)&&j[0])REC[s]={sb:j[0].strongBuy||0,b:j[0].buy||0,h:j[0].hold||0,s:j[0].sell||0,ss:j[0].strongSell||0,at:Date.now(),p:j[0].period}}lazyDirty=true}
     catch(e){if(/Limit/.test(e.message)){LQ.unshift(id);await sleep(20000);continue}}
     LQS.delete(id);await sleep(2200)}
   lqBusy=false;LS.set('quotes',Q);LS.set('recs',REC)}
@@ -1004,6 +1169,8 @@ setInterval(()=>{tickN++;
     if(!openF&&curView==='depot'){if(['1m','5m','1h','1d'].includes(range))renderMain();if(tickN%3===0)renderDepot()}
     if(openF&&tickN%2===0){renderSheetChart();$('#fPrice').textContent=eur(posVal(openF).p,openF.id==='etf'?3:2)}}
   if(tickN%10===0){if(lazyDirty||isLive()){lazyDirty=false;if(curView==='markt'&&!openF&&!document.activeElement?.matches('input'))renderMarkt();if(openF&&!document.activeElement?.matches('input'))renderSheet()}}
+  if(newsDirty&&curView==='news'&&!openF){newsDirty=false;if(window.scrollY<250&&!document.querySelector('#newsFeed details[open]'))renderNews();else $('#newsNew').hidden=false}
+  if(tickN%600===0&&curView==='news')queueNews(false);
   if(tickN%30===0)persistSnaps();
   if(tickN%300===0&&CFG.td)loadHistory(false);
   if(tickN%60===0)renderHeader();
@@ -1024,6 +1191,9 @@ $('#sheetBack').addEventListener('click',()=>{location.hash='#depot'});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openF)location.hash='#depot'});
 $('#fFund').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fFund=b.dataset.ff;renderOrders()});
 $('#fType').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fTyp=b.dataset.ft;renderOrders()});
+$('#newsF').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;newsF=b.dataset.nf;renderNews()});
+$('#newsFeed').addEventListener('toggle',e=>{const a=e.target.closest&&e.target.closest('.nw');if(!a)return;if(e.target.open)OPEN.add(a.dataset.id);else OPEN.delete(a.dataset.id)},true);
+$('#newsNew').addEventListener('click',()=>{OPEN.clear();renderNews();$('#newsNew').hidden=true;window.scrollTo(0,0)});
 $('#anSort').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;anSort=b.dataset.as;renderMarkt()});
 $('#lookQ').addEventListener('input',renderMarkt);$('#lookMore').addEventListener('click',()=>{if(($('#lookQ').value||'').trim())return;lookAll=!lookAll;renderMarkt()});
 $('#fQ').addEventListener('input',renderSheet);$('#fMore').addEventListener('click',()=>{if(($('#fQ').value||'').trim())return;fAll=!fAll;renderSheet()});
